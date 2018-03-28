@@ -1,0 +1,21 @@
+version: '3.1'
+
+services:
+  db:
+    build:
+      context: ./poem-jvm
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: poem
+      POSTGRES_PASSWORD: poem
+      POSTGRES_DB: poem
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '9090:8080'
+    links:
+      - 'db:database'
+    restart: unless-stopped
