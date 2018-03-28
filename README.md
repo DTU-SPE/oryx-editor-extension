@@ -21,5 +21,5 @@ Starting point is a git mirror of https://github.com/andreaswolf/oryx-editor whi
     * `# ant deploy-all`
     * `# exit`
 * Available sites:
-      * Oryx Repository: http://localhost:9090/backend/poem/repository
-      * Oryx Editor: http://localhost:9090/oryx/editor
+    * Oryx Repository: http://localhost:9090/backend/poem/repository
+    * Oryx Editor: http://localhost:9090/oryx/editor
