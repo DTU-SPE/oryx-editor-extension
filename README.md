@@ -1,5 +1,7 @@
 # oryx-editor-extension
-Starting point is a git mirror of https://github.com/andreaswolf/oryx-editor which is a git mirror of the Oryx project http://code.google.com/p/oryx-editor/
+* Starting point: mirror of https://github.com/andreaswolf/oryx-editor (mirror of http://code.google.com/p/oryx-editor/)
+* The Oryx Project: https://bpt.hpi.uni-potsdam.de/Oryx/WebHome
+* oryx-editor on Google Code Archive: https://code.google.com/archive/p/oryx-editor/
 
 ## Installation via Docker
 * nb: the installation has not been attempted on Windows systems which requires some additional setup: https://blog.docker.com/2017/09/preview-linux-containers-on-windows/
