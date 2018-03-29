@@ -1,8 +1,9 @@
 # oryx-editor-extension
 Starting point is a git mirror of https://github.com/andreaswolf/oryx-editor which is a git mirror of the Oryx project http://code.google.com/p/oryx-editor/
 
-## Installation (Docker)
-* Install Docker Community Edition (CE) (Docker Engine 1.13.1+)
+## Installation via Docker
+* nb: the installation has not been attempted on Windows systems which requires some additional setup: https://blog.docker.com/2017/09/preview-linux-containers-on-windows/
+* Prerequisite: Docker Community Edition (CE) (Docker Engine 1.13.1+)
 * Clone this repository
 * `$ cd oryx-editor-extension`
 * `$ docker-compose -f docker-compose.yml up`
