@@ -11,16 +11,11 @@
 * Clone this repository
 * `$ cd oryx-editor-extension`
 * `$ docker-compose -f docker-compose.yml up`
-* The composition of containers is active after the message "Attaching to oryxeditorextension_db_1, oryxeditorextension_web_1"
-* Enter db container (verify container name: `$ docker ps`):
-    * `$ docker exec -it oryxeditorextension_db_1 /bin/bash`
-    * `# psql -U poem`
-    * `poem=# create language plpythonu;`
-    * `poem=# \q`
-    * `# exit`
-* Enter web container
+* Log entry that the web server is initialized: `web_1  | INFO: Server startup in 1094 ms`
+* Log entry that the database is initialized: `db_1   | LOG:  database system is ready to accept connections`
+* Deploy in web container:
     * `$ docker exec -it oryxeditorextension_web_1 /bin/bash`
-    * `# cd /opt/oryx-editor`
+    * `# cd /opt/oryx-editor` (is default, see ./Dockerfile)
     * `# ant create-schema` (password prompt, see ./docker-compose.yml)
     * `# ant build-all`
     * `# ant deploy-all`

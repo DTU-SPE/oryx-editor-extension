@@ -2,6 +2,7 @@ version: '3.1'
 
 services:
   db:
+    image: oryxeditorextension_db:0.0.0
     build:
       context: ./poem-jvm
       dockerfile: Dockerfile
@@ -11,6 +12,7 @@ services:
       POSTGRES_PASSWORD: poem
       POSTGRES_DB: poem
   web:
+    image: oryxeditorextension_web:0.0.0
     build:
       context: .
       dockerfile: Dockerfile
