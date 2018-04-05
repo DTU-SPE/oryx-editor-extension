@@ -1,3 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
-psql -U poem -d poem -a -f db_schema.sql
+gosu postgres postgres --single -jE < /docker-entrypoint-initdb.d/db_schema.sql
+echo
