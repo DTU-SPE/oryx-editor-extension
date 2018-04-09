@@ -7,7 +7,7 @@
 	<presetdef name="javac">
 	    <javac target="${javac-target}"
 	    	compiler="${javac-compiler}" source="${javac-source}"
-	    	executable="${javac-executable}" fork="${javac-fork}"/>
+	    	executable="${java-home}/${javac-executable}" fork="${javac-fork}"/>
 	  </presetdef>
 	
     <!-- Import ANT build scripts of sub projects -->
