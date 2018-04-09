@@ -25,7 +25,7 @@ NB - the installation has not been attempted on Windows systems which requires s
 * `$ ant build-all`
 
 ## Deploying webapps and database
-After a successful deployment, the following sites are available in the browser:
+Expected result: after a successful deployment, the following sites are available in the browser:
 * Oryx Repository: http://localhost:9090/backend/poem/repository
 * Oryx Editor: http://localhost:9090/oryx/editor
 
@@ -47,7 +47,7 @@ After a successful deployment, the following sites are available in the browser:
 #### Deploying database in local PostgreSQL 8.4 container
 * Documentation: https://www.postgresql.org/docs/8.4/static/
 * In ./poem-jvm/etc/hibernate.cfg.xml modify the following lines:
-    * `<property name="connection.url">jdbc:postgresql://localhost/poem</property>`
+    * `<property name="connection.url">jdbc:postgresql://database/poem</property>`
     * `<property name="connection.username">poem</property>`
     * `<property name="connection.password">poem</property>`
 * In ./build.properties modify the following lines:
@@ -55,6 +55,5 @@ After a successful deployment, the following sites are available in the browser:
     * `postgresql-username = poem`
     * `postgresql-port = 5432`
     * `postgresql-bin-dir = /usr/bin`
-* NB - the string that is currently *database* for part of the property with name "connection.url" and the attribute postgresql-hostname must be the same
-* NB - the string that is currently *poem* for part of the property with name "connection.username" and the attribute postgresql-username must be the same
+* NB - the default hostname in the property with name="connection.url is *database* to accomodate the Docker setup. Change to the hostname of your postgres server
 * Then run ./poem-jvm/data/database/db_schema.sql for that url/username/password
