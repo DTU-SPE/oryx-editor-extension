@@ -11,6 +11,8 @@ services:
       POSTGRES_USER: poem
       POSTGRES_PASSWORD: poem
       POSTGRES_DB: poem
+    ports:
+      - '5432:5432'
   web-target-java-1.6:
     image: oryxeditorextension_web:0.0.0-target-java-1.6
     build:
