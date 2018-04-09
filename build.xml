@@ -4,7 +4,12 @@
     <property file="build.properties"/>
 	<property name="build-dir" value="build" />
 	<property name="target-dir" value="dist" />
-    
+	<presetdef name="javac">
+	    <javac target="${javac-target}"
+	    compiler="${javac-compiler}" source="${javac-source}"
+	    	executable="${javac-executable}" fork="${javac-fork}"/>
+	  </presetdef>
+	
     <!-- Import ANT build scripts of sub projects -->
     <import file="editor/build.xml"/>
     <!--<import file="editor/test.xml"/>-->
