@@ -13,13 +13,8 @@
 * `$ docker-compose -f docker-compose.yml up`
 * Log entry that the web server is initialized: `web_1  | INFO: Server startup in 1094 ms`
 * Log entry that the database is initialized: `db_1   | LOG:  database system is ready to accept connections`
-* Deploy in web container:
-    * `$ docker exec -it oryxeditorextension_web_1 /bin/bash`
-    * `# cd /opt/oryx-editor` (is default, see ./Dockerfile)
-    * `# ant create-schema` (password prompt, see ./docker-compose.yml)
-    * `# ant build-all`
-    * `# ant deploy-all`
-    * `# exit`
+* `$ docker cp dist/. oryxeditorextension_web-target-java-1.6_1:/usr/local/tomcat/webapps`
+* TODO
 * Available sites:
     * Oryx Repository: http://localhost:9090/backend/poem/repository
     * Oryx Editor: http://localhost:9090/oryx/editor
