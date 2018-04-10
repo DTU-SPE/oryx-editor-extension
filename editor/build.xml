@@ -2,18 +2,12 @@
 <project name="Oryx Editor" basedir="../">
     <!-- Load additional properties -->
     <property file="build.properties" />
-<<<<<<< HEAD
 	<property name="build-dir" value="build" />
 	<property name="target-dir" value="dist" />
 	<property name="war-dir" value="war" />
     <import file="../buildApps/build.xml" />
-	
-    
-=======
 
-    <import file="../buildApps/build.xml" />
 
->>>>>>> fee1b2166... added docker composition (docker-compose.yml) of web and db containers
     <!-- Editor properties *************************************************** -->
     <property name="editor-src-root" value="editor" />
     <property name="editor-src-client" value="${editor-src-root}/client" />
@@ -21,13 +15,7 @@
     <property name="editor-build-root" value="${build-dir}/editor" />
 	<!-- parses plugin xml-->
 	<xmlproperty file="${editor-src-client}/scripts/Plugins/plugins.xml" collapseAttributes="true"/>
-<<<<<<< HEAD
-    
-	
-	
-=======
 
->>>>>>> fee1b2166... added docker composition (docker-compose.yml) of web and db containers
     <!-- Targets for oryx javascript documentation ****************************************************** -->
     <path id="jsdoc.classpath">
         <fileset file="${editor-src-root}/lib/js.jar" />
@@ -40,11 +28,7 @@
         <jsdoctoolkit jsdochome="jsdoc-toolkit/" template="jsdoc" outputdir="doc/editor/client" inputdir="editor/client/scripts" depth="2">
         </jsdoctoolkit>
     </target>
-<<<<<<< HEAD
-	
-=======
 
->>>>>>> fee1b2166... added docker composition (docker-compose.yml) of web and db containers
     <!-- Oryx JavaDoc -->
     <target name="javadoc-editor">
       <mkdir dir="doc/editor/server" />
@@ -96,17 +80,16 @@
     <target name="build-with-script-files-flag">
         <property name="build-with-script-files-flag" value="scripts/**" />
     </target>
-<<<<<<< HEAD
-	
-	
+
+
     <target name="deploy-editor">
         <copy file="${war-dir}/oryx.war" todir="${deploymentdir}"/>
     </target>
-    
+
     <target name="undeploy-editor">
         <delete file="${deploymentdir}/oryx.war"/>
     </target>
-    
+
     <target name="deploy-stencilsets">
         <copy todir='${deploymentdir}/oryx/stencilsets'>
             <fileset dir="${editor-src-root}/data/stencilsets"/>
@@ -115,10 +98,7 @@
             Copied stencilsets into deployment destination
         </echo>
     </target>
-    
-=======
 
->>>>>>> fee1b2166... added docker composition (docker-compose.yml) of web and db containers
     <target name="clean-editor">
         <delete file="${war-dir}/oryx.war" />
         <delete dir="${editor-build-root}"/>
@@ -152,13 +132,9 @@
     </target>
 
     <target name="build-plugins">
-<<<<<<< HEAD
         <copy todir='${editor-build-root}/plugins/scripts'>
              <fileset dir="${editor-src-client}/scripts/Plugins/"/>
         </copy>
-=======
-
->>>>>>> fee1b2166... added docker composition (docker-compose.yml) of web and db containers
         <copy todir='${editor-build-root}' file="${editor-src-client}/scripts/Plugins/plugins.xml">
 
         </copy>
@@ -173,7 +149,6 @@
         </echo>
 
     </target>
-<<<<<<< HEAD
 	 <target name="build-profiles" depends='compile-buildApps'>
 	 	 <copy todir='${editor-build-root}' file="${editor-src-client}/scripts/Plugins/profiles.xml">
          </copy>
@@ -216,7 +191,7 @@
                 <file name='scripts/Core/StencilSet/rules.js'/>
                 <file name='scripts/Core/StencilSet/stencilset.js'/>
                 <file name='scripts/Core/StencilSet/stencilsets.js'/>
-                <file name='scripts/Core/command.js'/> 
+                <file name='scripts/Core/command.js'/>
                 <file name='scripts/Core/bounds.js'/>
                 <file name='scripts/Core/uiobject.js'/>
                 <file name='scripts/Core/abstractshape.js'/>
@@ -237,7 +212,7 @@
 	        <java dir="${editor-build-root}/tempProfiles/" jar="${editor-src-root}/lib/yuicompressor-2.4.2.jar" fork="true"
 	         failonerror="true" output='${editor-build-root}/tempProfiles/oryx.core.js' logError="true">
 	        	<!--explicitly use utf-8 http://developer.yahoo.com/yui/compressor/-->
-	        	<arg line='--charset utf-8' /> 
+	        	<arg line='--charset utf-8' />
 	            <arg file='${editor-build-root}/tempProfiles/oryx.core.uncompressed.js'/>
 	        </java>
 			<move todir='${editor-build-root}/profiles'>
@@ -256,7 +231,7 @@
 	                    <include name="*.js" />
 	            </fileset>
 			</move>
-			
+
 			<delete dir='${editor-build-root}/tempProfiles/' includeemptydirs='true'/>
      </target>
 	 <target name="compress-file">
@@ -264,14 +239,11 @@
 		<java dir="${editor-build-root}" jar="${editor-src-root}/lib/yuicompressor-2.4.2.jar" fork="true"
  			failonerror="true" output='${editor-build-root}/profiles'>
         	<!--explicitly use utf-8 http://developer.yahoo.com/yui/compressor/-->
-			<arg line='--charset utf-8' /> 
+			<arg line='--charset utf-8' />
     		<arg file='${editor-build-root}/tempProfiles/${file}'/>
 		</java>
 	 </target>
-    
-=======
 
->>>>>>> fee1b2166... added docker composition (docker-compose.yml) of web and db containers
     <target name="build-stencilsets" depends='compile-buildApps'>
 
         <delete failonerror="false">
@@ -340,11 +312,8 @@
 
     </target>
 
-<<<<<<< HEAD
 
-	
-=======
->>>>>>> fee1b2166... added docker composition (docker-compose.yml) of web and db containers
+
     <target name="build-editor-core">
 
         <!--<copy todir='${editor-build-root}' file='${editor-src-client}/scripts/Core/config.js'/>-->
@@ -437,15 +406,9 @@
             <arg value="--xml"/>
         </exec>
     </target>
-<<<<<<< HEAD
-        
+
     <target name="build" depends="copy-license, build-plugins,build-profiles, build-stencilsets, build-execution, build-server, build-editor-core, generate-version-file-editor" />
-    
-=======
 
-    <target name="build" depends="copy-license, build-plugins, build-stencilsets, build-execution, build-server, build-editor-core, generate-version-file-editor" />
-
->>>>>>> fee1b2166... added docker composition (docker-compose.yml) of web and db containers
     <target name='compress'>
 
         <tempfile property="compress.temp" suffix=".js" prefix="compressed" destDir="${editor-build-root}"/>
@@ -453,7 +416,7 @@
         <java dir="${editor-build-root}" jar="${editor-src-root}/lib/yuicompressor-2.4.2.jar" fork="true"
          failonerror="true" output='${compress.temp}' logError="true">
         	<!--explicitly use utf-8 http://developer.yahoo.com/yui/compressor/-->
-        	<arg line='--charset utf-8' /> 
+        	<arg line='--charset utf-8' />
             <arg file='${editor-build-root}/oryx.debug.js'/>
         </java>
         <echo>
@@ -482,14 +445,13 @@
         <delete file='${compress.temp}'/>
 
     </target>
-<<<<<<< HEAD
-	
+
 	<target name="check-wsdl2xforms">
 		<condition property="wsdl2xforms_present">
 			<available file="${editor-src-root}/lib/wsdl2xforms" type="dir" />
 		</condition>
 	</target>
-	
+
 	<target name="dist-wsdl2xforms" depends="check-wsdl2xforms" if="wsdl2xforms_present">
 		<echo>
 			Including WSDL2XForms
@@ -499,34 +461,27 @@
     	  <fileset dir="${editor-src-root}/lib/wsdl2xforms">
             <include name="*.xsl"/>
           	<depend  targetdir="${target-dir}/client/WEB-INF/lib/wsdl2xforms" />
-          </fileset>          
+          </fileset>
   	    </copy>
 	</target>
-    
+
     <target name="dist" depends="dist-wsdl2xforms">
-        
-=======
 
-    <target name="dist">
-        <mkdir dir="${target-dir}"/>
-
->>>>>>> fee1b2166... added docker composition (docker-compose.yml) of web and db containers
         <echo>
             Creating web application. ${deploy-xhtml}
         </echo>
-<<<<<<< HEAD
         <mkdir dir="${target-dir}"/>
     	<mkdir dir="${target-dir}/client"/>
     	<mkdir dir="${target-dir}/client/WEB-INF" />
     	<mkdir dir="${target-dir}/client/META-INF" />
-    	
+
     	<copy todir="${target-dir}/client/WEB-INF" >
     		<fileset dir="${editor-src-root}/etc">
     			<include name="web.xml"/>
     			<depend  targetdir="${target-dir}/client/WEB-INF" />
     		</fileset>
     	</copy>
-    	
+
     	<mkdir dir="${target-dir}/client/WEB-INF/lib"/>
     	<copy todir="${target-dir}/client/WEB-INF/lib">
           <fileset dir="${editor-src-root}/lib">
@@ -534,15 +489,15 @@
             <include name="*.xsl"/>
             <exclude name="deprecated/**"/>
             <exclude name="sources/**"/>
-            <exclude name="servlet-api.jar" />	
+            <exclude name="servlet-api.jar" />
           	<depend  targetdir="${target-dir}/client/WEB-INF/lib" />
-          </fileset>          
+          </fileset>
     	</copy>
-    	
-    	<!-- include WSDL2 Xforms only if it is present, this is done 
+
+    	<!-- include WSDL2 Xforms only if it is present, this is done
     	     conditionally by the target dist-wsdl2xforms.
-    	     This directory will be crated, since it is required to build the 
-    	     war 
+    	     This directory will be crated, since it is required to build the
+    	     war
     	-->
     	<mkdir dir="${target-dir}/client/WEB-INF/lib/wsdl2xforms" />
 
@@ -551,16 +506,16 @@
           <fileset dir="${editor-src-root}/lib/xsd">
             <include name="**/*.xsd"/>
           	<depend  targetdir="${target-dir}/client/WEB-INF/lib/xsd" />
-          </fileset>          
+          </fileset>
     	</copy>
-		
+
     	<copy todir="${target-dir}/client">
-	        <fileset dir="${editor-src-root}/client">           
+	        <fileset dir="${editor-src-root}/client">
 	            <include name="${build-with-script-files-flag}"/>
 	          	<depend  targetdir="${target-dir}/client" />
 	        </fileset>
 		</copy>
-    	
+
     	<copy todir="${target-dir}/client">
 	        <fileset dir="${editor-build-root}">
 	            <exclude name="classes/**"/>
@@ -575,7 +530,7 @@
 	          	<depend  targetdir="${target-dir}/client" />
 	        </fileset>
 		</copy>
-    	
+
     	<mkdir dir="${target-dir}/client/WEB-INF/classes" />
     	<copy todir="${target-dir}/client/WEB-INF/classes">
     		<fileset dir="${editor-build-root}/classes">
@@ -583,25 +538,21 @@
               	<depend  targetdir="${target-dir}/client/WEB-INF/classes" />
     		</fileset>
     	</copy>
-    	
+
     	<copy file="${editor-build-root}/LICENSE" tofile="${target-dir}/client/META-INF/LICENSE" />
     	<copy file="${editor-build-root}/LIBRARIES" tofile="${target-dir}/client/META-INF/LIBRARIES" />
     	<copy file="${editor-build-root}/VERSION" tofile="${target-dir}/client/META-INF/VERSION" />
     	<copy file="${editor-src-root}/etc/context.xml" tofile="${target-dir}/client/META-INF/context.xml" />
-    	<copy file="favicon.ico" tofile="${target-dir}/client/favicon.ico" />    	    
+    	<copy file="favicon.ico" tofile="${target-dir}/client/favicon.ico" />
     </target>
-    
+
 	<target name="build-client-war">
 		<mkdir dir="${war-dir}"/>
 		<echo>
 			Building war-file.
 		</echo>
         <war destfile="${war-dir}/oryx.war" webxml="${editor-src-root}/etc/web.xml">
-            
-=======
-        <war destfile="${target-dir}/oryx.war" webxml="${editor-src-root}/etc/web.xml">
 
->>>>>>> fee1b2166... added docker composition (docker-compose.yml) of web and db containers
             <lib dir="${editor-src-root}/lib">
                 <include name="*.jar"/>
                 <include name="*.xsl"/>
@@ -609,13 +560,8 @@
                 <exclude name="sources/**"/>
                 <exclude name="servlet-api.jar" />
             </lib>
-<<<<<<< HEAD
-            
-            <lib dir="${target-dir}/client/WEB-INF/lib/wsdl2xforms">
-=======
 
-            <lib dir="${editor-src-root}/lib/wsdl2xforms">
->>>>>>> fee1b2166... added docker composition (docker-compose.yml) of web and db containers
+            <lib dir="${target-dir}/client/WEB-INF/lib/wsdl2xforms">
                 <include name="*.xsl"/>
             </lib>
 
@@ -646,13 +592,6 @@
             <fileset file="favicon.ico"/>
         </war>
 
-<<<<<<< HEAD
 	</target>
     <target name="build-editor" depends="build, examples, compress, dist, build-client-war"/>
-=======
-
-    </target>
-
-    <target name="build-editor" depends="build, examples, compress, dist"/>
->>>>>>> fee1b2166... added docker composition (docker-compose.yml) of web and db containers
 </project>

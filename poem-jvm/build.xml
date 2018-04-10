@@ -7,11 +7,7 @@
 
 	<property name="build-dir" value="build" />
 	<property name="target-dir" value="dist" />
-<<<<<<< HEAD
 	<property name="war-dir" value="war" />
-=======
-
->>>>>>> fee1b2166... added docker composition (docker-compose.yml) of web and db containers
 	<property name="java-dir" value="${server-root-dir}/src/java" />
 	<property name="poem-build-dir" value="${build-dir}/poem-jvm" />
 	<property name="bin-dir" value="${poem-build-dir}/bin" />
@@ -74,8 +70,7 @@
 			<fileset dir="${server-root-dir}/src/javascript/repository2/plugins" includes="**/*.js"/>
         </concat>
 	</target>
-<<<<<<< HEAD
-	
+
 	<target name="dist" depends="compile-backend, compress-repository-javascript, generate-version-file-backend" >
 		<!-- Add Hibernate xml files to the binary classes dir -->
 		<copy file="${config-dir}/hibernate.cfg.xml" todir="${bin-dir}" />
@@ -83,7 +78,7 @@
 		<mkdir dir="${target-dir}" />
 		<mkdir dir="${target-dir}/backend" />
 		<mkdir dir="${target-dir}/backend/WEB-INF" />
-		
+
     	<copy todir="${target-dir}/backend/WEB-INF" >
     		<fileset dir="${config-dir}">
     			<include name="web.xml"/>
@@ -95,7 +90,7 @@
           <fileset dir="editor/lib">
             <include name="ext-2.0.2/"/>
           	<depend  targetdir="${target-dir}/backend/ext-2.0.2" />
-          </fileset>          
+          </fileset>
     	</copy>
 
 
@@ -105,7 +100,7 @@
 				<depend targetdir="${target-dir}/backend/ext-2.0.2"/>
 			</fileset>
 		</copy>
-		
+
 		<copy todir="${target-dir}/backend">
 			<fileset dir="${server-root-dir}" >
 				<include name="i18n/" />
@@ -126,7 +121,7 @@
 				<depend targetdir="${target-dir}/backend/repository2"/>
 			</fileset>
 		</copy>
-		
+
 		<copy todir="${target-dir}/backend">
 			<fileset dir="${poem-build-dir}" >
 				<include name="repository2/" />
@@ -138,7 +133,7 @@
           <fileset dir="${lib-dir}">
             <include name="**/*.*"/>
           	<depend  targetdir="${target-dir}/backend/WEB-INF/lib" />
-          </fileset>          
+          </fileset>
     	</copy>
 
     	<mkdir dir="${target-dir}/backend/WEB-INF/classes" />
@@ -152,7 +147,7 @@
 		<mkdir dir="${target-dir}/backend/META-INF" />
     	<copy file="build/editor/LICENSE" tofile="${target-dir}/backend/META-INF/LICENSE" />
 
-		
+
     	<copy todir="${target-dir}/backend/WEB-INF" >
     		<fileset dir="${server-root-dir}/etc">
 				<include name="backend.properties" />
@@ -161,27 +156,18 @@
     		</fileset>
     	</copy>
     	<copy file="${poem-build-dir}/version.xml" tofile="${target-dir}/backend/version.xml" />
-    	<copy file="favicon.ico" tofile="${target-dir}/backend/favicon.ico" />    	    
+    	<copy file="favicon.ico" tofile="${target-dir}/backend/favicon.ico" />
 
-	</target>	
-	
-	
+	</target>
+
+
 	<target name="build-backend-war" depends="compile-backend, compress-repository-javascript, generate-version-file-backend" >
-=======
-
-	<target name="build-backend" depends="compile-backend, compress-repository-javascript, generate-version-file-backend" >
->>>>>>> fee1b2166... added docker composition (docker-compose.yml) of web and db containers
 		<!-- Add Hibernate xml files to the binary classes dir -->
 		<copy file="${config-dir}/hibernate.cfg.xml" todir="${bin-dir}" />
 		<copy file="${data-dir}/Access.hbm.xml" todir="${bin-dir}" />
 		<mkdir dir="${target-dir}" />
-<<<<<<< HEAD
-		<war destfile="${war-dir}/backend.war"  
-			webxml="${config-dir}/web.xml" 
-=======
-		<war destfile="${target-dir}/backend.war"
+		<war destfile="${war-dir}/backend.war"
 			webxml="${config-dir}/web.xml"
->>>>>>> fee1b2166... added docker composition (docker-compose.yml) of web and db containers
 			update="true">
 			<!-- Ext files-->
 			<!--TODO the backend should not reference anything in folder editor-->
@@ -275,9 +261,5 @@
             <arg value="--xml"/>
         </exec>
     </target>
-<<<<<<< HEAD
     <target name="build-backend" depends="dist, build-backend-war"/>
-=======
-
->>>>>>> fee1b2166... added docker composition (docker-compose.yml) of web and db containers
 </project>
