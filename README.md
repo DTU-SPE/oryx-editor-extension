@@ -2,11 +2,11 @@
 * The Oryx Project: https://bpt.hpi.uni-potsdam.de/Oryx/WebHome
 * oryx-editor on Google Code Archive: https://code.google.com/archive/p/oryx-editor/
 * Related projects:
-    * andreaswolf/oryx-editor (mirror  29 Jun 2010 + changes): https://github.com/andreaswolf/oryx-editor
-    * code-d/oryx-editor (mirror 7 Oct 2012): https://github.com/code-d/oryx-editor
-    * koppor/oryx-editor (mirror 7 Oct 2012 + different commit history): https://github.com/koppor/oryx-editor
-    * tiku01/oryx-editor (mirror 7 Oct 2012 + changes): https://github.com/tiku01/oryx-editor
-    * SINTEF-9012/oryx-neffics (mirror 15 Jun 2011 + changes): https://github.com/SINTEF-9012/oryx-neffics
+    * andreaswolf/oryx-editor (mirror  29 Jun 2010, changes): https://github.com/andreaswolf/oryx-editor
+    * koppor/oryx-editor (mirror 7 Oct 2012): https://github.com/koppor/oryx-editor
+    * code-d/oryx-editor (mirror 7 Oct 2012, less commit history, migrated issues): https://github.com/code-d/oryx-editor
+    * tiku01/oryx-editor (mirror 7 Oct 2012, less commit history, changes): https://github.com/tiku01/oryx-editor
+    * SINTEF-9012/oryx-neffics (mirror 15 Jun 2011, changes): https://github.com/SINTEF-9012/oryx-neffics
     * yuanqixun/oryx-editor (restructured): https://github.com/yuanqixun/oryx-editor
     * hcacha/angular-oryx-editor: https://github.com/hcacha/angular-oryx-editor
     * CrossOryx Editor: https://sites.google.com/site/crossoryxeditor/
