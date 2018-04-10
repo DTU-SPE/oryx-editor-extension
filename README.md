@@ -1,6 +1,7 @@
 # oryx-editor-extension
 * The Oryx Project: https://bpt.hpi.uni-potsdam.de/Oryx/WebHome
 * oryx-editor on Google Code Archive: https://code.google.com/archive/p/oryx-editor/
+* The base used in this project is the [upstream-vcs branch from koppor/oryx-editor](https://github.com/koppor/oryx-editor/tree/upstream-vcs) (latest commit: [817ef05](https://github.com/koppor/oryx-editor/commit/817ef053c09152dc87ebfa8d741410244d0ad585) / 7 Oct 2012)
 * Related projects:
     * andreaswolf/oryx-editor (mirror  29 Jun 2010, changes): https://github.com/andreaswolf/oryx-editor
     * koppor/oryx-editor (mirror 7 Oct 2012): https://github.com/koppor/oryx-editor
@@ -13,8 +14,6 @@
 
 
 ## Installation
-NB - the installation has not been attempted on Windows systems which requires some additional setup: https://blog.docker.com/2017/09/preview-linux-containers-on-windows/
-
 The subsections below cover the following installation steps:
 * Prerequisites
 * Build webapps
