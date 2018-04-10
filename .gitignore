@@ -1,4 +1,6 @@
 /bin/
 /build/
 /dist/
+/doxygen/*
+!/doxygen/.gitkeep
 /build-dependencies.png
