@@ -2,7 +2,7 @@ version: '3.1'
 
 services:
   db:
-    image: oryxeditorextension_db
+    image: oryxeditorextension_db:0.0.0
     build:
       context: ./poem-jvm
       dockerfile: Dockerfile
@@ -14,7 +14,7 @@ services:
     ports:
       - '5432:5432'
   web:
-    image: oryxeditorextension_web
+    image: oryxeditorextension_web:0.1.0
     build:
       context: .
       dockerfile: Dockerfile

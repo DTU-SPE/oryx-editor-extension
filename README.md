@@ -7,7 +7,11 @@
 
 ## Installation
 NB - the installation has not been attempted on Windows systems which requires some additional setup: https://blog.docker.com/2017/09/preview-linux-containers-on-windows/
-* Clone this repository
+
+The subsections below cover the following installation steps:
+* Prerequisites
+* Build webapps
+* Deploy webapps and database in {Docker,local} containers
 
 ### Prerequisites
 * Set JAVA_HOME to the installation path of Oracle Java JDK {6,7,8} or OpenJDK 8 (other versions have not been tested)
@@ -24,27 +28,28 @@ NB - the installation has not been attempted on Windows systems which requires s
 * `$ cd /path/to/workspace/oryx-editor-extension`
 * `$ ant build-all`
 
-## Deploying webapps and database
+## Deploy webapps and database
 Expected result: after a successful deployment, the following sites are available in the browser:
 * Oryx Repository: http://localhost:9090/backend/poem/repository
 * Oryx Editor: http://localhost:9090/oryx/editor
 
-### Deploying webapps and database in Docker containers
+### Deploy webapps and database in Docker containers
 * `$ cd /path/to/workspace/oryx-editor-extension`
 * `$ docker-compose -f docker-compose.yml up`
-* Log entry indicating that the web server is initialized: `web_web-target-java-1.6_1  | INFO: Server startup in 1094 ms`
-* Log entry indicating that the database is initialized: `db_web-target-java-1.6_1   | LOG:  database system is ready to accept connections`
-* `$ ant create-schema` (new terminal session)
-* `$ docker cp dist/. oryxeditorextension_web-target-java-1.6_1:/usr/local/tomcat/webapps`
+* Log entry indicating that the web server is initialized: `web_1  | INFO: Server startup in 1094 ms`
+* Log entry indicating that the database is initialized: `db_1   | LOG:  database system is ready to accept connections`
+* In a separate terminal: `$ cd /path/to/workspace/oryx-editor-extension`
+* `$ ant create-schema`
+* `$ docker cp dist/. oryxeditorextension_web_1:/usr/local/tomcat/webapps`
 
-### Deploying webapps and database in local containers
-#### Deploying webapps in local Tomcat 6 container
+### Deploy webapps and database in local containers
+#### Deploy webapps in local Tomcat 6 container
 * Documentation: https://tomcat.apache.org/tomcat-6.0-doc/
 * In ./build.properties change *deploymentdir* to the webapps directory of your tomcat installation
 * `$ cd /path/to/workspace/oryx-editor-extension`
 * `$ ant deploy-all`
 
-#### Deploying database in local PostgreSQL 8.4 container
+#### Deploy database in local PostgreSQL 8.4 container
 * Documentation: https://www.postgresql.org/docs/8.4/static/
 * In ./poem-jvm/etc/hibernate.cfg.xml modify the following lines:
     * `<property name="connection.url">jdbc:postgresql://database/poem</property>`
@@ -55,5 +60,5 @@ Expected result: after a successful deployment, the following sites are availabl
     * `postgresql-username = poem`
     * `postgresql-port = 5432`
     * `postgresql-bin-dir = /usr/bin`
-* NB - the default hostname in the property with name="connection.url is *database* to accomodate the Docker setup. Change to the hostname of your postgres server
+* NB - the default hostname in the property with name="connection.url is *database* to accomodate the Docker setup. Change to the hostname of your postgres server (same for postgresql-hostname in ./build.properties)
 * Then run ./poem-jvm/data/database/db_schema.sql for that url/username/password
