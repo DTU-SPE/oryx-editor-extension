@@ -1,8 +1,8 @@
 version: '3.1'
 
 services:
-  db-target-java-1.6:
-    image: oryxeditorextension_db:0.0.0-target-java-1.6
+  db:
+    image: oryxeditorextension_db
     build:
       context: ./poem-jvm
       dockerfile: Dockerfile
@@ -13,13 +13,13 @@ services:
       POSTGRES_DB: poem
     ports:
       - '5432:5432'
-  web-target-java-1.6:
-    image: oryxeditorextension_web:0.0.0-target-java-1.6
+  web:
+    image: oryxeditorextension_web
     build:
       context: .
       dockerfile: Dockerfile
     ports:
       - '9090:8080'
     links:
-      - 'db-target-java-1.6:database'
+      - 'db:database'
     restart: unless-stopped
