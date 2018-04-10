@@ -389,12 +389,6 @@
         <echo>
             Copied language files into oryx build destination
         </echo>
-        <copy todir="${editor-build-root}/profiles">
-            <fileset dir="${editor-src-root}/data/profiles"/>
-        </copy>
-        <echo>
-            Copied profiles into oryx build destination
-        </echo>
     </target>
 
     <!-- generates a file containing the Subversion branch and revision number

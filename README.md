@@ -47,7 +47,7 @@ Expected result: after a successful deployment, the following sites are availabl
 * Log entry indicating that the database is initialized: `db_1   | LOG:  database system is ready to accept connections`
 * In a separate terminal: `$ cd /path/to/workspace/oryx-editor-extension`
 * `$ ant create-schema`
-* `$ docker cp dist/. oryxeditorextension_web_1:/usr/local/tomcat/webapps`
+* `$ docker cp war/. oryxeditorextension_web_1:/usr/local/tomcat/webapps`
 
 #### Deploy webapps and database in local containers
 ##### Deploy webapps in local Tomcat 6 container
