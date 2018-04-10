@@ -2,6 +2,7 @@ FROM tomcat:6
 
 ENV JAVA_HOME /usr/lib/jvm/oracle-java6-jdk-amd64
 ENV TOMCAT_WEBAPPS /usr/local/tomcat/webapps
+ENV JAVA_OPTS="-Xdebug -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8000"
 
 RUN apt-get update
 # libxt6 is required by Java SE Development Kit 6u45 (Oracle)
