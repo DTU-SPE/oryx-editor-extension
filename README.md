@@ -28,12 +28,12 @@ The subsections below cover the following installation steps:
 * `$ cd /path/to/workspace/oryx-editor-extension`
 * `$ ant build-all`
 
-## Deploy webapps and database
+### Deploy webapps and database
 Expected result: after a successful deployment, the following sites are available in the browser:
 * Oryx Repository: http://localhost:9090/backend/poem/repository
 * Oryx Editor: http://localhost:9090/oryx/editor
 
-### Deploy webapps and database in Docker containers
+#### Deploy webapps and database in Docker containers
 * `$ cd /path/to/workspace/oryx-editor-extension`
 * `$ docker-compose -f docker-compose.yml up`
 * Log entry indicating that the web server is initialized: `web_1  | INFO: Server startup in 1094 ms`
@@ -42,14 +42,14 @@ Expected result: after a successful deployment, the following sites are availabl
 * `$ ant create-schema`
 * `$ docker cp dist/. oryxeditorextension_web_1:/usr/local/tomcat/webapps`
 
-### Deploy webapps and database in local containers
-#### Deploy webapps in local Tomcat 6 container
+#### Deploy webapps and database in local containers
+##### Deploy webapps in local Tomcat 6 container
 * Documentation: https://tomcat.apache.org/tomcat-6.0-doc/
 * In ./build.properties change *deploymentdir* to the webapps directory of your tomcat installation
 * `$ cd /path/to/workspace/oryx-editor-extension`
 * `$ ant deploy-all`
 
-#### Deploy database in local PostgreSQL 8.4 container
+##### Deploy database in local PostgreSQL 8.4 container
 * Documentation: https://www.postgresql.org/docs/8.4/static/
 * In ./poem-jvm/etc/hibernate.cfg.xml modify the following lines:
     * `<property name="connection.url">jdbc:postgresql://database/poem</property>`
