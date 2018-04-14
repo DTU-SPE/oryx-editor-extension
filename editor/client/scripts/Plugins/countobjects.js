@@ -48,9 +48,9 @@ ORYX.Plugins.PetrinetCountObjects = ORYX.Plugins.AbstractPlugin.extend({
       'maxShape': 0
     });
     this.facade.registerOnEvent(ORYX.Plugins.PetrinetCountObjects.COUNT_OBJECTS_EVENT, this.countObjects.bind(this));
-    this.facade.registerOnEvent(ORYX.Plugins.PetrinetCountObjects.CHECK_FOR_ERRORS_EVENT, this.checkForErrors.bind(this));
-    this.facade.registerOnEvent(ORYX.Plugins.PetrinetCountObjects.RESET_ERRORS_EVENT, this.resetErrors.bind(this));
-    this.facade.registerOnEvent(ORYX.Plugins.PetrinetCountObjects.SHOW_ERRORS_EVENT, this.doShowErrors.bind(this));
+    //this.facade.registerOnEvent(ORYX.Plugins.PetrinetCountObjects.CHECK_FOR_ERRORS_EVENT, this.checkForErrors.bind(this));
+    //this.facade.registerOnEvent(ORYX.Plugins.PetrinetCountObjects.RESET_ERRORS_EVENT, this.resetErrors.bind(this));
+    //this.facade.registerOnEvent(ORYX.Plugins.PetrinetCountObjects.SHOW_ERRORS_EVENT, this.doShowErrors.bind(this));
   },
 
   perform: function(button, pressed){
@@ -132,40 +132,40 @@ ORYX.Plugins.PetrinetCountObjects = ORYX.Plugins.AbstractPlugin.extend({
     console.log(data);
 
     // Send the request to the server.
-    new Ajax.Request(ORYX.CONFIG.COUNTOBJECTS_URL, {
-      method: 'POST',
-      asynchronous: false,
-      parameters: {
-        resource: location.href,
-        data: data,
-        context: options.context,
-        isJson: includesJson
-      },
-      onSuccess: function(request){
-        var resp = (request&&request.responseText?request.responseText:"{}").evalJSON();
-
-        Ext.Msg.hide();
-
-        if (resp instanceof Object) {
-          resp = $H(resp)
-          if (resp.size() > 0) {
-            if(options.showErrors) this.showErrors(resp);
-
-            options.onErrors();
-          }
-          else {
-            options.onNoErrors();
-          }
-        }
-        else {
-          options.onFailure();
-        }
-      }.bind(this),
-      onFailure: function(){
-        Ext.Msg.hide();
-        options.onFailure();
-      }
-    });
+    // new Ajax.Request(ORYX.CONFIG.COUNTOBJECTS_URL, {
+    //   method: 'POST',
+    //   asynchronous: false,
+    //   parameters: {
+    //     resource: location.href,
+    //     data: data,
+    //     context: options.context,
+    //     isJson: includesJson
+    //   },
+    //   onSuccess: function(request){
+    //     var resp = (request&&request.responseText?request.responseText:"{}").evalJSON();
+    //
+    //     Ext.Msg.hide();
+    //
+    //     if (resp instanceof Object) {
+    //       resp = $H(resp)
+    //       if (resp.size() > 0) {
+    //         if(options.showErrors) this.showErrors(resp);
+    //
+    //         options.onErrors();
+    //       }
+    //       else {
+    //         options.onNoErrors();
+    //       }
+    //     }
+    //     else {
+    //       options.onFailure();
+    //     }
+    //   }.bind(this),
+    //   onFailure: function(){
+    //     Ext.Msg.hide();
+    //     options.onFailure();
+    //   }
+    // });
   },
 
   /**
