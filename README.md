@@ -46,7 +46,7 @@ Expected result: after a successful deployment, the following sites are availabl
 * Log entry indicating that the database is initialized: `db_1   | LOG:  database system is ready to accept connections`
 * In a separate terminal: `$ cd /path/to/workspace/oryx-editor-extension`
 * `$ ant create-schema`
-* `$ docker cp war/. oryxeditorextension_web_1:/usr/local/tomcat/web apps`
+* `$ docker cp war/. oryxeditorextension_web_1:/usr/local/tomcat/webapps`
 
 #### Deploy web apps and database in local containers
 ##### Deploy web apps in local Tomcat 6 container
@@ -83,3 +83,13 @@ JAVA_OPTS="-Xdebug -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address
     * Port: 8000
 * Select "Apply" -> "Debug"
 * Select "Window" -> "Show View" -> "Debug"
+
+## Documentation
+
+### JavaDoc
+`$ cd /path/to/workspace/oryx-editor-extension`
+
+#### Oryx Editor
+`$ ant javadoc-editor`
+
+#### Oryx Backend

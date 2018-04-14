@@ -1,7 +1,8 @@
 /bin/
 /build/
+/build-dependencies.png
 /dist/
-/war/
+/doc/
 /doxygen/*
 !/doxygen/.gitkeep
-/build-dependencies.png
+/war/
