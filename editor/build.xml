@@ -85,10 +85,33 @@
     <target name="deploy-editor">
         <copy file="${war-dir}/oryx.war" todir="${deploymentdir}"/>
     </target>
-
+	
+	<target name="deploy-editor-docker">
+	   <exec executable="docker">
+	      <arg value="cp"/>
+	      <arg value="${war-dir}/oryx.war"/>
+	   	  <arg value="${docker-container-web}:${deploymentdir}"/>
+	   </exec>
+		<echo>
+		  Copied editor web app into docker container
+		</echo>
+	</target>
+	
     <target name="undeploy-editor">
         <delete file="${deploymentdir}/oryx.war"/>
     </target>
+	
+	<target name="undeploy-editor-docker">
+	   <exec executable="docker">
+	      <arg value="exec"/>
+	   	  <arg value="${docker-container-web}"/>
+	   	  <arg value="rm"/>
+	   	  <arg value="${deploymentdir}/oryx.war"/>
+	   </exec>
+		<echo>
+		  Undeployed editor web app from docker container
+		</echo>
+	</target>
 
     <target name="deploy-stencilsets">
         <copy todir='${deploymentdir}/oryx/stencilsets'>

@@ -24,10 +24,33 @@
     <target name="deploy-backend">
         <copy file="${war-dir}/backend.war" tofile="${deploymentdir}/backend.war"/>
     </target>
+	
+	<target name="deploy-backend-docker">
+	   <exec executable="docker">
+	      <arg value="cp"/>
+	      <arg value="${war-dir}/backend.war"/>
+	   	  <arg value="${docker-container-web}:${deploymentdir}"/>
+	   </exec>
+		<echo>
+		  Copied backend web app into docker container
+		</echo>
+	</target>
 
     <target name="undeploy-backend">
         <delete file="${deploymentdir}/backend.war"/>
     </target>
+	
+	<target name="undeploy-backend-docker">
+	   <exec executable="docker">
+	      <arg value="exec"/>
+	   	  <arg value="${docker-container-web}"/>
+	   	  <arg value="rm"/>
+	   	  <arg value="${deploymentdir}/backend.war"/>
+	   </exec>
+		<echo>
+		  Undeployed backend web app from docker container
+		</echo>
+	</target>
 
 	<target name="clean-backend">
 		<delete dir="${poem-build-dir}" />
