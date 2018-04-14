@@ -46,12 +46,13 @@ Expected result: after a successful deployment, the following sites are availabl
 * Log entry indicating that the database is initialized: `db_1   | LOG:  database system is ready to accept connections`
 * In a separate terminal: `$ cd /path/to/workspace/oryx-editor-extension`
 * `$ ant create-schema`
-* `$ docker cp war/. oryxeditorextension_web_1:/usr/local/tomcat/webapps`
+* In ./build.properties change *docker-container-web* to container name of the web container (usually should be oryxeditorextension_web_1, but check `$ docker ps` if automatic naming has changed)
+* `$ ant deploy-all-docker`
 
 #### Deploy web apps and database in local containers
 ##### Deploy web apps in local Tomcat 6 container
 * Documentation: https://tomcat.apache.org/tomcat-6.0-doc/
-* In ./build.properties change *deploymentdir* to the web apps directory of your tomcat installation
+* In ./build.properties change *deploymentdir* to the web apps directory of the tomcat installation
 * `$ cd /path/to/workspace/oryx-editor-extension`
 * `$ ant deploy-all`
 
