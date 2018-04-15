@@ -126,7 +126,7 @@
         <plugin source="syntaxchecker.js" name="ORYX.Plugins.PetrinetSyntaxChecker">
             <requires namespace="http://b3mn.org/stencilset/petrinet#"/>
         </plugin>
-				<plugin source="countobjects.js" name="ORYX.Plugins.PetrinetCountObjects">
+				<plugin source="countObjects.js" name="ORYX.Plugins.PetrinetCountObjects">
 						<requires namespace="http://b3mn.org/stencilset/petrinet#"/>
 				</plugin>
 		<plugin source="validator.js" name="ORYX.Plugins.BPMNValidator">
