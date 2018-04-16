@@ -49,17 +49,17 @@ import de.hpi.util.LibConfigToJsonConvert;
 
 /**
  * Copyright (c) 2010 Philipp Berger
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -76,7 +76,7 @@ public class LolaPetrinetSoundnessChecker extends HttpServlet {
 //	private static final String PNML 			= "pnml";
 //	private static final String INPUT			= "input";
 //	private static final String TEXT			= "text";
-	private static final String LOLA_URI 		= "http://esla.informatik.uni-rostock.de/service-tech/.lola/lola.php";
+	private static final String LOLA_URI 		= "http://172.17.0.1:1234/lola.php";
 	private static final long serialVersionUID = 6150856095430348410L;
 	private Tool tool;
 	public Tool getTool() {
@@ -111,14 +111,16 @@ public class LolaPetrinetSoundnessChecker extends HttpServlet {
 			 */
 			String rdf = req.getParameter("data");
 			this.setTool( PetriNetPNMLExporter.Tool.LOLA);
-			
+
 			/*
 			 * transform to xml document
 			 */
 			DocumentBuilder builder;
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			builder = factory.newDocumentBuilder();
-			Document document = builder.parse(new ByteArrayInputStream(rdf.getBytes()));
+			byte[] rdfBytes = rdf.getBytes();
+			ByteArrayInputStream rdfByteStream = new ByteArrayInputStream(rdfBytes);
+			Document document = builder.parse(rdfByteStream);
 			Document pnmlDoc = builder.newDocument();
 
 			processDocument(document, pnmlDoc);
@@ -131,8 +133,8 @@ public class LolaPetrinetSoundnessChecker extends HttpServlet {
 			XMLSerializer serial2 = new XMLSerializer(stringOut, format);
 			serial2.asDOMSerializer();
 			serial2.serialize(pnmlDoc.getDocumentElement());
-			
-			
+
+
 			sendPostToLola(res, stringOut.toString(), "lola-deadlock");
 
 		} catch (ParserConfigurationException e) {
@@ -212,11 +214,11 @@ public class LolaPetrinetSoundnessChecker extends HttpServlet {
 	 * Sends a request to the Lola Webservice and write the response to the {@link HttpServletResponse}
 	 * @param res the response to write on
 	 * @param tool the tool which should be called
-	 * @param pnmlAsString 
-	 * @throws IOException 
+	 * @param pnmlAsString
+	 * @throws IOException
 	 */
 	private void sendPostToLola(HttpServletResponse res, String pnmlAsString, String tool)
-	throws 
+	throws
 	IOException {
 		URLConnection con;
 		try{
@@ -224,6 +226,8 @@ public class LolaPetrinetSoundnessChecker extends HttpServlet {
 		con = lola.openConnection();
 		con.setDoOutput(true);
 		con.setUseCaches(false);
+		con.setRequestProperty("User-Agent","Mozilla/5.0 ( compatible ) ");
+		con.setRequestProperty("Accept","*/*");
 		}catch (MalformedURLException e) {
 			writeException(res, e);
 			return;
@@ -232,8 +236,10 @@ public class LolaPetrinetSoundnessChecker extends HttpServlet {
 			return;
 		}
 		StringBuilder databld = new StringBuilder();
-		databld.append(		   INPUT_TEXT	+	"=" + URLEncoder.encode(pnmlAsString, "UTF-8"));
-//		databld.append(	"&"	+ 	INPUT		+	"=" + TEXT);
+		databld.append( 	   INPUT_TEXT	+	"=" + pnmlAsString);
+//		databld.append(		   INPUT_TEXT	+	"=" + URLEncoder.encode(pnmlAsString, "UTF-8"));
+//		databld.append(		   INPUT_TEXT	+	"=" + pnmlAsString);
+		databld.append(	"&"	+ 	"deadlocks"		+	"=" + "on");
 //		databld.append(	"&"	+ INPUT_FORMAT	+	"=" + PNML);
 //		databld.append(	"&"	+ 	TOOL		+	"=" + tool);
 		OutputStreamWriter writer = new OutputStreamWriter(con.getOutputStream());
@@ -256,6 +262,9 @@ public class LolaPetrinetSoundnessChecker extends HttpServlet {
 			if(a.startsWith("<pre>")){
 				a = a.replace("<pre>","");
 				a = a.replace("</pre>", "");
+			}
+			if(a.contains("<br />")){
+				a = a.replace("<br />","");
 			}
 			JSONObject rs = LibConfigToJsonConvert.parseString(a);
 			rs.put("errors", new JSONArray());
