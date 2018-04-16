@@ -85,7 +85,7 @@
     <target name="deploy-editor">
         <copy file="${war-dir}/oryx.war" todir="${deploymentdir}"/>
     </target>
-	
+
 	<target name="deploy-editor-docker">
 	   <exec executable="docker">
 	      <arg value="cp"/>
@@ -96,11 +96,11 @@
 		  Copied editor web app into docker container
 		</echo>
 	</target>
-	
+
     <target name="undeploy-editor">
         <delete file="${deploymentdir}/oryx.war"/>
     </target>
-	
+
 	<target name="undeploy-editor-docker">
 	   <exec executable="docker">
 	      <arg value="exec"/>
@@ -425,6 +425,7 @@
     </target>
 
     <target name="build" depends="copy-license, build-plugins,build-profiles, build-stencilsets, build-execution, build-server, build-editor-core, generate-version-file-editor" />
+    <target name="build-debug" depends="build, build-with-script-files-flag, build-with-xhtml-test-files-flag" />
 
     <target name='compress'>
 
@@ -611,4 +612,5 @@
 
 	</target>
     <target name="build-editor" depends="build, examples, compress, dist, build-client-war"/>
+    <target name="build-editor-debug" depends="build-debug, examples, compress, dist, build-client-war"/>
 </project>
