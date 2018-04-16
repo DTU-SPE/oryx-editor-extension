@@ -226,8 +226,8 @@ public class LolaPetrinetSoundnessChecker extends HttpServlet {
 		con = lola.openConnection();
 		con.setDoOutput(true);
 		con.setUseCaches(false);
-		con.setRequestProperty("User-Agent","Mozilla/5.0 ( compatible ) ");
-		con.setRequestProperty("Accept","*/*");
+//		con.setRequestProperty("User-Agent","Mozilla/5.0 ( compatible ) ");
+//		con.setRequestProperty("Accept","*/*");
 		}catch (MalformedURLException e) {
 			writeException(res, e);
 			return;
@@ -236,8 +236,8 @@ public class LolaPetrinetSoundnessChecker extends HttpServlet {
 			return;
 		}
 		StringBuilder databld = new StringBuilder();
-		databld.append( 	   INPUT_TEXT	+	"=" + pnmlAsString);
-//		databld.append(		   INPUT_TEXT	+	"=" + URLEncoder.encode(pnmlAsString, "UTF-8"));
+//		databld.append( 	   INPUT_TEXT	+	"=" + pnmlAsString);
+		databld.append(		   INPUT_TEXT	+	"=" + URLEncoder.encode(pnmlAsString, "UTF-8"));
 //		databld.append(		   INPUT_TEXT	+	"=" + pnmlAsString);
 		databld.append(	"&"	+ 	"deadlocks"		+	"=" + "on");
 //		databld.append(	"&"	+ INPUT_FORMAT	+	"=" + PNML);
