@@ -100,13 +100,13 @@
 	</servlet>
 	<servlet>
 		<display-name>
-			Oryx Lola driven Soundness Check, alternative
+			LoLA 2 as a service (bptlab/lola-webservice)
 		</display-name>
 		<servlet-name>
 			LolaServlet
 		</servlet-name>
 		<servlet-class>
-			org.oryxeditor.server.LoLaServlet
+			org.oryxeditor.server.LolaServlet
 		</servlet-class>
 	</servlet>
 	<servlet>
