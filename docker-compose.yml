@@ -2,7 +2,7 @@ version: '3.1'
 
 services:
   db:
-    image: oryxeditorextension_db:0.0.0
+    image: oryxeditorextension_db
     build:
       context: ./poem-jvm
       dockerfile: Dockerfile
@@ -13,14 +13,21 @@ services:
       POSTGRES_DB: poem
     ports:
       - '5432:5432'
+    networks:
+      gazelle-network:
+        aliases:
+          - database
   web:
-    image: oryxeditorextension_web:0.2.5
+    image: oryxeditorextension_web
     build:
       context: .
       dockerfile: Dockerfile
     ports:
       - '9090:8080'
       - '8000:8000'
-    links:
-      - 'db:database'
+    networks:
+      - gazelle-network
     restart: unless-stopped
+networks:
+  gazelle-network:
+    driver: bridge
