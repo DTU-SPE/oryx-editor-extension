@@ -99,6 +99,17 @@
 		</servlet-class>
 	</servlet>
 	<servlet>
+		<display-name>
+			Oryx Lola driven Soundness Check, alternative
+		</display-name>
+		<servlet-name>
+			LolaServlet
+		</servlet-name>
+		<servlet-class>
+			org.oryxeditor.server.LoLaServlet
+		</servlet-class>
+	</servlet>
+	<servlet>
 		<display-name>Oryx BPEL IMPORTER</display-name>
 		<servlet-name>BPELImporter</servlet-name>
 		<servlet-class>org.oryxeditor.server.BPELImporter</servlet-class>
