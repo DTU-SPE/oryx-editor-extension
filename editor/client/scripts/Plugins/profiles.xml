@@ -108,6 +108,7 @@
 		<plugin name="ORYX.Plugins.PetriNetStepThroughPlugin"/>
 		<plugin name="ORYX.Plugins.PetrinetSyntaxChecker"/>
 		<plugin name="ORYX.Plugins.PetrinetCountObjects"/>
+		<plugin name="ORYX.Plugins.Lola"/>
 		<plugin name="ORYX.Plugins.LolaPetriNetSoundnessChecker"/>
 		<plugin name="ORYX.Plugins.ProcessLogGenerator"/>
 	</profile>

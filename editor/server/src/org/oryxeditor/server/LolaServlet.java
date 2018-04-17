@@ -70,33 +70,35 @@ import de.hpi.util.LibConfigToJsonConvert;
  */
 public class LolaServlet extends HttpServlet {
 
-	private static final String INPUT_TEXT 		= "input";
-//	private static final String TOOL 			= "tool";
-//	private static final String INPUT_FORMAT 	= "input_format";
-//	private static final String PNML 			= "pnml";
-//	private static final String INPUT			= "input";
-//	private static final String TEXT			= "text";
-	private static final String LOLA_URI 		= "http://lola:1234/lola.php";
+	private static final String INPUT_TEXT = "input";
+	// private static final String TOOL = "tool";
+	// private static final String INPUT_FORMAT = "input_format";
+	// private static final String PNML = "pnml";
+	// private static final String INPUT = "input";
+	// private static final String TEXT = "text";
+	private static final String LOLA_URI = "http://lola:80/lola.php";
 	private static final long serialVersionUID = 6150856095430348410L;
 	private Tool tool;
+
 	public Tool getTool() {
 		return this.tool;
 	}
+
 	public void setTool(Tool tool) {
 		this.tool = tool;
 	}
+
 	/**
 	 * @param pnmlDoc
 	 * @param net
 	 * @param exp
 	 */
-	private void convertNetToDocumentUsing(Document pnmlDoc, PetriNet net,
-			PetriNetPNMLExporter exp) {
+	private void convertNetToDocumentUsing(Document pnmlDoc, PetriNet net, PetriNetPNMLExporter exp) {
 		exp.setTargetTool(getTool());
 		/*
 		 * if no initial Marking given set one token to the inital place
 		 */
-		if(net.getInitialMarking().getNumTokens()==0){
+		if (net.getInitialMarking().getNumTokens() == 0) {
 			net.getInitialMarking().setNumTokens(net.getInitialPlace(), 1);
 		}
 		exp.savePetriNet(pnmlDoc, net);
@@ -110,7 +112,7 @@ public class LolaServlet extends HttpServlet {
 			 * get the rdf
 			 */
 			String rdf = req.getParameter("data");
-			this.setTool( PetriNetPNMLExporter.Tool.LOLA);
+			this.setTool(PetriNetPNMLExporter.Tool.LOLA);
 
 			/*
 			 * transform to xml document
@@ -131,7 +133,6 @@ public class LolaServlet extends HttpServlet {
 			XMLSerializer serial2 = new XMLSerializer(stringOut, format);
 			serial2.asDOMSerializer();
 			serial2.serialize(pnmlDoc.getDocumentElement());
-
 
 			sendPostToLola(res, stringOut.toString(), "lola-deadlock");
 
@@ -178,7 +179,6 @@ public class LolaServlet extends HttpServlet {
 			processPN(document, pnmlDoc);
 	}
 
-
 	protected void processIBPMN(Document document, Document pnmlDoc) {
 		IBPMNRDFImporter importer = new IBPMNRDFImporter(document);
 		BPMNDiagram diagram = (IBPMNDiagram) importer.loadIBPMN();
@@ -209,36 +209,45 @@ public class LolaServlet extends HttpServlet {
 	}
 
 	/**
-	 * Sends a request to the Lola Webservice and write the response to the {@link HttpServletResponse}
-	 * @param res the response to write on
-	 * @param tool the tool which should be called
+	 * Sends a request to the Lola Webservice and write the response to the
+	 * {@link HttpServletResponse}
+	 * 
+	 * @param res
+	 *            the response to write on
+	 * @param tool
+	 *            the tool which should be called
 	 * @param pnmlAsString
 	 * @throws IOException
 	 */
-	private void sendPostToLola(HttpServletResponse res, String pnmlAsString, String tool)
-	throws
-	IOException {
+	private void sendPostToLola(HttpServletResponse res, String pnmlAsString, String tool) throws IOException {
 		URLConnection con;
-		try{
-		URL lola = new URL(LOLA_URI);
-		con = lola.openConnection();
-		con.setDoOutput(true);
-		con.setUseCaches(false);
-		}catch (MalformedURLException e) {
+		try {
+			URL lola = new URL(LOLA_URI);
+			con = lola.openConnection();
+			con.setDoOutput(true);
+			con.setUseCaches(false);
+		} catch (MalformedURLException e) {
 			writeException(res, e);
 			return;
-		}catch (IOException e) {
+		} catch (IOException e) {
 			writeException(res, e);
 			return;
 		}
 		StringBuilder databld = new StringBuilder();
-		databld.append(		   INPUT_TEXT	+	"=" + URLEncoder.encode(pnmlAsString, "UTF-8"));
-//		databld.append(	"&"	+ 	INPUT		+	"=" + TEXT);
-//		databld.append(	"&"	+ INPUT_FORMAT	+	"=" + PNML);
-//		databld.append(	"&"	+ 	TOOL		+	"=" + tool);
+		databld.append(INPUT_TEXT + "=" + URLEncoder.encode(pnmlAsString, "UTF-8"));
+		// databld.append( "&" + INPUT + "=" + TEXT);
+		databld.append("&" + "boundedness" + "=" + "on");
+		databld.append("&" + "deadlocks" + "=" + "on");
+		databld.append("&" + "liveness" + "=" + "on");
+		databld.append("&" + "quasiliveness" + "=" + "on");
+		databld.append("&" + "relaxed_soundness" + "=" + "on");
+		databld.append("&" + "reversibility" + "=" + "on");
+		databld.append("&" + "soundness" + "=" + "on");
+		// databld.append( "&" + INPUT_FORMAT + "=" + PNML);
+		// databld.append( "&" + TOOL + "=" + tool);
 		OutputStreamWriter writer = new OutputStreamWriter(con.getOutputStream());
 
-		//write parameters
+		// write parameters
 		writer.write(databld.toString());
 		writer.flush();
 		StringBuffer answer = new StringBuffer();
@@ -249,13 +258,16 @@ public class LolaServlet extends HttpServlet {
 		}
 
 		try {
-			String a =answer.toString();
+			String a = answer.toString();
 			/*
 			 * remove added pre container if there
 			 */
-			if(a.startsWith("<pre>")){
-				a = a.replace("<pre>","");
+			if (a.startsWith("<pre>")) {
+				a = a.replace("<pre>", "");
 				a = a.replace("</pre>", "");
+			}
+			if (a.contains("<br />")) {
+				a = a.replace("<br />", "");
 			}
 			JSONObject rs = LibConfigToJsonConvert.parseString(a);
 			rs.put("errors", new JSONArray());
@@ -264,13 +276,13 @@ public class LolaServlet extends HttpServlet {
 			writeException(res, e);
 		}
 	}
+
 	/**
 	 * @param res
 	 * @param e
 	 * @throws IOException
 	 */
-	private void writeException(HttpServletResponse res, Exception e)
-			throws IOException {
+	private void writeException(HttpServletResponse res, Exception e) throws IOException {
 		JSONObject o = new JSONObject();
 		JSONArray a = new JSONArray();
 		a.put(e.getLocalizedMessage());
@@ -281,6 +293,5 @@ public class LolaServlet extends HttpServlet {
 		}
 		res.getWriter().print(o);
 	}
-
 
 }

@@ -542,6 +542,10 @@
 		<url-pattern>/lola</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
+		<servlet-name>LolaServlet</servlet-name>
+		<url-pattern>/lola2</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
 		<servlet-name>BPELImporter</servlet-name>
 		<url-pattern>/bpelimporter</url-pattern>
 	</servlet-mapping>
