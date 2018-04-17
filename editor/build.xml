@@ -424,8 +424,13 @@
         </exec>
     </target>
 
+<<<<<<< HEAD
     <target name="build" depends="copy-license, build-plugins,build-profiles, build-stencilsets, build-execution, build-server, build-editor-core, generate-version-file-editor" />
     <target name="build-debug" depends="build, build-with-script-files-flag, build-with-xhtml-test-files-flag" />
+=======
+    <target name="build" depends="copy-license, build-plugins,build-profiles, build-stencilsets, build-execution, build-server, build-editor-core, generate-version-file-editor,
+      build-with-script-files-flag, build-with-xhtml-test-files-flag" />
+>>>>>>> add-editor-client-plugin-example
 
     <target name='compress'>
 

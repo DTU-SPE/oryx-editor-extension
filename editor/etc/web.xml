@@ -6,14 +6,14 @@
 
 	<display-name>Oryx Editor</display-name>
 
-	
+
 	<servlet>
 		<display-name>Default Servlet for Directory Listings</display-name>
 		<servlet-name>DirectoryListingServlet</servlet-name>
 		<servlet-class>org.apache.catalina.servlets.DefaultServlet</servlet-class>
 		<init-param>
 			<param-name>debug</param-name>
-			<param-value>0</param-value>
+			<param-value>6</param-value>
 		</init-param>
 		<init-param>
 			<param-name>listings</param-name>
@@ -29,12 +29,12 @@
 			org.oryxeditor.server.RepositoryProvider
 		</servlet-class>
 	</servlet>-->
-	
+
 	<!--	<servlet>
 		<servlet-name>EngineProxy</servlet-name>
 		<servlet-class>org.oryxeditor.server.EngineProxy</servlet-class>
 	</servlet> -->
-	
+
 	<servlet>
 		<display-name>Resource List</display-name>
 		<servlet-name>ResourceList</servlet-name>
@@ -42,12 +42,12 @@
 			org.oryxeditor.server.ResourceList
 		</servlet-class>
 	</servlet>
-	
+
 	<servlet-mapping>
 		<servlet-name>ResourceList</servlet-name>
 		<url-pattern>/resourceList</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<display-name>Oryx Legacy File Download Servlet</display-name>
 		<servlet-name>DownloadServlet</servlet-name>
@@ -55,7 +55,7 @@
 			org.oryxeditor.server.MultiDownloader
 		</servlet-class>
 	</servlet>
-    
+
     <servlet>
         <display-name>Feedback Servlet</display-name>
         <servlet-name>FeedbackServlet</servlet-name>
@@ -71,7 +71,7 @@
             org.oryxeditor.server.RDF2JSONServlet
         </servlet-class>
     </servlet>
-    
+
 	<servlet>
 		<display-name>Oryx BPMN to PNML Export</display-name>
 		<servlet-name>ExportServlet</servlet-name>
@@ -79,7 +79,7 @@
 			org.oryxeditor.server.ExportServlet
 		</servlet-class>
 	</servlet>
-	
+
 	<servlet>
 		<display-name>
 			Oryx BPMN to PNML Export - unexecutable
@@ -103,19 +103,19 @@
 		<servlet-name>BPELImporter</servlet-name>
 		<servlet-class>org.oryxeditor.server.BPELImporter</servlet-class>
 	</servlet>
-	
+
 	<servlet>
 		<display-name>Oryx BPEL EXPORTER</display-name>
 		<servlet-name>BPELExporter</servlet-name>
 		<servlet-class>org.oryxeditor.server.BPELExporter</servlet-class>
 	</servlet>
-	
+
 	<servlet>
 		<display-name>Oryx BPEL4CHOR IMPORTER</display-name>
 		<servlet-name>BPEL4ChorImporter</servlet-name>
 		<servlet-class>org.oryxeditor.server.BPEL4ChorImporter</servlet-class>
 	</servlet>
-	
+
 	<servlet>
 		<display-name>Oryx BPEL4CHOR EXPORTER</display-name>
 		<servlet-name>BPEL4ChorExporter</servlet-name>
@@ -126,7 +126,7 @@
 		<servlet-name>JPDLImporter</servlet-name>
 		<servlet-class>org.oryxeditor.server.JPDLImporter</servlet-class>
 	</servlet>
-	
+
 	<servlet>
 		<display-name>Oryx JPDL EXPORTER</display-name>
 		<servlet-name>JPDLExporter</servlet-name>
@@ -137,13 +137,13 @@
 		<servlet-name>BPEL4Chor2BPELExporter</servlet-name>
 		<servlet-class>org.oryxeditor.server.BPEL4Chor2BPELExporter</servlet-class>
 	</servlet>
-	
+
 	<servlet>
 		<display-name>Oryx XPDL4Chor to BPEL4Chor Servlet</display-name>
 		<servlet-name>XPDL4Chor2BPEL4ChorServlet</servlet-name>
 		<servlet-class>org.oryxeditor.server.XPDL4Chor2BPEL4ChorServlet</servlet-class>
 	</servlet>
-	
+
 	<servlet>
 		<display-name>
 			Oryx Desynchronizability Checker
@@ -153,7 +153,7 @@
 			org.oryxeditor.server.DesynchronizabilityServlet
 		</servlet-class>
 	</servlet>
-	
+
 	<servlet>
 		<display-name>
 			Oryx XPDL Export Import
@@ -163,7 +163,7 @@
 			org.oryxeditor.server.BPMN2XPDLServlet
 		</servlet-class>
 	</servlet>
-	
+
 	<servlet>
 		<display-name>
 			BPEL 2 BPMN Transformation
@@ -183,7 +183,7 @@
 			org.oryxeditor.server.IBPMN2BPMNServlet
 		</servlet-class>
 	</servlet>
-	
+
 	<servlet>
 		<display-name>
 			Oryx Editor Handler
@@ -193,7 +193,7 @@
 			org.oryxeditor.server.EditorHandler
 		</servlet-class>
 	</servlet>
-	
+
 	<servlet>
 		<display-name>
 			ProcessWaveEditorHandler
@@ -203,7 +203,7 @@
 			org.oryxeditor.server.ProcessWaveEditorHandler
 		</servlet-class>
 	</servlet>
-	
+
 	<servlet>
 		<display-name>
 			Oryx syntax checker
@@ -252,7 +252,7 @@
 			org.oryxeditor.server.ValidatorServlet
 		</servlet-class>
 	</servlet>
-    
+
     <servlet>
         <display-name>
             Oryx Petri Net Soundness Checker
@@ -262,7 +262,7 @@
             org.oryxeditor.server.PetriNetSoundnessCheckerServlet
         </servlet-class>
     </servlet>
-	
+
 	<!--<servlet>
 		<display-name>Oryx Simple Storage Servlet</display-name>
 		<servlet-name>SimpleStorageServlet</servlet-name>
@@ -270,7 +270,7 @@
 			org.oryxeditor.server.SimpleStorageServlet
 		</servlet-class>
 	</servlet>-->
-	
+
 	<servlet>
 		<display-name>Alternatives Renderer</display-name>
 		<servlet-name>AlternativesRenderer</servlet-name>
@@ -278,7 +278,7 @@
 			org.oryxeditor.server.AlternativesRenderer
 		</servlet-class>
 	</servlet>
-    
+
     <servlet>
         <display-name>BPMN to Petri Net Converter</display-name>
         <servlet-name>BPMN2PNServlet</servlet-name>
@@ -286,7 +286,7 @@
             org.oryxeditor.server.BPMN2PNServlet
         </servlet-class>
     </servlet>
-	
+
 	<servlet>
         <display-name>BPMN to YAWL Converter</display-name>
         <servlet-name>BPMN2YAWLServlet</servlet-name>
@@ -294,7 +294,7 @@
             org.oryxeditor.server.BPMN2YAWLServlet
         </servlet-class>
     </servlet>
-	
+
 <!--<servlet>
 		<display-name>Worklist</display-name>
 		<servlet-name>Worklist</servlet-name>
@@ -307,7 +307,7 @@
 		<servlet-name>EPCUpload</servlet-name>
 		<servlet-class>org.oryxeditor.server.EPCUpload</servlet-class>
 	</servlet>
-	
+
 	<servlet>
 		<display-name>Step Through</display-name>
 		<servlet-name>StepThrough</servlet-name>
@@ -315,7 +315,7 @@
 			de.hpi.diagram.stepthrough.StepThroughServlet
 		</servlet-class>
 	</servlet>
-	
+
 	<servlet>
 		<display-name>XForms Export</display-name>
 		<servlet-name>XFormsExportServlet</servlet-name>
@@ -323,8 +323,8 @@
 			org.oryxeditor.server.XFormsExportServlet
 		</servlet-class>
 	</servlet>
-	
-<!--	
+
+<!--
 	<servlet>
 		<display-name>XForms Export Orbeon</display-name>
 		<servlet-name>XFormsExportOrbeonServlet</servlet-name>
@@ -333,14 +333,14 @@
 		</servlet-class>
 	</servlet>
 -->
-	
+
 	<servlet>
 		<display-name>WSDL2XForms Transformation</display-name>
 		<servlet-name>WSDL2XFormsServlet</servlet-name>
 		<servlet-class>
 			org.oryxeditor.server.WSDL2XFormsServlet
 		</servlet-class>
-	</servlet> 
+	</servlet>
 
     <servlet>
         <display-name>BPMN2XForms Servlet</display-name>
@@ -349,7 +349,7 @@
              org.oryxeditor.server.BPMN2XFormsServlet
         </servlet-class>
     </servlet>
-	
+
 	<servlet>
 		<display-name>XForms Import</display-name>
 		<servlet-name>XFormsImportServlet</servlet-name>
@@ -357,7 +357,7 @@
 			org.oryxeditor.server.XFormsImportServlet
 		</servlet-class>
 	</servlet>
-	
+
 	<servlet>
 		<display-name>StencilSet JSONP</display-name>
 		<servlet-name>StencilSetJSONPServlet</servlet-name>
@@ -385,8 +385,8 @@
         </servlet-class>
     </servlet>
 -->
-	
-<!--	
+
+<!--
 	<servlet>
         <display-name>GoldenEye Servlet</display-name>
         <servlet-name>GoldenEyeServlet</servlet-name>
@@ -396,7 +396,7 @@
     </servlet>
 -->
 
-	
+
 	<servlet>
         <display-name>BPMN2BPEL Servlet</display-name>
         <servlet-name>BPMN2BPELServlet</servlet-name>
@@ -413,7 +413,7 @@
 			org.oryxeditor.server.BPMNLayouterServlet
 		</servlet-class>
 	</servlet>
-	
+
 	<servlet>
 		<display-name>EPC Layouter</display-name>
 		<servlet-name>EPCLayouterServlet</servlet-name>
@@ -421,8 +421,8 @@
 			org.oryxeditor.server.EPCLayoutServlet
 		</servlet-class>
 	</servlet>
-	
-	
+
+
 	<servlet>
 		<display-name>BPMN 2 Exporter</display-name>
 		<servlet-name>Bpmn2_0Servlet</servlet-name>
@@ -430,7 +430,7 @@
 			org.oryxeditor.server.Bpmn2_0Servlet
 		</servlet-class>
 	</servlet>
-	
+
 	<servlet>
 		<display-name>BPMN 2 XPDL Exporter</display-name>
 		<servlet-name>Bpmn2_0ToXpdlServlet</servlet-name>
@@ -438,7 +438,7 @@
 			org.oryxeditor.server.Bpmn2_0ToXpdlServlet
 		</servlet-class>
 	</servlet>
-	
+
 	<servlet>
 		<display-name>BPMN 2 Importer</display-name>
 		<servlet-name>Bpmn2_0Importer</servlet-name>
@@ -470,19 +470,19 @@
 			org.oryxeditor.server.TBPMServlet
 		</servlet-class>
 	</servlet>
-	
+
 	<servlet>
 		<display-name>Colored Petri Net to CPN Tools</display-name>
 		<servlet-name>CPNToolsExporter</servlet-name>
 		<servlet-class>org.oryxeditor.server.CPNToolsExporter</servlet-class>
 	</servlet>
-	
+
 	<servlet>
 		<display-name>CPN Tools to Colored Petri Net</display-name>
 		<servlet-name>CPNToolsImporter</servlet-name>
 		<servlet-class>org.oryxeditor.server.CPNToolsImporter</servlet-class>
 	</servlet>
-	
+
 	<servlet>
 		<display-name>Petrinet to Process Log</display-name>
 		<servlet-name>ProcessLogGenerator</servlet-name>
@@ -496,7 +496,7 @@
 	</servlet>
 
     <!-- Servlet Mappings -->
-<!--	
+<!--
 	<servlet-mapping>
 		<servlet-name>Repository</servlet-name>
 		<url-pattern>/repository</url-pattern>
@@ -509,19 +509,19 @@
 		<url-pattern>/engineproxy</url-pattern>
 	</servlet-mapping>
 -->
-	
+
 	<servlet-mapping>
 		<servlet-name>ExportServlet</servlet-name>
 		<url-pattern>/pnml</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet-mapping>
 		<servlet-name>BPMN2YAWLServlet</servlet-name>
 		<url-pattern>/bpmn2yawl</url-pattern>
 	</servlet-mapping>
-	
-	
-	
+
+
+
 	<servlet-mapping>
 		<servlet-name>SimplePNMLExporter</servlet-name>
 		<url-pattern>/simplepnmlexporter</url-pattern>
@@ -529,12 +529,12 @@
 	<servlet-mapping>
 		<servlet-name>LolaPetrinetSoundnessChecker</servlet-name>
 		<url-pattern>/lola</url-pattern>
-	</servlet-mapping>	
+	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>BPELImporter</servlet-name>
 		<url-pattern>/bpelimporter</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet-mapping>
 		<servlet-name>BPELExporter</servlet-name>
 		<url-pattern>/bpelexporter</url-pattern>
@@ -543,7 +543,7 @@
 		<servlet-name>JPDLImporter</servlet-name>
 		<url-pattern>/jpdlimporter</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet-mapping>
 		<servlet-name>JPDLExporter</servlet-name>
 		<url-pattern>/jpdlexporter</url-pattern>
@@ -552,32 +552,32 @@
 		<servlet-name>BPEL4ChorImporter</servlet-name>
 		<url-pattern>/bpel4chorimporter</url-pattern>
 	</servlet-mapping>
-    
+
     <servlet-mapping>
         <servlet-name>PetriNetSoundnessChecker</servlet-name>
         <url-pattern>/checksoundness</url-pattern>
     </servlet-mapping>
-	
+
 	<servlet-mapping>
 		<servlet-name>BPEL4ChorExporter</servlet-name>
 		<url-pattern>/bpel4chorexporter</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet-mapping>
 		<servlet-name>BPEL4Chor2BPELExporter</servlet-name>
 		<url-pattern>/bpel4chor2bpelexporter</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet-mapping>
 		<servlet-name>XPDL4Chor2BPEL4ChorServlet</servlet-name>
 		<url-pattern>/xpdl4chor2bpel4chor</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet-mapping>
 		<servlet-name>DesynchronizabilityServlet</servlet-name>
 		<url-pattern>/desynchronizability</url-pattern>
 	</servlet-mapping>
-    
+
     <servlet-mapping>
         <servlet-name>RDF2JSONServlet</servlet-name>
         <url-pattern>/rdf2json</url-pattern>
@@ -597,7 +597,7 @@
 		<servlet-name>SyntaxChecker</servlet-name>
 		<url-pattern>/syntaxchecker</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet-mapping>
 		<servlet-name>Validator</servlet-name>
 		<url-pattern>/validator</url-pattern>
@@ -617,12 +617,12 @@
 		<servlet-name>AlternativesRenderer</servlet-name>
 		<url-pattern>/pdf</url-pattern>
 	</servlet-mapping>
-    
+
     <servlet-mapping>
         <servlet-name>BPMN2PNServlet</servlet-name>
         <url-pattern>/bpmn2pn</url-pattern>
     </servlet-mapping>
-    
+
     <servlet-mapping>
         <servlet-name>BPMN2XPDLServlet</servlet-name>
         <url-pattern>/bpmn2xpdl</url-pattern>
@@ -639,26 +639,26 @@
 		<servlet-name>EPCUpload</servlet-name>
 		<url-pattern>/epc-upload</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet-mapping>
 		<servlet-name>StepThrough</servlet-name>
 		<url-pattern>/stepthrough</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet-mapping>
 		<servlet-name>XFormsExportServlet</servlet-name>
 		<url-pattern>/xformsexport</url-pattern>
 	</servlet-mapping>
-	
+
 	<!-- Exported XForms are rendered by Orbeon (see below: filter mappings) -->
     <!-- crossContext="true" is required for using Orbeon. Configure this in editor/etc/context.xml -->
-<!--	
+<!--
 	<servlet-mapping>
 		<servlet-name>XFormsExportOrbeonServlet</servlet-name>
 		<url-pattern>/xformsexport-orbeon</url-pattern>
 	</servlet-mapping>
 -->
-	
+
 	<servlet-mapping>
 		<servlet-name>WSDL2XFormsServlet</servlet-name>
 		<url-pattern>/wsdl2xforms</url-pattern>
@@ -677,12 +677,12 @@
 		<url-pattern>/bpmn2xforms-orbeon</url-pattern>
 	</servlet-mapping>
 -->
-	
+
 	<servlet-mapping>
 		<servlet-name>XFormsImportServlet</servlet-name>
 		<url-pattern>/xformsimport</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet-mapping>
 		<servlet-name>StencilSetJSONPServlet</servlet-name>
 		<url-pattern>/jsonp</url-pattern>
@@ -696,14 +696,14 @@
 -->
 
 
-<!--  
+<!--
     <servlet-mapping>
             <servlet-name>ServiceComposerServlet</servlet-name>
             <url-pattern>/servicecomposer</url-pattern>
     </servlet-mapping>
 -->
 
-<!--	
+<!--
 	<servlet-mapping>
             <servlet-name>GoldenEyeServlet</servlet-name>
             <url-pattern>/goldeneye</url-pattern>
@@ -721,7 +721,7 @@
             <servlet-name>FeedbackServlet</servlet-name>
             <url-pattern>/feedback</url-pattern>
     </servlet-mapping>
-	
+
 	<servlet-mapping>
             <servlet-name>BPMN2BPELServlet</servlet-name>
             <url-pattern>/bpmn2bpel</url-pattern>
@@ -731,28 +731,28 @@
 		<servlet-name>DirectoryListingServlet</servlet-name>
 		<url-pattern>/generated-uis/</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet-mapping>
 		<servlet-name>BPMNLayouterServlet</servlet-name>
 		<url-pattern>/bpmnlayouter</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet-mapping>
 		<servlet-name>EPCLayouterServlet</servlet-name>
 		<url-pattern>/epclayouter</url-pattern>
 	</servlet-mapping>
-	
-	
+
+
 	<servlet-mapping>
 		<servlet-name>Bpmn2_0Servlet</servlet-name>
 		<url-pattern>/bpmn2_0serialization</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet-mapping>
 		<servlet-name>Bpmn2_0ToXpdlServlet</servlet-name>
 		<url-pattern>/bpmn2xpdlserialization</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet-mapping>
 		<servlet-name>Bpmn2_0Importer</servlet-name>
 		<url-pattern>/bpmn2_0deserialization</url-pattern>
@@ -762,7 +762,7 @@
 		<servlet-name>BPMN2MigrationServlet</servlet-name>
 		<url-pattern>/bpmn2migration</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet-mapping>
 		<servlet-name>SATSolverForComplianceTemplate</servlet-name>
 		<url-pattern>/satSolver</url-pattern>
@@ -772,27 +772,27 @@
 		<servlet-name>TBPMServlet</servlet-name>
 		<url-pattern>/tbpmimport</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet-mapping>
 		<servlet-name>CPNToolsExporter</servlet-name>
 		<url-pattern>/cpntoolsexporter</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet-mapping>
 		<servlet-name>CPNToolsImporter</servlet-name>
 		<url-pattern>/cpntoolsimporter</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet-mapping>
 		<servlet-name>ProcessLogGenerator</servlet-name>
 		<url-pattern>/processloggenerator</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet-mapping>
 		<servlet-name>VisioImporter</servlet-name>
 		<url-pattern>/visioimport</url-pattern>
 	</servlet-mapping>
-	
+
 	<jsp-config>
 		<taglib>
 			<taglib-uri>http://java.sun.com/jstl/core</taglib-uri>
@@ -805,7 +805,7 @@
 	<session-config>
 		<session-timeout>1440</session-timeout>
 	</session-config>
-	
+
 	<!--
 		jBoss' default mapping is to "image/svg", which causes the client not to
 		parse the SVG content as XML. However, the Oryx Editor client relies on
@@ -824,8 +824,8 @@
 		<extension>css</extension>
 		<mime-type>text/css</mime-type>
 	</mime-mapping>
-	
-	<!-- Set Favourites Icon MIME-Type --> 
+
+	<!-- Set Favourites Icon MIME-Type -->
 	<mime-mapping>
 	    <extension>ico</extension>
 	    <mime-type>image/x-icon</mime-type>
@@ -833,7 +833,7 @@
 
 
 	<!-- Declare and configure the Orbeon Forms XForms filter -->
-<!--	
+<!--
 	<filter>
 		<filter-name>orbeon-xforms-filter</filter-name>
 		<filter-class>org.orbeon.oxf.servlet.OPSXFormsFilter</filter-class>
@@ -881,8 +881,8 @@
 	<!--<welcome-file-list>
 		<welcome-file>/server</welcome-file>
 	</welcome-file-list>-->
-    
-    
+
+
     <!-- Postmaster Config -->
     <!-- example config for googlemail account -->
     <context-param>
@@ -909,17 +909,17 @@
         <description>Enables debug mode</description>
         <param-name>SMTP_DEBUG</param-name><param-value>true</param-value>
     </context-param>
-    
+
     <context-param>
         <description>Recipient for feedback servlet</description>
         <param-name>FEEDBACK_RECIPIENT_EMAIL</param-name><param-value>mymail@googlemail.com</param-value>
     </context-param>
-   <!--  
+   <!--
     <context-param>
     	<description>Analytics Snippet</description>
     	<param-name>ANALYTICS_SNIPPET</param-name>
     	<param-value><![CDATA[
-		  ... 	
+		  ...
     	]]></param-value>
     </context-param>
     -->

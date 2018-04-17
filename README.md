@@ -94,3 +94,21 @@ JAVA_OPTS="-Xdebug -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address
 `$ ant javadoc-editor`
 
 #### Oryx Backend
+
+## Development
+
+### Editor
+
+Update editor (example): `$ ant build-editor undeploy-editor-docker deploy-editor-docker`
+
+#### Client (JS App)
+
+##### Add a plugin
+* In *editor/client/scripts/Plugins/plugins.xml* add a plugin element as a child of the *plugins* element:
+```
+<plugin source="countObjects.js" name="ORYX.Plugins.PetrinetCountObjects">
+    <requires namespace="http://b3mn.org/stencilset/petrinet#"/>
+</plugin>
+```
+* Add localization in *editor/data/i18n/{translation_de.js,translation_en_us.js,translation_es.js,translation_ru.js}*
+* Add plugin functionality in *editor/client/scripts/Plugins* as a JavaScript file which extends AbstractPlugin (*editor/client/scripts/Core/abstractPlugin.js*)
