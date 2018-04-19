@@ -24,17 +24,17 @@ import de.hpi.petrinet.verification.PetriNetSyntaxChecker;
 
 /**
  * Copyright (c) 2008 Gero Decker, Matthias Weidlich
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -44,7 +44,7 @@ import de.hpi.petrinet.verification.PetriNetSyntaxChecker;
  * SOFTWARE.
  */
 public class PetriNet implements Cloneable {
-	
+
 	protected List<Place> places;
 	protected List<Transition> transitions;
 	protected List<FlowRelationship> flowRelationships;
@@ -56,13 +56,13 @@ public class PetriNet implements Cloneable {
 	protected Map<Node,Set<Node>> postdominators;
 
 	protected String id;
-	
+
 	public List<FlowRelationship> getFlowRelationships() {
 		if (flowRelationships == null)
 			flowRelationships = new MyFlowRelationshipList();
 		return flowRelationships;
 	}
-	
+
 	public List<Place> getPlaces() {
 		if (places == null)
 			places = new ArrayList<Place>();
@@ -74,7 +74,7 @@ public class PetriNet implements Cloneable {
 			transitions = new ArrayList<Transition>();
 		return transitions;
 	}
-	
+
 	public List<Node> getLabeledTransitions() {
 		List<Node> result = new ArrayList<Node>();
 		for(Transition t : getTransitions())
@@ -89,7 +89,7 @@ public class PetriNet implements Cloneable {
 		nodes.addAll(getTransitions());
 		return nodes;
 	}
-	
+
 	public SyntaxChecker getSyntaxChecker() {
 		return new PetriNetSyntaxChecker(this);
 	}
@@ -98,19 +98,19 @@ public class PetriNet implements Cloneable {
 	 * Creates a deep copy of whole Petri net. All places,
 	 * transitions and flows are copied, whereas the source
 	 * and targets for the latter are also set accordingly.
-	 * 
+	 *
 	 * @return the clone of the Petri net
 	 */
 	@Override
 	public Object clone() throws CloneNotSupportedException {
 		PetriNet clone = (PetriNet) super.clone();
 		Map<Node,Node> nodeCopies = new HashMap<Node, Node>();
-		
-		clone.setPlaces(new ArrayList<Place>());		
+
+		clone.setPlaces(new ArrayList<Place>());
 		// will be generated when needed
 		clone.setInitialPlaces(null);
 		clone.setFinalPlaces(null);
-		
+
 		for(Place p : this.getPlaces()) {
 			Place p2 = (Place) p.clone();
 			clone.getPlaces().add(p2);
@@ -131,7 +131,7 @@ public class PetriNet implements Cloneable {
 			newF.setTarget(nodeCopies.get(f.getTarget()));
 			clone.getFlowRelationships().add(newF);
 		}
-		
+
 		// will be generated if needed
 		clone.setTransitiveClosure(null);
 		return clone;
@@ -144,7 +144,7 @@ public class PetriNet implements Cloneable {
 	public Marking getInitialMarking() {
 		return null;
 	}
-	
+
 
 //	public void optimize(Map<String,Boolean> parameters) {
 //		boolean changed = false;
@@ -158,11 +158,11 @@ public class PetriNet implements Cloneable {
 //				}
 //		} while (changed);
 //	}
-//	
+//
 //	protected boolean doOptimization(String parameter) {
 //		return false;
 //	}
-	
+
 //	protected boolean doOptimization(Map<String,Boolean> parameters, String parameter) {
 //		if (parameters == null)
 //			return false;
@@ -172,7 +172,7 @@ public class PetriNet implements Cloneable {
 //		else
 //			return b.booleanValue();
 //	}
-	
+
 	public PetriNetInterpreter getInterpreter() {
 		return null;
 	}
@@ -186,9 +186,9 @@ public class PetriNet implements Cloneable {
 			return ls.serializeToString(doc);
 		} catch (Exception e) {
 			return super.toString();
-		}		
+		}
 	}
-	
+
 	/**
 	 * Returns all final places of this petri net (cached).
 	 */
@@ -209,13 +209,16 @@ public class PetriNet implements Cloneable {
 	 * Returns the first final place, intended for use in workflow nets.
 	 */
 	public Place getFinalPlace(){
-		try {
-			return this.getFinalPlaces().get(0);
-		} catch (IndexOutOfBoundsException exception) {
+		List<Place> finalPlaces = this.getFinalPlaces();
+
+		if (finalPlaces.size() > 0) {
+			return finalPlaces.get(0);
+		}
+		else {
 			return null;
 		}
 	}
-	
+
 	/**
 	 * Returns all initial places of this petri net (cached).
 	 */
@@ -241,12 +244,12 @@ public class PetriNet implements Cloneable {
 
 	/**
 	 * Checks whether the net is a free choice net.
-	 * 
+	 *
 	 * @return true, if the net is free-choice
 	 */
 	public boolean isFreeChoiceNet() {
 		boolean isFC = true;
-		
+
 		outer:
 		for(Transition t1 : this.getTransitions()) {
 			for(Transition t2 : this.getTransitions()) {
@@ -258,7 +261,7 @@ public class PetriNet implements Cloneable {
 					preT1.retainAll(preT2);
 					boolean tmp = (preT1.size() == preT2.size());
 					isFC &= tmp;
-					if (!isFC) 
+					if (!isFC)
 						break outer;
 				}
 			}
@@ -268,9 +271,9 @@ public class PetriNet implements Cloneable {
 
 	/**
 	 * Checks whether the net is a workflow net. Such a net has
-	 * exactly one initial and one final place and every place and 
+	 * exactly one initial and one final place and every place and
 	 * transition is one a path from i to o.
-	 * 
+	 *
 	 * @return true, if the net is a workflow net
 	 */
 	public boolean isWorkflowNet() {
@@ -278,7 +281,7 @@ public class PetriNet implements Cloneable {
 		// maybe we already know that the net is not a workflow net
 		if (!isWF)
 			return isWF;
-		
+
 		Node in = this.getInitialPlace();
 		Node out = this.getFinalPlace();
 		for (Node n : this.getNodes()) {
@@ -292,7 +295,7 @@ public class PetriNet implements Cloneable {
 
 	public PTNet getSubnet(Collection<Node> nodes) {
 		PTNet net = PTNetFactory.eINSTANCE.createPetriNet();
-		
+
 		Map<Node,Node> nodeCopies = new HashMap<Node, Node>();
 
 		try {
@@ -324,29 +327,29 @@ public class PetriNet implements Cloneable {
 
 		return net;
 	}
-	
+
 	/**
 	 * Checks whether the net is an S-net.
-	 * 
+	 *
 	 * @return true, if net is an S-net.
 	 */
 	public boolean isSNet() {
 		boolean result = true;
 		for (Transition t : this.getTransitions())
 			result &= (t.getIncomingFlowRelationships().size() == 1) && ((t.getOutgoingFlowRelationships().size() == 1));
-		return result;	
+		return result;
 	}
-	
+
 	/**
 	 * Checks whether the net is a T-net.
-	 * 
+	 *
 	 * @return true, if net is a T-net.
 	 */
 	public boolean isTNet() {
 		boolean result = true;
 		for (Place p : this.getPlaces())
 			result &= (p.getIncomingFlowRelationships().size() == 1) && ((p.getOutgoingFlowRelationships().size() == 1));
-		return result;	
+		return result;
 	}
 
 	public Map<Node, Set<Node>> getDominators() {
@@ -354,21 +357,21 @@ public class PetriNet implements Cloneable {
 			this.dominators = deriveDominators(false);
 		return this.dominators;
 	}
-	
+
 	public Map<Node, Set<Node>> getPostDominators() {
 		if (this.postdominators == null)
 			this.postdominators = deriveDominators(true);
 		return this.postdominators;
 	}
-	
+
 	protected Map<Node,Set<Node>> deriveDominators(boolean reverse) {
 
 		int initIndex = reverse ? this.getNodes().indexOf(this.getFinalPlace()) : this.getNodes().indexOf(this.getInitialPlace());
-		
-		int size = this.getNodes().size(); 
+
+		int size = this.getNodes().size();
 		final BitSet[] dom = new BitSet[size];
 		final BitSet ALL = new BitSet(size);
-		
+
 		for (Node n : this.getNodes())
 			ALL.set(this.getNodes().indexOf(n));
 
@@ -380,9 +383,9 @@ public class PetriNet implements Cloneable {
 			if (index != initIndex) curDoms.or(ALL);
 			else curDoms.set(initIndex);
 		}
-		
+
 		boolean changed = true;
-	
+
 		/*
 		 * While we change the dom relation for a node
 		 */
@@ -391,28 +394,28 @@ public class PetriNet implements Cloneable {
 			for (Node n : this.getNodes()) {
 				int index = this.getNodes().indexOf(n);
 				if (index == initIndex) continue;
-				 
+
 				final BitSet old = dom[index];
 				final BitSet curDoms = new BitSet(size);
 				curDoms.or(old);
-				
+
 				Collection<Node> predecessors = reverse ? n.getSucceedingNodes() : n.getPrecedingNodes();
 				for (Node p : predecessors) {
 					int index2 = this.getNodes().indexOf(p);
 					curDoms.and(dom[index2]);
-				}				
-				
+				}
+
 				curDoms.set(index);
-				
+
 				if (!curDoms.equals(old)) {
 					changed = true;
 					dom[index] = curDoms;
 				}
 			}
 		}
-		
+
 		Map<Node,Set<Node>> dominators = new HashMap<Node, Set<Node>>();
-		
+
 		for (Node n : this.getNodes()) {
 			int index = this.getNodes().indexOf(n);
 			dominators.put(n, new HashSet<Node>());
@@ -420,12 +423,12 @@ public class PetriNet implements Cloneable {
 				if (dom[index].get(i))
 					dominators.get(n).add(this.getNodes().get(i));
 		}
-		
+
 		return dominators;
 	}
-	
+
 	protected class MyFlowRelationshipList extends ArrayList<FlowRelationship> {
-		
+
 		private static final long serialVersionUID = 7350067193890668068L;
 
 		@Override
@@ -507,5 +510,5 @@ public class PetriNet implements Cloneable {
 		this.id = id;
 	}
 
-	
+
 }
