@@ -99,7 +99,9 @@ public class LolaServlet extends HttpServlet {
 		 * if no initial Marking given set one token to the inital place
 		 */
 		if (net.getInitialMarking().getNumTokens() == 0) {
-			net.getInitialMarking().setNumTokens(net.getInitialPlace(), 1);
+			if (net.getInitialPlaces().size() > 0) {
+				net.getInitialMarking().setNumTokens(net.getInitialPlace(), 1);
+			}
 		}
 		exp.savePetriNet(pnmlDoc, net);
 	}
