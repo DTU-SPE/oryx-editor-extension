@@ -19,10 +19,9 @@
 * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 * DEALINGS IN THE SOFTWARE.
 **/
-Ext.ns("Oryx.Plugins");
 
-// if (!ORYX.Plugins)
-// ORYX.Plugins = new Object();
+if (!ORYX.Plugins)
+ORYX.Plugins = new Object();
 
 /**
 Analyze Petri nets using LoLA 2
@@ -58,10 +57,10 @@ ORYX.Plugins.Lola = ORYX.Plugins.AbstractPlugin.extend({
     } else {
       this.setActivated(button, false);
       this.analyze({
-        onSuccess: function(numObjects, numSelectedObjects) {
+        onSuccess: function(response) {
           this.facade.raiseEvent({
             type:ORYX.CONFIG.EVENT_LOADING_STATUS,
-            text:'Objects in diagram: ' + numObjects + ', ' + 'Selected objects: ' + numSelectedObjects,
+            text:'Response: ' + response,
             timeout:10000
           });
         }.bind(this)
@@ -109,6 +108,7 @@ ORYX.Plugins.Lola = ORYX.Plugins.AbstractPlugin.extend({
       success: function(request){
         var res = Ext.decode(request.responseText);
         console.log(res);
+        options.onSuccess(JSON.stringify(res));
       }.bind(this),
       failure: function(){
 
@@ -119,6 +119,8 @@ ORYX.Plugins.Lola = ORYX.Plugins.AbstractPlugin.extend({
     });
 
     Ext.Msg.hide();
+
+
   }
 });
 

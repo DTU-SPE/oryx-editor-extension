@@ -76,7 +76,7 @@ public class LolaServlet extends HttpServlet {
 	// private static final String PNML = "pnml";
 	// private static final String INPUT = "input";
 	// private static final String TEXT = "text";
-	private static final String LOLA_URI = "http://lola:80/lola.php";
+	private static final String LOLA_URI = "http://lola:80/lola2_new.php";
 	private static final long serialVersionUID = 6150856095430348410L;
 	private Tool tool;
 
