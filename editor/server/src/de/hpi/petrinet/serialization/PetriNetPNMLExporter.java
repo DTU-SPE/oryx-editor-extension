@@ -72,7 +72,6 @@ public class PetriNetPNMLExporter {
 		}
 		if(targetTool == Tool.LOLA && net.getFinalPlace()!=null){
 			createSimpleFinalMarking(doc, net, root);
-		
 		}
 		
 	}
