@@ -58,11 +58,54 @@ ORYX.Plugins.Lola = ORYX.Plugins.AbstractPlugin.extend({
       this.setActivated(button, false);
       this.analyze({
         onSuccess: function(response) {
-          this.facade.raiseEvent({
-            type:ORYX.CONFIG.EVENT_LOADING_STATUS,
-            text:'Response: ' + response,
-            timeout:10000
-          });
+          var win;
+          if(!win){
+            win = new Ext.Window({
+              layout:'fit',
+              width:500,
+              height:300,
+              closeAction:'hide',
+              plain: true,
+
+              items: [{
+                title: 'LoLA 2.0 success',
+                html: '<p>' + response + '</p>'
+              }],
+
+              buttons: [{
+                text: 'Close',
+                handler: function(){
+                  win.hide();
+                }
+              }]
+            });
+          }
+          win.show(this);
+        }.bind(this),
+        onFailure: function(response) {
+          var win;
+          if(!win){
+            win = new Ext.Window({
+              layout:'fit',
+              width:500,
+              height:300,
+              closeAction:'hide',
+              plain: true,
+
+              items: [{
+                title: 'LoLA 2.0 failure',
+                html: response.status.toString() + ': ' + response.statusText
+              }],
+
+              buttons: [{
+                text: 'Close',
+                handler: function(){
+                  win.hide();
+                }
+              }]
+            });
+          }
+          win.show(this);
         }.bind(this)
       });
     }
@@ -92,7 +135,8 @@ ORYX.Plugins.Lola = ORYX.Plugins.AbstractPlugin.extend({
   analyze: function(options) {
     Ext.applyIf(options || {}, {
       showErrors: true,
-      onSuccess: Ext.emptyFn
+      onSuccess: Ext.emptyFn,
+      onFailure: Ext.emptyFn
     });
 
     Ext.Msg.wait('Analyzing...'); // ORYX.I18N.Lola.analyzingMessage
@@ -107,11 +151,11 @@ ORYX.Plugins.Lola = ORYX.Plugins.AbstractPlugin.extend({
       method: 'POST',
       success: function(request){
         var res = Ext.decode(request.responseText);
-        console.log(res);
         options.onSuccess(JSON.stringify(res));
       }.bind(this),
-      failure: function(){
-
+      failure: function(request){
+        console.log(request)
+        options.onFailure(request);
       }.bind(this),
       params: {
         data: serialized_rdf
@@ -119,8 +163,6 @@ ORYX.Plugins.Lola = ORYX.Plugins.AbstractPlugin.extend({
     });
 
     Ext.Msg.hide();
-
-
   }
 });
 
