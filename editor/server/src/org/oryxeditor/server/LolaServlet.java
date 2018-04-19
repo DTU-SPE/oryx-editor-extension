@@ -211,7 +211,7 @@ public class LolaServlet extends HttpServlet {
 	/**
 	 * Sends a request to the Lola Webservice and write the response to the
 	 * {@link HttpServletResponse}
-	 * 
+	 *
 	 * @param res
 	 *            the response to write on
 	 * @param tool

@@ -209,7 +209,11 @@ public class PetriNet implements Cloneable {
 	 * Returns the first final place, intended for use in workflow nets.
 	 */
 	public Place getFinalPlace(){
-		return this.getFinalPlaces().get(0);
+		try {
+			return this.getFinalPlaces().get(0);
+		} catch (IndexOutOfBoundsException exception) {
+			return null;
+		}
 	}
 	
 	/**
