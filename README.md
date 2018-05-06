@@ -23,11 +23,13 @@ The subsections below cover the following installation steps:
 * Set JAVA_HOME to the installation path of Oracle Java JDK {6,7,8} or OpenJDK 8 (other versions have not been tested)
 * Java SE Development Kit 6u45: [download from Oracle's Java SE 6 Downloads page](http://www.oracle.com/technetwork/java/javase/downloads/java-archive-downloads-javase6-419409.html)
     * NB - This JDK is currently included as a Debian package in *docker/packages/oracle-java6-jdk_6u45_amd64.deb* following this guide: https://wiki.debian.org/JavaPackage. For security reasons the package should probably be replaced.
-* packages: ant, graphviz, subversion and postgresql-client
+* packages: ant graphviz subversion postgresql-client
 * Tomcat 6 with JRE 6 (available as Docker container)
 * PostgreSQL 8.4 with PL/Python (available as Docker container)
 * [OPTIONAL] Docker Community Edition (CE) (Docker Engine 1.13.1+)
-    * ./docker-compose.yml, ./Dockerfile (Tomcat 6) and ./poem-jvm/Dockerfile (PostgreSQL 8.4) included
+    * ./Dockerfile (Tomcat 6) and ./poem-jvm/Dockerfile (PostgreSQL 8.4) included
+* [OPTIONAL] docker-compose
+    * ./docker-compose.yml 
 
 ### Build web apps
 * In ./build.properties change *java-home* to the installation path (JAVA_HOME) of *Java SE Development Kit 6u45*
@@ -77,6 +79,7 @@ The web container needs the following Java options (*address* and the port used 
 JAVA_OPTS="-Xdebug -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8000"`
 ```
 #### Eclipse (Oxygen)
+* NB - JRE System Library vendor must match the one used in *Tomcat 6 container* and should match version
 * Select "Run" -> "Debug Configurations..."
 * Right-click "Remote Java Application" -> Select "New"
 * "Connection Properties":
