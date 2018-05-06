@@ -19,6 +19,7 @@ services:
           - database
   web:
     image: oryxeditorextension_web
+    container_name: oryxeditorextension_web_1
     build:
       context: .
       dockerfile: Dockerfile
