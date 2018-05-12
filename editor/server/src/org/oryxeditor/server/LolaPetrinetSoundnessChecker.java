@@ -49,17 +49,17 @@ import de.hpi.util.LibConfigToJsonConvert;
 
 /**
  * Copyright (c) 2010 Philipp Berger
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -76,7 +76,7 @@ public class LolaPetrinetSoundnessChecker extends HttpServlet {
 //	private static final String PNML 			= "pnml";
 //	private static final String INPUT			= "input";
 //	private static final String TEXT			= "text";
-	private static final String LOLA_URI 		= "http://esla.informatik.uni-rostock.de/service-tech/.lola/lola.php";
+	private static final String LOLA_URI 		= "http://lola:80/lola.php";
 	private static final long serialVersionUID = 6150856095430348410L;
 	private Tool tool;
 	public Tool getTool() {
@@ -111,7 +111,7 @@ public class LolaPetrinetSoundnessChecker extends HttpServlet {
 			 */
 			String rdf = req.getParameter("data");
 			this.setTool( PetriNetPNMLExporter.Tool.LOLA);
-			
+
 			/*
 			 * transform to xml document
 			 */
@@ -131,8 +131,8 @@ public class LolaPetrinetSoundnessChecker extends HttpServlet {
 			XMLSerializer serial2 = new XMLSerializer(stringOut, format);
 			serial2.asDOMSerializer();
 			serial2.serialize(pnmlDoc.getDocumentElement());
-			
-			
+
+
 			sendPostToLola(res, stringOut.toString(), "lola-deadlock");
 
 		} catch (ParserConfigurationException e) {
@@ -212,11 +212,11 @@ public class LolaPetrinetSoundnessChecker extends HttpServlet {
 	 * Sends a request to the Lola Webservice and write the response to the {@link HttpServletResponse}
 	 * @param res the response to write on
 	 * @param tool the tool which should be called
-	 * @param pnmlAsString 
-	 * @throws IOException 
+	 * @param pnmlAsString
+	 * @throws IOException
 	 */
 	private void sendPostToLola(HttpServletResponse res, String pnmlAsString, String tool)
-	throws 
+	throws
 	IOException {
 		URLConnection con;
 		try{

@@ -126,6 +126,9 @@
         <plugin source="syntaxchecker.js" name="ORYX.Plugins.PetrinetSyntaxChecker">
             <requires namespace="http://b3mn.org/stencilset/petrinet#"/>
         </plugin>
+				<plugin source="countObjects.js" name="ORYX.Plugins.PetrinetCountObjects">
+						<requires namespace="http://b3mn.org/stencilset/petrinet#"/>
+				</plugin>
 		<plugin source="validator.js" name="ORYX.Plugins.BPMNValidator">
 			<requires namespace="http://b3mn.org/stencilset/bpmn#"/>
 			<requires namespace="http://b3mn.org/stencilset/bpmn1.1#"/>
@@ -268,6 +271,9 @@
         <plugin source="petriNetSoundnessChecker.js" name="ORYX.Plugins.PetriNetSoundnessChecker">
             <requires namespace="http://b3mn.org/stencilset/petrinet#"/>
         </plugin>
+				<plugin source="lola.js" name="ORYX.Plugins.Lola">
+					<requires namespace="http://b3mn.org/stencilset/petrinet#"/>
+				</plugin>
         <plugin source="lolaPetriNetSoundnessChecker.js" name="ORYX.Plugins.LolaPetriNetSoundnessChecker">
             <requires namespace="http://b3mn.org/stencilset/petrinet#"/>
         </plugin>

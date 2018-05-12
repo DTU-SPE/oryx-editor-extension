@@ -12,8 +12,8 @@ var PREFER_SPANS_OVER_DIVS =			true;
 var PREFER_TITLE_OVER_TEXTNODE =		false;
 var RESOURCE_ID_PREFIX =				'resource';
 
-var SHOW_DEBUG_ALERTS_WHEN_SAVING =	false;
-var SHOW_EXTENDED_DEBUG_INFORMATION =	false;
+var SHOW_DEBUG_ALERTS_WHEN_SAVING =	true;
+var SHOW_EXTENDED_DEBUG_INFORMATION =	true;
 
 /*
  * Back end specific workarounds.
@@ -74,7 +74,7 @@ var PROCESSDATA_REF = 'processdata';
  * @class DataManager
  */
 var DataManager = {
-	
+
 	/**
 	 * The init method should be called once in the DataManagers lifetime.
 	 * It causes the DataManager to initialize itself, the erdf parser, do all
@@ -86,12 +86,12 @@ var DataManager = {
 		ERDF.init(DataManager._registerTriple);
 		DataManager.__synclocal();
 	},
-	
+
 	/**
 	 * This triple array is meant to be the whole knowledge of the DataManager.
 	 */
 	_triples: [],
-	
+
 	/**
 	 * This method is meant for callback from erdf parsing. It is not to be
 	 * used in another way than to add triples to the triple store.
@@ -100,7 +100,7 @@ var DataManager = {
 	_registerTriple: function(triple) {
 		DataManager._triples.push(triple)
 	},
-	
+
 	/**
 	 * The __synclocal method is for internal usage only.
 	 * It performs synchronization with the local document, that is, the triple
@@ -111,7 +111,7 @@ var DataManager = {
 		DataManager._triples = [];
 		ERDF.run();
 	},
-	
+
 	/**
 	 * Makes the shape passed into this method synchronize itself with the DOM.
 	 * This method returns the shapes resource object for further manipulation.
@@ -124,7 +124,7 @@ var DataManager = {
 
 		// store all serialize values
 		serialize.each( function(ser) {
-			
+
 			var resource = (ser.type == 'resource');
 			var _triple = new ERDF.Triple(
 				new ERDF.Resource(shape.resourceId),
@@ -135,38 +135,38 @@ var DataManager = {
 			);
 			DataManager.setObject(_triple);
 		});
-		
+
 		return r;
 	},
 
 	__storeShape: function(shape) {
-		
+
 		// first synchronize the shape,
 		var resource = DataManager.__synchronizeShape(shape);
-		
+
 		// then save the synchronized dom.
 		resource.save();
 	},
-		
+
 	__forceExistance: function(shape) {
-		
+
 		if(!$(shape.resourceId)) {
-			
+
 			if(!$$('.' + PROCESSDATA_REF)[0])
 				DataManager.graft(XMLNS.XHTML,
 					document.getElementsByTagNameNS(XMLNS.XHTML, 'body').item(0), ['div', {'class': PROCESSDATA_REF, 'style':'display:none;'}]);
-				
+
 			// object is literal
 			DataManager.graft(XMLNS.XHTML,
 				$$('.' + PROCESSDATA_REF)[0], [
-				
+
 				'div', {
                     'id': shape.resourceId,
                     //This should be done in a more dynamic way!!!!!
                     'class': (shape instanceof ORYX.Core.Canvas) ? "-oryx-canvas" : undefined
                 }
 			]);
-			
+
 		} else {
 			var resource = $(shape.resourceId)
 			var children = $A(resource.childNodes)
@@ -175,12 +175,12 @@ var DataManager = {
 			});
 		};
 	},
-	
+
 	__persistShape: function(shape) {
 
 		// a shape serialization.
 		var shapeData = shape.serialize();
-		
+
 		// initialize a triple array and construct a shape resource
 		// to be used in triple generation.
 		var triplesArray = [];
@@ -206,35 +206,35 @@ var DataManager = {
 			));
 		});
 	},
-	
+
 	__persistDOM: function(facade) {
 
 		// getChildShapes gets all shapes (nodes AND edges), deep flag
 		// makes it return a flattened child hierarchy.
-		
+
 		var canvas = facade.getCanvas();
 		var shapes = canvas.getChildShapes(true);
 		var result = '';
-		
+
 		// persist all shapes.
 		shapes.each( function(shape) {
 			DataManager.__forceExistance(shape);
 		});
 		//DataManager.__synclocal();
-		
+
 		DataManager.__renderCanvas(facade);
 		result += DataManager.serialize(
 				$(ERDF.__stripHashes(facade.getCanvas().resourceId)), true);
-				
+
 		shapes.each( function(shape) {
-			
+
 			DataManager.__persistShape(shape);
 			result += DataManager.serialize(
 				$(ERDF.__stripHashes(shape.resourceId)), true);
 		});
-		
+
 		//result += DataManager.__renderCanvas(facade);
-		
+
 		return result;
 	},
 
@@ -243,11 +243,11 @@ var DataManager = {
 		var canvas = facade.getCanvas();
 		var stencilSets = facade.getStencilSets();
 		var shapes = canvas.getChildShapes(true);
-		
+
 		DataManager.__forceExistance(canvas);
-		
+
 		DataManager.__persistShape(canvas);
-		
+
 		var shapeResource = new ERDF.Resource(canvas.resourceId);
 
 		// remove all triples for this particular shape's resource
@@ -272,13 +272,13 @@ var DataManager = {
 				{prefix: "oryx", name: "stencilset"},
 				new ERDF.Resource(stencilset.source().replace(/&/g, "%26"))
 			));
-			
+
 			DataManager.addTriple( new ERDF.Triple(
 				shapeResource,
 				{prefix: "oryx", name: "ssnamespace"},
 				new ERDF.Resource(stencilset.namespace())
 			));
-			
+
 			stencilset.extensions().keys().each(function(extension) {
 				DataManager.addTriple( new ERDF.Triple(
 					shapeResource,
@@ -287,7 +287,7 @@ var DataManager = {
 				));
 			});
 		});
-						
+
 		shapes.each(function(shape) {
 			DataManager.addTriple( new ERDF.Triple(
 				shapeResource,
@@ -299,23 +299,23 @@ var DataManager = {
 
 	__counter: 0,
 	__provideId: function() {
-		
+
 		while($(RESOURCE_ID_PREFIX+DataManager.__counter))
 			DataManager.__counter++;
-			
+
 		return RESOURCE_ID_PREFIX+DataManager.__counter;
 	},
-		
+
 	serializeDOM: function(facade) {
-		
+
 		return DataManager.__persistDOM(facade);
 	},
-	
+
 	syncGlobal: function(facade) {
-		
+
 		return DataManager.__syncglobal(facade);
 	},
-	
+
 	/**
 	 * This method is used to synchronize local DOM with remote resources.
 	 * Local changes are commited to the server, and remote changes are
@@ -327,7 +327,7 @@ var DataManager = {
 
 		// getChildShapes gets all shapes (nodes AND edges), deep flag
 		// makes it return a flattened child hierarchy.
-		
+
 		var canvas = facade.getCanvas();
 		var shapes = canvas.getChildShapes(true);
 
@@ -344,7 +344,7 @@ var DataManager = {
 
 			// create new resources for them.
 			if(USE_ARESS_WORKAROUNDS) {
-				
+
 				/*
 				 * This is a workaround due to a bug in aress. Resources are
 				 * ignoring changes to raziel:type property once they are
@@ -352,28 +352,28 @@ var DataManager = {
 				 * being created using a randomly guessed id, this temporary id
 				 * is then used in references and the appropriate div is being
 				 * populated with properties.
-				 * 
+				 *
 				 * AFTER THIS PHASE THE DATA IS INCONSISTENT AS REFERENCES POINT
 				 * TO IDS THAT ARE UNKNOWN TO THE BACK END.
-				 * 
+				 *
 				 * After the resource is actually created in aress, it gets an id
 				 * that is persistent. All shapes are then being populated with the
 				 * correct id references and stored on the server.
-				 * 
+				 *
 				 * AFTER THE SAVE PROCESS HAS RETURNED, THE DATA IS CONSISTENT
 				 * REGARDING THE ID REFERENCES AGAIN.
 				 */
-				
+
 				var razielType = shape.properties['raziel-type'];
-				
+
 				var div = '<div xmlns="http://www.w3.org/1999/xhtml">' +
 					'<span class="raziel-type">'+razielType+'</span></div>';
 
 				var r = ResourceManager.__createResource(div);
 				shape.resourceId = r.id();
-				
+
 			} else {
-		
+
 				var r = ResourceManager.__createResource();
 				shape.resourceId = r.id();
 			}
@@ -381,12 +381,12 @@ var DataManager = {
 		});
 
 		shapes.each( function(shape) {
-			
+
 			// store all shapes.
 			DataManager.__storeShape(shape);
 		});
 	},
-	
+
 	/**
 	 * This method serializes a single div into a string that satisfies the
 	 * client/server communication protocol. It ingnores all elements that have
@@ -400,7 +400,7 @@ var DataManager = {
 
 		if (node.nodeType == node.ELEMENT_NODE) {
 			// serialize an element node.
-			
+
 			var children = $A(node.childNodes);
 			var attributes = $A(node.attributes);
 			var clazz = new String(node.getAttribute('class'));
@@ -412,28 +412,28 @@ var DataManager = {
 				return '';
 
 			// start serialization.
-			
+
 			var result = '<' + node.nodeName;
-			
+
 			// preserve namespace?
-			if(!preserveNamespace) 
+			if(!preserveNamespace)
 				result += ' xmlns="' + (node.namespaceURI ? node.namespaceURI : XMLNS.XHTML) + '" xmlns:oryx="http://oryx-editor.org"';
-			
+
 			// add all attributes.
-			
+
 			attributes.each(function(attribute) {
 				result += ' ' + attribute.nodeName + '="' +
 					attribute.nodeValue + '"';});
-			
+
 			// close if no children.
-			
+
 			if(children.length == 0)
 				result += '/>';
-				
+
 			else {
-				
+
 				// serialize all children.
-				
+
 				result += '>';
 				children.each(function(_node) {
 					result += DataManager.serialize(_node, true)});
@@ -441,13 +441,13 @@ var DataManager = {
 			}
 
 			return result;
-			
+
 		} else if (node.nodeType == node.TEXT_NODE) {
-			
+
 			// serialize a text node.
 			return  node.nodeValue;
 		}
-		
+
 		//TODO serialize cdata areas also.
 		//TODO work on namespace awareness.
 	},
@@ -455,15 +455,15 @@ var DataManager = {
 	addTriple: function(triple) {
 
 		// assert the subject is a resource
-		
+
 		if(!triple.subject.type == ERDF.LITERAL)
 			throw 'Cannot add the triple ' + triple.toString() +
 				' because the subject is not a resource.'
-		
+
 		// get the element which represents this triple's subject.
 		var elementId = ERDF.__stripHashes(triple.subject.value);
 		var element = $(elementId);
-				
+
 		// assert the subject is inside this document.
 		if(!element)
 			throw 'Cannot add the triple ' + triple.toString() +
@@ -476,7 +476,7 @@ var DataManager = {
 				'span', {'class': (triple.predicate.prefix + "-" +
 					triple.predicate.name)}, triple.object.value.escapeHTML()
 			]);
-			
+
 		else {
 
 			// object is resource
@@ -484,12 +484,12 @@ var DataManager = {
 				'a', {'rel': (triple.predicate.prefix + "-" +
 					triple.predicate.name), 'href': triple.object.value}
 			]);
-			
+
 		}
 
 		return true;
 	},
-	
+
 	removeTriples: function(triples) {
 
 		// alert('Removing ' +triples.length+' triples.');
@@ -498,19 +498,19 @@ var DataManager = {
 		var removed = triples.select(
 
 			function(triple) {
-				
+
 				// TODO remove also from triple store.
 				// ... that were actually removed.
 				return DataManager.__removeTriple(triple);
 			});
-		
+
 		// sync and return removed triples.
 		// DataManager.__synclocal();
 		return removed;
 	},
-	
+
 	removeTriple: function(triple) {
-		
+
 		// remember whether the triple was actually removed.
 		var result = DataManager.__removeTriple(triple);
 
@@ -520,10 +520,10 @@ var DataManager = {
 	},
 
 	__removeTriple: function(triple) {
-		
+
 		// assert the subject is a resource
 		if(!triple.subject.type == ERDF.LITERAL)
-		
+
 			throw 'Cannot remove the triple ' + triple.toString() +
 				' because the subject is not a resource.';
 
@@ -533,39 +533,39 @@ var DataManager = {
 
 		// assert the subject is inside this document.
 		if(!element)
-		
+
 			throw 'Cannot remove the triple ' + triple.toString() +
 				' because the subject is not in the document.';
-	  
+
 		if(triple.object.type == ERDF.LITERAL) {
-	  
+
   			// continue searching actively for the triple.
 			var result = DataManager.__removeTripleRecursively(triple, element);
 			return result;
 		}
 	},
 
-	__removeTripleRecursively: function(triple, continueFrom) {  
+	__removeTripleRecursively: function(triple, continueFrom) {
 
 		// return when this node is not an element node.
 		if(continueFrom.nodeType != continueFrom.ELEMENT_NODE)
 			return false;
-		
+
 		var classes = new String(continueFrom.getAttribute('class'));
 		var children = $A(continueFrom.childNodes);
-		
+
 		if(classes.include(triple.predicate.prefix + '-' + triple.predicate.name)) {
-		  
+
 			var content = continueFrom.textContent;
 			if(	(triple.object.type == ERDF.LITERAL) &&
 				(triple.object.value == content))
 
 				continueFrom.parentNode.removeChild(continueFrom);
-			
+
 			return true;
-		  
+
 		} else {
-		 
+
 			children.each(function(_node) {
 			DataManager.__removeTripleRecursively(triple, _node)});
 			return false;
@@ -591,7 +591,7 @@ var DataManager = {
 	 * @param {Object} doc the document in which grafting is performed.
 	 */
 	graft: function(namespace, parent, t, doc) {
-		
+
 	    doc = (doc || (parent && parent.ownerDocument) || document);
 	    var e;
 	    if(t === undefined) {
@@ -612,12 +612,12 @@ var DataManager = {
 	                    e = doc.createElementNS(namespace, snared[1]);  // but no class
 	                    continue;
 	                }
-	
+
 	                // Otherwise:
 	                e = doc.createElementNS(namespace, "span");
 	                e.setAttribute(null, "class", "namelessFromLOL" );
 	            }
-	
+
 	            if( t[i] === undefined ) {
 	                echo("Can't graft an undefined value in a list!");
 	            } else if( t[i].constructor == String || t[i].constructor == Array) {
@@ -633,9 +633,9 @@ var DataManager = {
 					throw "Object " + t[i] + " is inscrutable as an graft arglet.";
 	        }
 	    }
-		
+
 		if(parent) parent.appendChild(e);
-	
+
 	    return Element.extend(e); // return the topmost created node
 	},
 
@@ -652,14 +652,14 @@ var DataManager = {
 			triple.predicate,
 			undefined
 		);
-		
+
 		DataManager.removeTriples(triples);
 
 		DataManager.addTriple(triple);
 
 		return true;
 	},
-	
+
 	query: function(subject, predicate, object) {
 
 		/*
@@ -667,10 +667,10 @@ var DataManager = {
 		 *	{value: subject, type: subjectType},
 		 *	{prefix: schema.prefix, name: property},
 		 *	{value: object, type: objectType});
-		 */	
-		 	
+		 */
+
 		return DataManager._triples.select(function(triple) {
-			
+
 			var select = ((subject) ?
 				(triple.subject.type == subject.type) &&
 				(triple.subject.value == subject.value) : true);
@@ -693,18 +693,18 @@ Kickstart.register(DataManager.init);
 function assert(expr, m) { if(!expr) throw m; };
 
 function DMCommand(action, triple) {
-	
+
 	// store action and triple.
 	this.action = action;
 	this.triple = triple;
-	
+
 	this.toString = function() {
 		return 'Command('+action+', '+triple+')';
 	};
 }
 
 function DMCommandHandler(nextHandler) {
-	
+
 	/**
 	 * Private method to set the next handler in the Chain of Responsibility
 	 * (see http://en.wikipedia.org/wiki/Chain-of-responsibility_pattern for
@@ -726,7 +726,7 @@ function DMCommandHandler(nextHandler) {
 	this.__invokeNext = function(command) {
 		return this.__next ? this.__next.handle(command) : false;
 	};
-	
+
 	/**
 	 * Handles a command. The abstract method process() is called with the
 	 * command object that has been passed. If the process method catches the
@@ -738,7 +738,7 @@ function DMCommandHandler(nextHandler) {
 	this.handle = function(command) {
 		return this.process(command) ? true : this.__invokeNext(command);
 	}
-	
+
 	/**
 	 * Empty process() method returning false. If javascript knew abstract
 	 * class members, this would be one.
@@ -753,12 +753,12 @@ function DMCommandHandler(nextHandler) {
  * @param {DMCommandHandler} next The handler that is next in the chain.
  */
 function MetaTagHandler(next) {
-	
+
 	DMCommandHandler.apply(this, [next]);
 	this.process = function(command) {
-		
+
 		with(command.triple) {
-			
+
 			/* assert prerequisites */
 			if( !(
 				(subject instanceof ERDF.Resource) &&
@@ -766,7 +766,7 @@ function MetaTagHandler(next) {
 				(object instanceof ERDF.Literal)
 			))	return false;
 		}
-		
+
 	};
 };
 
@@ -783,12 +783,12 @@ if(chain.handle(command))
 */
 
 ResourceManager = {
-	
+
 	__corrupt: false,
 	__latelyCreatedResource: undefined,
 	__listeners: $H(),
 	__token: 1,
-	
+
 	addListener: function(listener, mask) {
 
 		if(!(listener instanceof Function))
@@ -799,30 +799,30 @@ ResourceManager = {
 		// construct controller and token.
 		var controller = {listener: listener, mask: mask};
 		var token = ResourceManager.__token++;
-		
+
 		// add new listener.
 		ResourceManager.__listeners[token] = controller;
-		
+
 		// return the token generated.
 		return token;
 	},
-	
+
 	removeListener: function(token) {
-		
+
 		// remove the listener with the token and return it.
 		return ResourceManager.__listners.remove(token);
 	},
-	
+
 	__Event: function(action, resourceId) {
 		this.action = action;
 		this.resourceId = resourceId;
 	},
-	
+
 	__dispatchEvent: function(event) {
-		
+
 		// get all listeners. for each listener, ...
 		ResourceManager.__listeners.values().each(function(controller) {
-			
+
 			// .. if listener subscribed to this type of event ...
 			if(event.action & controller.mask)
 				return controller.listener(event);
@@ -855,7 +855,7 @@ ResourceManager = {
 	},
 
 	__createResource: function(alternativeDiv) {
-		
+
 		var collectionUrls = DataManager.query(
 			new ERDF.Resource(''),
 			// TODO This will become raziel:collection in near future.
@@ -864,50 +864,50 @@ ResourceManager = {
 		);
 
 		// check for consistency.
-		
+
 		if(	(collectionUrls.length == 1) &&
 			(collectionUrls[0].object.isResource())) {
 
 			// get the collection url.
-			
+
 			var collectionUrl = collectionUrls[0].object.value;
 			var resource = undefined;
-			
+
 			// if there is an old id, serialize the dummy div from there,
 			// otherwise create a dummy div on the fly.
-			
-			var serialization = alternativeDiv? alternativeDiv : 
+
+			var serialization = alternativeDiv? alternativeDiv :
 					'<div xmlns="http://www.w3.org/1999/xhtml"></div>';
-					
+
 			ResourceManager.__request(
 				'POST', collectionUrl, serialization,
 
 				// on success
 				function() {
-					
+
 					// get div and id that have been generated by the server.
-					
+
 					var response = (this.responseXML);
 					var div = response.childNodes[0];
 					var id = div.getAttribute('id');
-					
+
 					// store div in DOM
 					if(!$$('.' + PROCESSDATA_REF)[0])
 						DataManager.graft(XMLNS.XHTML,
 							document.getElementsByTagNameNS(XMLNS.XHTML, 'body').item(0), ['div', {'class': PROCESSDATA_REF, 'style':'display:none;'}]);
-				
+
 					$$('.' + PROCESSDATA_REF)[0].appendChild(div.cloneNode(true));
 
 					// parse local erdf data once more.
-					
+
 					DataManager.__synclocal();
-					
+
 					// get new resource object.
 
 					resource = new ResourceManager.getResource(id);
 
 					// set up an action informing of the creation.
-					
+
 					ResourceManager.__resourceActionSucceeded(
 						this, RESOURCE_CREATED, undefined);
 				},
@@ -916,44 +916,44 @@ ResourceManager = {
 					this, RESOURCE_CREATED, undefined);},
 				false
 			);
-			
+
 			return resource;
 		}
-		
+
 		// else
 		throw 'Could not create resource! raziel:collection URL is missing!';
 		return false;
 
 	},
-	
+
 	__Resource: function(id, url) {
-		
+
 		this.__id = id;
 		this.__url = url;
-		
+
 		/*
 		 * Process URL is no longer needed to refer to the shape element on the
 		 * canvas. AReSS uses the id's to gather information on fireing
 		 * behaviour now.
 		 */
-		
-//		// find the process url.		
+
+//		// find the process url.
 //		var processUrl = undefined;
-//		
+//
 //		var urls = DataManager.query(
 //			new ERDF.Resource('#'+this.__id),
 //			{prefix: 'raziel', name: 'process'},
 //			undefined
 //		);
-//		
+//
 //		if(urls.length == 0) { throw 'The resource with the id ' +id+ ' has no process url.'};
-//		
+//
 //		urls.each( function(triple) {
-//			
+//
 //			// if there are more urls, use the last one.
 //			processUrl = triple.object.value;
 //		});
-//		
+//
 //		this.__processUrl = processUrl;
 //
 //		// convenience function for getting the process url.
@@ -971,7 +971,7 @@ ResourceManager = {
 		this.url = function() {
 			return this.__url;
 		}
-		
+
 		this.reload = function() {
 			var _url = this.__url;
 			var _id = this.__id;
@@ -984,7 +984,7 @@ ResourceManager = {
 				USE_ASYNCHRONOUS_REQUESTS
 			);
 		};
-		
+
 		this.save = function(synchronize) {
 			var _url = this.__url;
 			var _id = this.__id;
@@ -998,7 +998,7 @@ ResourceManager = {
 				USE_ASYNCHRONOUS_REQUESTS
 			);
 		};
-		
+
 		this.remove = function() {
 			var _url = this.__url;
 			var _id = this.__id;
@@ -1022,29 +1022,29 @@ ResourceManager = {
 		};
 
 		Object.extend(options, requestOptions || {});
- 		
+
 		var params = Hash.toQueryString(options.parameters);
-		if (params) 
+		if (params)
 			url += (url.include('?') ? '&' : '?') + params;
-   
+
 		return ResourceManager.__request(
-			options.method, 
-			url, 
-			options.data, 
-			(options.onSuccess instanceof Function ? function() { options.onSuccess(this); } : undefined ), 
-			(options.onFailure instanceof Function ? function() { options.onFailure(this); } : undefined ), 
+			options.method,
+			url,
+			options.data,
+			(options.onSuccess instanceof Function ? function() { options.onSuccess(this); } : undefined ),
+			(options.onFailure instanceof Function ? function() { options.onFailure(this); } : undefined ),
 			options.asynchronous && USE_ASYNCHRONOUS_REQUESTS,
 			options.headers);
 	},
-	
+
 	__request: function(method, url, data, success, error, async, headers) {
-		
+
 		// get a request object
 		var httpRequest = Try.these(
 
 			/* do the Mozilla/Safari/Opera stuff */
 			function() { return new XMLHttpRequest(); },
-			
+
 			/* do the IE stuff */
 			function() { return new ActiveXObject("Msxml2.XMLHTTP"); },
 			function() { return new ActiveXObject("Microsoft.XMLHTTP") }
@@ -1057,23 +1057,23 @@ ResourceManager = {
 			this.__corrupt = true;
 			return false;
         }
-		
+
 		if(success instanceof Function)
 			httpRequest.onload = success;
 		if(error instanceof Function) {
 			httpRequest.onerror = error;
 		}
-		
+
 		var h = $H(headers)
 		h.keys().each(function(key) {
-			
+
 			httpRequest.setRequestHeader(key, h[key]);
-		}); 
-		
+		});
+
 		try {
 
 			if(SHOW_DEBUG_ALERTS_WHEN_SAVING)
-			
+
 				alert(method + ' ' + url + '\n' +
 					SHOW_EXTENDED_DEBUG_INFORMATION ? data : '');
 
@@ -1081,7 +1081,7 @@ ResourceManager = {
 			// handles asynchronous requests without failure.
 	        httpRequest.open(method, url, !async?false:true);
 	        httpRequest.send(data);
-			
+
 		} catch(e) {
 			return false;
 		}
@@ -1089,10 +1089,10 @@ ResourceManager = {
     },
 
 	__resourceActionSucceeded: function(transport, action, id) {
-		
+
 		var status = transport.status;
 		var response = transport.responseText;
-		
+
 		if(SHOW_DEBUG_ALERTS_WHEN_SAVING)
 
 			alert(status + ' ' + url + '\n' +
@@ -1103,14 +1103,14 @@ ResourceManager = {
 			throw 'The server responded with an error: ' + status + '\n' + (SHOW_EXTENDED_DEBUG_INFORMATION ? + data : 'If you need additional information here, including the data sent by the server, consider setting SHOW_EXTENDED_DEBUG_INFORMATION to true.');
 
 		switch(action) {
-			
+
 			case RESOURCE_REMOVED:
 
 				// get div and id
 				var response = (transport.responseXML);
 				var div = response.childNodes[0];
 				var id = div.getAttribute('id');
-				
+
 				// remove the resource from DOM
 				var localDiv = document.getElementById(id);
 				localDiv.parentNode.removeChild(localDiv);
@@ -1120,7 +1120,7 @@ ResourceManager = {
 
 				// nothing remains to be done.
 				break;
-	
+
 			case RESOURCE_SAVED | RESOURCE_SYNCHRONIZED:
 
 				DataManager.__synclocal();
@@ -1131,21 +1131,21 @@ ResourceManager = {
 				break;
 
 			case RESOURCE_RELOADED:
-			
+
 				// get div and id
 				var response = (transport.responseXML);
 				var div = response.childNodes[0];
 				var id = div.getAttribute('id');
-				
+
 				// remove the local resource representation from DOM
 				var localDiv = document.getElementById(id)
 				localDiv.parentNode.removeChild(localDiv);
-				
+
 				// store div in DOM
 				if(!$$(PROCESSDATA_REF)[0])
 					DataManager.graft(XMLNS.XHTML,
 						document.getElementsByTagNameNS(XMLNS.XHTML, 'body').item(0), ['div', {'class': PROCESSDATA_REF, 'style':'display:none;'}]);
-				
+
 				$$(PROCESSDATA_REF)[0].appendChild(div.cloneNode(true));
 				DataManager.__synclocal();
 				break;
@@ -1154,7 +1154,7 @@ ResourceManager = {
 				DataManager.__synclocal();
 
 		}
-		 
+
 		// dispatch to all listeners ...
 		ResourceManager.__dispatchEvent(
 
