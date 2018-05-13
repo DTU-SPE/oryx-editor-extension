@@ -81,10 +81,15 @@ ORYX.Plugins.GenericWebService = ORYX.Plugins.AbstractPlugin.extend({
 											this.request({
 												request: operation.request,
 												onSuccess: function(response) {
-													console.log(response);
+													var item = {
+														title: Date.now(),
+														html: response
+													};
+													this.window.insert(1, item);
+													this.window.doLayout();
 												}.bind(this),
 												onFailure: function(response) {
-													console.log(response);
+													// TODO
 												}.bind(this)
 											});
 										}.bind(this)
@@ -94,7 +99,7 @@ ORYX.Plugins.GenericWebService = ORYX.Plugins.AbstractPlugin.extend({
 								this.window.doLayout();
 							}.bind(this),
 							onFailure: function(response) {
-								console.log(response);
+								// TODO
 							}
 						});
 					}.bind(this)
@@ -154,13 +159,9 @@ ORYX.Plugins.GenericWebService = ORYX.Plugins.AbstractPlugin.extend({
 			url: ORYX.CONFIG.SIMPLE_PNML_EXPORT_URL,
 			method: 'POST',
 			success: function(request) {
-				console.log('success');
-				console.log(request);
 				options.onSuccess(request);
 			}.bind(this),
 			failure: function(request) {
-				console.log('failure');
-				console.log(request);
 				options.onFailure(request);
 			}.bind(this),
 			params: {
@@ -192,23 +193,16 @@ ORYX.Plugins.GenericWebService = ORYX.Plugins.AbstractPlugin.extend({
 					url: request.url,
 					method: request.method,
 					success: function(request) {
-						var item = {
-							title: Date.now(),
-							html: request.responseText
-						};
-						this.window.insert(1, item);
-						this.window.doLayout();
 						options.onSuccess(request.responseText);
 					}.bind(this),
 					failure: function(request) {
-						console.log(this.window);
 						options.onFailure(request);
 					}.bind(this),
 					params: parameters
 				});
 			}.bind(this),
 			onFailure: function(response) {
-				console.log(response);
+				// TODO
 			}.bind(this)
 		})
 	}
