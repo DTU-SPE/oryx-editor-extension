@@ -56,58 +56,66 @@ ORYX.Plugins.GenericWebService = ORYX.Plugins.AbstractPlugin.extend({
 			this.setActivated(button, false);
 
 			if(!this.window) {
-				this.window =  new Ext.Window({
-					width: 500,
-					height: 300,
-					closeAction: 'hide',
-					plain: true,
-					autoScroll: true,
-					buttons: [{
-						text: 'Close',
-						handler: function() {
-							this.window.hide();
-						}.bind(this)
-					}]
-				});
+				this.window = this.createWindow();
 				this.window.show(
 					this,
-					function() {
-						this.getOperations({
-							onSuccess: function(response) {
-								var operations = response.map(function(operation) {
-									return {
-										text: operation.title,
-										handler: function() {
-											this.request({
-												request: operation.request,
-												onSuccess: function(response) {
-													var item = {
-														title: Date.now(),
-														html: response
-													};
-													this.window.insert(1, item);
-													this.window.doLayout();
-												}.bind(this),
-												onFailure: function(response) {
-													// TODO
-												}.bind(this)
-											});
-										}.bind(this)
-									};
-								}.bind(this));
-								this.window.add({tbar: operations});
-								this.window.doLayout();
-							}.bind(this),
-							onFailure: function(response) {
-								// TODO
-							}
-						});
-					}.bind(this)
+					this.addItems()
 				);
 			} else {
 				this.window.show();
 			}
 		}
+	},
+
+	createWindow: function() {
+		return new Ext.Window({
+			width: 500,
+			height: 300,
+			closeAction: 'hide',
+			plain: true,
+			autoScroll: true,
+			buttons: [
+				{
+					text: 'Close',
+					handler: function() {
+						this.window.hide();
+					}.bind(this)
+				}
+			]
+		});
+	},
+
+	addItems: function() {
+		this.getOperations({
+			onSuccess: function(response) {
+				var operations = response.map(function(operation) {
+					return {
+						text: operation.title,
+						handler: function() {
+							this.request({
+								request: operation.request,
+								onSuccess: function(response) {
+									var item = {
+										title: Date.now(),
+										html: response
+									};
+									this.window.insert(1, item);
+									this.window.doLayout();
+								}.bind(this),
+								onFailure: function(response) {
+									// TODO
+								}.bind(this)
+							});
+						}.bind(this)
+					};
+				}.bind(this));
+				this.window.add({tbar: operations});
+				this.window.doLayout();
+			}.bind(this),
+			onFailure: function(response) {
+				// TODO
+			}
+		});
 	},
 
 	setActivated: function(button, activated) {
