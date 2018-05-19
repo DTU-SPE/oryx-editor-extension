@@ -47,7 +47,7 @@ ORYX.Plugins.GenericWebService = ORYX.Plugins.AbstractPlugin.extend({
 			'maxShape': 0
 		});
 
-		var window;
+		var window = undefined;
 		this.window = window;
 	},
 
@@ -56,10 +56,10 @@ ORYX.Plugins.GenericWebService = ORYX.Plugins.AbstractPlugin.extend({
 			this.setActivated(button, false);
 
 			if(!this.window) {
-				this.window = this.createWindow();
+				this.window = this.CreateWindow();
 				this.window.show(
 					this,
-					this.addItems()
+					this.initialize()
 				);
 			} else {
 				this.window.show();
@@ -67,55 +67,71 @@ ORYX.Plugins.GenericWebService = ORYX.Plugins.AbstractPlugin.extend({
 		}
 	},
 
-	createWindow: function() {
-		return new Ext.Window({
-			width: 500,
-			height: 300,
-			closeAction: 'hide',
-			plain: true,
-			autoScroll: true,
-			buttons: [
-				{
-					text: 'Close',
-					handler: function() {
-						this.window.hide();
-					}.bind(this)
-				}
-			]
+	initialize: function() {
+		// add service
+		var servicePanel = this.CreateServicePanel({title: 'LoLA 2.0 as a service'});
+		this.window.insert(1, servicePanel);
+		this.window.doLayout();
+		this.addService({
+			url: 'http://localhost:1234/operations.json',
+			container: servicePanel
 		});
 	},
 
-	addItems: function() {
+	addService: function(options) {
 		this.getOperations({
+			url: options.url,
 			onSuccess: function(response) {
-				var operations = response.map(function(operation) {
-					return {
-						text: operation.title,
-						handler: function() {
-							this.request({
-								request: operation.request,
-								onSuccess: function(response) {
-									var item = {
-										title: Date.now(),
-										html: response
-									};
-									this.window.insert(1, item);
-									this.window.doLayout();
-								}.bind(this),
-								onFailure: function(response) {
-									// TODO
-								}.bind(this)
-							});
-						}.bind(this)
-					};
-				}.bind(this));
-				this.window.add({tbar: operations});
-				this.window.doLayout();
+				this.addOperations({
+					container: options.container,
+					response: response
+				});
 			}.bind(this),
 			onFailure: function(response) {
-				// TODO
-			}
+				this.insertItem({
+					response: JSON.stringify(response)
+				})
+			}.bind(this)
 		});
+	},
+
+	insertItem: function(options) {
+		var item = {
+			title: Date.now(),
+			html: options.response
+		};
+		this.window.insert(1, item);
+		this.window.doLayout();
+	},
+
+	handleAddOperation(options) {
+		this.request({
+			request: options.operation.request,
+			onSuccess: function(response) {
+				this.insertItem({response: response});
+			}.bind(this),
+			onFailure: function(response) {
+				this.insertItem({
+					response: JSON.stringify(response)
+				})
+			}.bind(this)
+		});
+	},
+
+	addOperations: function(options) {
+		var operations = options.response.map(
+			function(operation) {
+				return {
+					text: operation.title,
+					handler: function() {
+						
+					}
+					//handler: this.handleAddOperation({options: operation})
+				};
+			}.bind(this)
+		);
+		options.container.add({tbar: operations});
+		options.container.doLayout();
 	},
 
 	setActivated: function(button, activated) {
@@ -135,7 +151,7 @@ ORYX.Plugins.GenericWebService = ORYX.Plugins.AbstractPlugin.extend({
 		});
 
 		Ext.Ajax.request({
-			url: 'http://localhost:1234/operations.json',
+			url: options.url,
 			method: 'GET',
 			success: function(request) {
 				var res = Ext.decode(request.responseText);
@@ -210,8 +226,37 @@ ORYX.Plugins.GenericWebService = ORYX.Plugins.AbstractPlugin.extend({
 				});
 			}.bind(this),
 			onFailure: function(response) {
-				// TODO
+				this.insertItem({
+					response: JSON.stringify(response)
+				})
 			}.bind(this)
 		})
+	},
+
+	CreateWindow: function() {
+		return new Ext.Window({
+			width: 500,
+			height: 300,
+			closeAction: 'hide',
+			plain: true,
+			autoScroll: true,
+			buttons: [
+				{
+					text: 'Close',
+					handler: function() {
+						this.window.hide();
+					}.bind(this)
+				}
+			]
+		});
+	},
+
+	CreateServicePanel: function(options) {
+		return new Ext.Panel({
+        title: options.title,
+        collapsible: true,
+        autoWidth: true,
+				html: '<i>Test</i>'
+    });
 	}
 });
