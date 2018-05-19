@@ -104,7 +104,8 @@ ORYX.Plugins.GenericWebService = ORYX.Plugins.AbstractPlugin.extend({
 		this.window.doLayout();
 	},
 
-	handleAddOperation(options) {
+	handleAddOperation: function(options) {
+		console.log(options);
 		this.request({
 			request: options.operation.request,
 			onSuccess: function(response) {
@@ -121,16 +122,18 @@ ORYX.Plugins.GenericWebService = ORYX.Plugins.AbstractPlugin.extend({
 	addOperations: function(options) {
 		var operations = options.response.map(
 			function(operation) {
+				// return panel or tbar/button
 				return {
 					text: operation.title,
 					handler: function() {
-						
-					}
-					//handler: this.handleAddOperation({options: operation})
+						this.handleAddOperation({operation: operation})
+					}.bind(this)
 				};
 			}.bind(this)
 		);
-		options.container.add({tbar: operations});
+		var randomPanel = this.CreateServicePanel({title: 'testPanel'});
+		randomPanel.add({tbar: operations});
+		options.container.insert(1, randomPanel);
 		options.container.doLayout();
 	},
 
@@ -202,7 +205,7 @@ ORYX.Plugins.GenericWebService = ORYX.Plugins.AbstractPlugin.extend({
 			onSuccess: Ext.emptyFn,
 			onFailure: Ext.emptyFn
 		});
-
+		console.log(options);
 		var request = options.request
 		var parameters = {};
 		request.parameters.forEach(function(parameter) {
