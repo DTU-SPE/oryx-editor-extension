@@ -111,7 +111,7 @@
 		<plugin name="ORYX.Plugins.Lola"/>
 		<plugin name="ORYX.Plugins.LolaPetriNetSoundnessChecker"/>
 		<plugin name="ORYX.Plugins.ProcessLogGenerator"/>
-		<plugin name="ORYX.Plugins.Controller"/>
+		<plugin name="ORYX.Plugins.Gazelle.Controller"/>
 	</profile>
 	<profile name="xforms" depends="default" stencilset="stencilsets/xforms/xforms.json">
 		<plugin name="ORYX.Plugins.XFormsExportOrbeon"/>

@@ -20,8 +20,8 @@
 * SOFTWARE.
 */
 
-if (!ORYX.Plugins) {
-	ORYX.Plugins = new Object();
+if (!ORYX.Plugins.Gazelle) {
+	ORYX.Plugins.Gazelle = new Object();
 }
 
 /**
@@ -30,7 +30,7 @@ if (!ORYX.Plugins) {
 * @class
 * @extends ORYX.Plugins.AbstractPlugin
 */
-ORYX.Plugins.Controller = ORYX.Plugins.AbstractPlugin.extend({
+ORYX.Plugins.Gazelle.Controller = ORYX.Plugins.AbstractPlugin.extend({
 	construct: function() {
 		// Call super class constructor
 		arguments.callee.$.construct.apply(this, arguments);
@@ -108,7 +108,7 @@ ORYX.Plugins.Controller = ORYX.Plugins.AbstractPlugin.extend({
 
 	addOperations: function(options) {
 		var operations = options.response.map(function(operation) {
-				var _operation = new ORYX.Plugins.Operation({
+				var _operation = new ORYX.Plugins.Gazelle.Operation({
 					operation: operation
 				});
 

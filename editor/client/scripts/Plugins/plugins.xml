@@ -282,11 +282,11 @@
             <requires namespace="http://b3mn.org/stencilset/petrinet#"/>
         </plugin>
 
-				<plugin source="Gazelle/Controller.js" name="ORYX.Plugins.Controller">
+				<plugin source="Gazelle/Controller.js" name="ORYX.Plugins.Gazelle.Controller">
     			<requires namespace="http://b3mn.org/stencilset/petrinet#"/>
 				</plugin>
 
-				<plugin source="Gazelle/Operation.js" name="ORYX.Plugins.Operation">
+				<plugin source="Gazelle/Operation.js" name="ORYX.Plugins.Gazelle.Operation">
 					<requires namespace="http://b3mn.org/stencilset/petrinet#"/>
 				</plugin>
 

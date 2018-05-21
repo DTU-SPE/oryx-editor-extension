@@ -1,8 +1,8 @@
-if (!ORYX.Plugins) {
-	ORYX.Plugins = new Object();
+if (!ORYX.Plugins.Gazelle) {
+	ORYX.Plugins.Gazelle = new Object();
 }
 
-ORYX.Plugins.Operation = Clazz.extend({
+ORYX.Plugins.Gazelle.Operation = Clazz.extend({
   construct: function(options) {
     arguments.callee.$.construct.apply(this, arguments);
 
