@@ -30,17 +30,17 @@ if (!ORYX.Plugins) {
 * @class
 * @extends ORYX.Plugins.AbstractPlugin
 */
-ORYX.Plugins.GenericWebService = ORYX.Plugins.AbstractPlugin.extend({
+ORYX.Plugins.Controller = ORYX.Plugins.AbstractPlugin.extend({
 	construct: function() {
 		// Call super class constructor
 		arguments.callee.$.construct.apply(this, arguments);
 
 		this.facade.offer({
-			'name': 'Generic Web Service', // ORYX.I18N.GenericWebService.name
+			'name': 'Generic Web Service', // ORYX.I18N.Controller.name
 			'functionality': this.react.bind(this),
-			'group': 'analysis', // ORYX.I18N.GenericWebService.group
+			'group': 'analysis', // ORYX.I18N.Controller.group
 			'icon': ORYX.PATH + "images/icon-ws.png",
-			'description': 'Generic Web Service plugin', // ORYX.I18N.GenericWebService.desc
+			'description': 'Generic Web Service plugin', // ORYX.I18N.Controller.desc
 			'index': 0,
 			'toggle': true,
 			'minShape': 0,
@@ -48,7 +48,9 @@ ORYX.Plugins.GenericWebService = ORYX.Plugins.AbstractPlugin.extend({
 		});
 
 		var window = undefined;
+		var services = [];
 		this.window = window;
+		this.services= services;
 	},
 
 	react: function(button, pressed) {
@@ -104,31 +106,18 @@ ORYX.Plugins.GenericWebService = ORYX.Plugins.AbstractPlugin.extend({
 		this.window.doLayout();
 	},
 
-	handleAddOperation: function(options) {
-		console.log(options);
-		this.request({
-			request: options.operation.request,
-			onSuccess: function(response) {
-				this.insertItem({response: response});
-			}.bind(this),
-			onFailure: function(response) {
-				this.insertItem({
-					response: JSON.stringify(response)
-				})
-			}.bind(this)
-		});
-	},
-
 	addOperations: function(options) {
-		var operations = options.response.map(
-			function(operation) {
-				// return panel or tbar/button
-				return {
-					text: operation.title,
-					handler: function() {
-						this.handleAddOperation({operation: operation})
-					}.bind(this)
-				};
+		var operations = options.response.map(function(operation) {
+				var _operation = new ORYX.Plugins.Operation({
+					operation: operation
+				});
+
+				if (_operation.hasUserParameters()) {
+					// TODO: return (create panel)
+					return this.CreateButton({operation: operation});
+				} else {
+					return this.CreateButton({operation: operation});
+				}
 			}.bind(this)
 		);
 		var randomPanel = this.CreateServicePanel({title: 'testPanel'});
@@ -137,33 +126,40 @@ ORYX.Plugins.GenericWebService = ORYX.Plugins.AbstractPlugin.extend({
 		options.container.doLayout();
 	},
 
-	setActivated: function(button, activated) {
-		button.toggle(activated);
-		if (activated === undefined) {
-			this.active = !this.active;
-		} else {
-			this.active = activated;
-		}
-	},
-
-	getOperations: function(options) {
+	request: function(options) {
 		Ext.applyIf(options || {}, {
 			showErrors: true,
 			onSuccess: Ext.emptyFn,
 			onFailure: Ext.emptyFn
 		});
+		var request = options.request
+		var parameters = {};
+		request.staticParameters.forEach(function(parameter) {
+			parameters[parameter.key] = parameter.value;
+		})
 
-		Ext.Ajax.request({
-			url: options.url,
-			method: 'GET',
-			success: function(request) {
-				var res = Ext.decode(request.responseText);
-				options.onSuccess(res);
+		this.retrieveDoc({
+			onSuccess: function(response) {
+				parameters['input'] = response.responseText;
+
+				Ext.Ajax.request({
+					url: request.url,
+					method: request.method,
+					success: function(request) {
+						options.onSuccess(request.responseText);
+					}.bind(this),
+					failure: function(request) {
+						options.onFailure(request);
+					}.bind(this),
+					params: parameters
+				});
 			}.bind(this),
-			failure: function(request) {
-				options.onFailure(request);
+			onFailure: function(response) {
+				this.insertItem({
+					response: JSON.stringify(response)
+				})
 			}.bind(this)
-		});
+		})
 	},
 
 	retrieveDoc: function(options) {
@@ -199,41 +195,33 @@ ORYX.Plugins.GenericWebService = ORYX.Plugins.AbstractPlugin.extend({
 		});
 	},
 
-	request: function(options) {
+	setActivated: function(button, activated) {
+		button.toggle(activated);
+		if (activated === undefined) {
+			this.active = !this.active;
+		} else {
+			this.active = activated;
+		}
+	},
+
+	getOperations: function(options) {
 		Ext.applyIf(options || {}, {
 			showErrors: true,
 			onSuccess: Ext.emptyFn,
 			onFailure: Ext.emptyFn
 		});
-		console.log(options);
-		var request = options.request
-		var parameters = {};
-		request.parameters.forEach(function(parameter) {
-			parameters[parameter.key] = parameter.value;
-		})
 
-		this.retrieveDoc({
-			onSuccess: function(response) {
-				parameters['input'] = response.responseText;
-
-				Ext.Ajax.request({
-					url: request.url,
-					method: request.method,
-					success: function(request) {
-						options.onSuccess(request.responseText);
-					}.bind(this),
-					failure: function(request) {
-						options.onFailure(request);
-					}.bind(this),
-					params: parameters
-				});
+		Ext.Ajax.request({
+			url: options.url,
+			method: 'GET',
+			success: function(request) {
+				var res = Ext.decode(request.responseText);
+				options.onSuccess(res);
 			}.bind(this),
-			onFailure: function(response) {
-				this.insertItem({
-					response: JSON.stringify(response)
-				})
+			failure: function(request) {
+				options.onFailure(request);
 			}.bind(this)
-		})
+		});
 	},
 
 	CreateWindow: function() {
@@ -261,5 +249,28 @@ ORYX.Plugins.GenericWebService = ORYX.Plugins.AbstractPlugin.extend({
         autoWidth: true,
 				html: '<i>Test</i>'
     });
+	},
+
+	handleAddOperation: function(options) {
+		this.request({
+			request: options.operation.request,
+			onSuccess: function(response) {
+				this.insertItem({response: response});
+			}.bind(this),
+			onFailure: function(response) {
+				this.insertItem({
+					response: JSON.stringify(response)
+				})
+			}.bind(this)
+		});
+	},
+
+	CreateButton: function(options) {
+		return new Ext.Button({
+			text: options.operation.title,
+			handler: function() {
+				this.handleAddOperation({operation: options.operation})
+			}.bind(this)
+		});
 	}
 });

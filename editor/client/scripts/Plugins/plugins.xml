@@ -282,8 +282,12 @@
             <requires namespace="http://b3mn.org/stencilset/petrinet#"/>
         </plugin>
 
-				<plugin source="GenericWebService.js" name="ORYX.Plugins.GenericWebService">
+				<plugin source="Gazelle/Controller.js" name="ORYX.Plugins.Controller">
     			<requires namespace="http://b3mn.org/stencilset/petrinet#"/>
+				</plugin>
+
+				<plugin source="Gazelle/Operation.js" name="ORYX.Plugins.Operation">
+					<requires namespace="http://b3mn.org/stencilset/petrinet#"/>
 				</plugin>
 
         <plugin source="bpmn2pn.js" name="ORYX.Plugins.PNExport">
