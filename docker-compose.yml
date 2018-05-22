@@ -29,6 +29,8 @@ services:
     networks:
       - gazelle-network
     restart: unless-stopped
+    volumes:
+    - ./editor/client/scripts/Plugins/gazelle/:/usr/local/tomcat/webapps/gazelle
 networks:
   gazelle-network:
     driver: bridge

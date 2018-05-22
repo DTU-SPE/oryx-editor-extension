@@ -240,10 +240,13 @@
 		<plugin source="petrinet.js" name="ORYX.Plugins.PetriNet">
 			<requires namespace="http://b3mn.org/stencilset/petrinet#" />
 		</plugin>
-		<plugin source="Gazelle/Controller.js" name="ORYX.Plugins.Gazelle.Controller">
+		<plugin source="gazelle/Controller.js" name="ORYX.Plugins.Gazelle.Controller">
 			<requires namespace="http://b3mn.org/stencilset/petrinet#" />
 		</plugin>
-		<plugin source="Gazelle/Operation.js" name="ORYX.Plugins.Gazelle.Operation">
+		<plugin source="gazelle/Operation.js" name="ORYX.Plugins.Gazelle.Operation">
+			<requires namespace="http://b3mn.org/stencilset/petrinet#" />
+		</plugin>
+		<plugin source="gazelle/Service.js" name="ORYX.Plugins.Gazelle.Service">
 			<requires namespace="http://b3mn.org/stencilset/petrinet#" />
 		</plugin>
 		<plugin source="bpmn2pn.js" name="ORYX.Plugins.PNExport">
@@ -254,7 +257,7 @@
 			<requires namespace="http://b3mn.org/stencilset/bpmn1.1#" />
 			<requires namespace="http://b3mn.org/stencilset/bpmn#" />
 		</plugin>
-		<!-- Replaced by BPMN2XPDL 2.0 <plugin source="bpmn2xpdl.js" name="ORYX.Plugins.BPMN2XPDL"> 
+		<!-- Replaced by BPMN2XPDL 2.0 <plugin source="bpmn2xpdl.js" name="ORYX.Plugins.BPMN2XPDL">
 			<requires namespace="http://b3mn.org/stencilset/bpmn1.1#"/> </plugin> -->
 		<plugin source="bpmn2xhtml.js" name="ORYX.Plugins.BPMN2XHTML">
 			<requires namespace="http://b3mn.org/stencilset/bpmn1.1#" />
@@ -319,7 +322,7 @@
 			<property name="cssfile" value="/oryx/css/feedback.css" />
 			<!-- configure subjects and info in localization: /editor/data/I18N#ORYX.I18N.Feedback.subjects -->
 		</plugin>
-		<!-- <plugin source="stencilsetmanipulator.js" name="ORYX.Plugins.StencilSetManipulator" 
+		<!-- <plugin source="stencilsetmanipulator.js" name="ORYX.Plugins.StencilSetManipulator"
 			/> -->
 		<plugin source="fileRepository.js" name="ORYX.Plugins.FileRepositorySave" />
 		<plugin source="dockerCreation.js" name="ORYX.Plugins.DockerCreation" />
