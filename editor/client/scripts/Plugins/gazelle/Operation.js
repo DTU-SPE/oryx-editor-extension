@@ -7,6 +7,7 @@ ORYX.Plugins.Gazelle.Operation = Clazz.extend({
 		arguments.callee.$.construct.apply(this, arguments);
 
 		this.operation = options.operation;
+		this.controller = options.controller;
 	},
 
 	hasUserParameters: function() {
@@ -18,11 +19,30 @@ ORYX.Plugins.Gazelle.Operation = Clazz.extend({
 		);
 	},
 
-	CreateButton: function(options) {
+	hasServiceParameters: function() {
+		var userParameters = this.operation.request.serviceParameters;
+		return (
+			typeof userParameters !== 'undefined'
+			&& userParameters instanceof Array
+			&& userParameters.length > 0
+		);
+	},
+
+	CreateButton: function() {
 		return new Ext.Button({
 			text: this.operation.title,
 			handler: function() {
-				options.ref.handleAddOperation({operation: this.operation});
+				this.request({
+					request: this.operation.request,
+					onSuccess: function(response) {
+						this.controller.insertItem({response: response});
+					}.bind(this),
+					onFailure: function(response) {
+						this.controller.insertItem({
+							response: JSON.stringify(response)
+						})
+					}.bind(this)
+				})
 			}.bind(this)
 		});
 	},
@@ -38,7 +58,7 @@ ORYX.Plugins.Gazelle.Operation = Clazz.extend({
 	},
 
 	CreateFormPanel: function() {
-		var userParameters = [];
+		var userParameters = [{}];
 		if (this.hasUserParameters()) {
 			userParameters = this.operation.request.userParameters.map(function(userParameter) {
 				return {
@@ -48,21 +68,107 @@ ORYX.Plugins.Gazelle.Operation = Clazz.extend({
 			});
 		}
 
-		return new Ext.FormPanel({
-			labelWidth: 150,
-			url:'save-form.php',
-			frame:true,
+		var formPanel = new Ext.FormPanel({
+			url: this.operation.request.url,
+			method: this.operation.request.method,
 			title: this.operation.title,
+			submit: function(form) {
+				this.request({
+					request: this.operation.request,
+					values: form.getValues(),
+					onSuccess: function(response) {
+						this.controller.insertItem({response: response});
+					}.bind(this),
+					onFailure: function(response) {
+						this.controller.insertItem({
+							response: JSON.stringify(response)
+						})
+					}.bind(this)
+				})
+			}.bind(this),
+			labelWidth: 150,
 			collapsible: true,
 			collapsed: false,
 			autoWidth: true,
 			defaultType: 'textfield',
 			items: userParameters,
-			buttons: [
-				{
-					text: 'Submit'
+			buttons: [{
+				text: 'Submit',
+				type: 'submit',
+				handler: function(formPanel) {
+					var form = formPanel.ownerCt.getForm();
+					form.submit(form);
 				}
-			]
+			},{
+				text: 'Reset',
+				type: 'reset'
+			}]
 		});
-	}
+		return formPanel;
+	},
+
+	request: function(options) {
+		var request = this.operation.request;
+
+		var parameters = {};
+		if (typeof options.values !== 'undefined') {
+			parameters = options.values
+		}
+
+		if (this.hasServiceParameters()) {
+			request.serviceParameters.forEach(function(parameter) {
+				parameters[parameter.key] = parameter.value;
+			})
+		}
+
+		this.getPNML({
+			onSuccess: function(response) {
+				parameters['input'] = response.responseText;
+
+				Ext.Ajax.request({
+					url: request.url,
+					method: request.method,
+					success: function(request) {
+						options.onSuccess(request.responseText);
+					}.bind(this),
+					failure: function(request) {
+						options.onFailure(request);
+					}.bind(this),
+					params: parameters
+				});
+			}.bind(this),
+			onFailure: function(response) {
+				this.insertItem({
+					response: JSON.stringify(response)
+				})
+			}.bind(this)
+		})
+	},
+
+	getPNML: function(options) {
+		var serialized_rdf = this.controller.getRDFFromDOM();
+		if (!serialized_rdf.startsWith("<?xml")) {
+			serialized_rdf = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+			+ serialized_rdf;
+		}
+
+		var resource = location.href;
+		var tool = 'lola';
+
+		Ext.Ajax.request({
+			url: ORYX.CONFIG.SIMPLE_PNML_EXPORT_URL,
+			method: 'POST',
+			success: function(request) {
+				options.onSuccess(request);
+			}.bind(this),
+			failure: function(request) {
+				options.onFailure(request);
+			}.bind(this),
+			params: {
+				resource: resource,
+				data: serialized_rdf,
+				tool: tool
+			}
+		});
+	},
 });

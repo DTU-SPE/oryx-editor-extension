@@ -103,10 +103,10 @@ ORYX.Plugins.Gazelle.Controller = ORYX.Plugins.AbstractPlugin.extend({
 			response.values.forEach(function(r) {
 				var array = Ext.decode(r.responseText);
 				array.forEach(function(value) {
-					var operation = new ORYX.Plugins.Gazelle.Operation({operation: value});
+					var operation = new ORYX.Plugins.Gazelle.Operation({operation: value, controller: this});
 					response.service.addOperation(operation);
-				});
-			});
+				}, this);
+			}, this);
 
 			options.onSuccess(response.service);
 		}.bind(this))
@@ -143,16 +143,9 @@ ORYX.Plugins.Gazelle.Controller = ORYX.Plugins.AbstractPlugin.extend({
 		var operations = options.operations.map(
 			function(operation) {
 				if (operation.hasUserParameters()) {
-				// TODO: create panel
-					var formPanel = operation.CreateFormPanel();
-				//var panel = operation.CreatePanel();
-				//panel.add({tbar: formPanel});
-					return formPanel;
-				//return operation.CreateButton({container: this.window, ref: this});
+					return operation.CreateFormPanel();
 				} else {
-					var panel = operation.CreatePanel();
-					return panel;
-				// 	return operation.CreateButton({container: this.window, ref: this});
+					return operation.CreateButton();
 				}
 			}.bind(this)
 		);
@@ -166,7 +159,7 @@ ORYX.Plugins.Gazelle.Controller = ORYX.Plugins.AbstractPlugin.extend({
 			onSuccess: Ext.emptyFn,
 			onFailure: Ext.emptyFn
 		});
-		var request = options.request
+		var request = options.request;
 		var parameters = {};
 		request.serviceParameters.forEach(function(parameter) {
 			parameters[parameter.key] = parameter.value;
@@ -196,32 +189,7 @@ ORYX.Plugins.Gazelle.Controller = ORYX.Plugins.AbstractPlugin.extend({
 		})
 	},
 
-	getPNML: function(options) {
-		var serialized_rdf = this.getRDFFromDOM();
-		if (!serialized_rdf.startsWith("<?xml")) {
-			serialized_rdf = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
-			+ serialized_rdf;
-		}
 
-		var resource = location.href;
-		var tool = 'lola';
-
-		Ext.Ajax.request({
-			url: ORYX.CONFIG.SIMPLE_PNML_EXPORT_URL,
-			method: 'POST',
-			success: function(request) {
-				options.onSuccess(request);
-			}.bind(this),
-			failure: function(request) {
-				options.onFailure(request);
-			}.bind(this),
-			params: {
-				resource: resource,
-				data: serialized_rdf,
-				tool: tool
-			}
-		});
-	},
 
 	CreateWindow: function() {
 		return new Ext.Window({
