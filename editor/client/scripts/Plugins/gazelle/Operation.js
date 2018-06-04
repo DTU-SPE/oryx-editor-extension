@@ -30,7 +30,7 @@ ORYX.Plugins.Gazelle.Operation = Clazz.extend({
 
 	CreateButton: function() {
 		return new Ext.Button({
-			text: this.operation.title,
+			text: this.operation.label,
 			handler: function() {
 				this.request({
 					request: this.operation.request,
@@ -49,7 +49,7 @@ ORYX.Plugins.Gazelle.Operation = Clazz.extend({
 
 	CreatePanel: function() {
 		return new Ext.Panel({
-			title: this.operation.title,
+			title: this.operation.label,
 			collapsible: true,
 			frame:true,
 			bodyStyle: 'padding: 5px 5px 5px 5px',
@@ -62,7 +62,7 @@ ORYX.Plugins.Gazelle.Operation = Clazz.extend({
 		if (this.hasUserParameters()) {
 			userParameters = this.operation.request.userParameters.map(function(userParameter) {
 				return {
-					fieldLabel: userParameter.key,
+					fieldLabel: userParameter.label,
 					name: userParameter.key
 				}
 			});
@@ -71,7 +71,7 @@ ORYX.Plugins.Gazelle.Operation = Clazz.extend({
 		var formPanel = new Ext.FormPanel({
 			url: this.operation.request.url,
 			method: this.operation.request.method,
-			title: this.operation.title,
+			title: this.operation.label,
 			submit: function(form) {
 				this.request({
 					request: this.operation.request,

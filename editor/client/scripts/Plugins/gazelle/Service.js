@@ -13,7 +13,7 @@ ORYX.Plugins.Gazelle.Service = Clazz.extend({
 
 	CreatePanel: function() {
 		return new Ext.Panel({
-			title: this.service.title,
+			title: this.service.label,
 			collapsible: true,
 			collapsed: false,
 			autoWidth: true,

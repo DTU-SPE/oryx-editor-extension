@@ -55,10 +55,17 @@ ORYX.Plugins.Gazelle.Controller = ORYX.Plugins.AbstractPlugin.extend({
 
 	initialize: function() {
 		// Expected input from the user
-		var service_endpoint_url = 'http://localhost:1234/service.json'
+		var service_endpoint_lola = 'http://localhost:1234/service_lola.json'
+		var service_endpoint_plg = 'http://localhost:1234/service_plg.json'
 
+		this.configureService({url: service_endpoint_lola});
+		this.configureService({url: service_endpoint_plg});
+	},
+
+	configureService: function(options) {
+		console.log(options.url);
 		this.CreateService({
-			url: service_endpoint_url,
+			url: options.url,
 			onSuccess: function(service) {
 				// add service to controller
 				this.addService(service);
@@ -75,9 +82,11 @@ ORYX.Plugins.Gazelle.Controller = ORYX.Plugins.AbstractPlugin.extend({
 				});
 			}.bind(this),
 			onFailure: function(response) {
-				console.log(response);
+				this.insertItem({
+					response: JSON.stringify(response)
+				})
 			}.bind(this)
-		})
+		});
 	},
 
 	CreateService: function(options) {
@@ -153,43 +162,9 @@ ORYX.Plugins.Gazelle.Controller = ORYX.Plugins.AbstractPlugin.extend({
 		options.container.doLayout();
 	},
 
-	request: function(options) {
-		Ext.applyIf(options || {}, {
-			showErrors: true,
-			onSuccess: Ext.emptyFn,
-			onFailure: Ext.emptyFn
-		});
-		var request = options.request;
-		var parameters = {};
-		request.serviceParameters.forEach(function(parameter) {
-			parameters[parameter.key] = parameter.value;
-		})
-
-		this.getPNML({
-			onSuccess: function(response) {
-				parameters['input'] = response.responseText;
-
-				Ext.Ajax.request({
-					url: request.url,
-					method: request.method,
-					success: function(request) {
-						options.onSuccess(request.responseText);
-					}.bind(this),
-					failure: function(request) {
-						options.onFailure(request);
-					}.bind(this),
-					params: parameters
-				});
-			}.bind(this),
-			onFailure: function(response) {
-				this.insertItem({
-					response: JSON.stringify(response)
-				})
-			}.bind(this)
-		})
+	addService: function(service) {
+		this.services.push(service);
 	},
-
-
 
 	CreateWindow: function() {
 		return new Ext.Window({
@@ -207,23 +182,5 @@ ORYX.Plugins.Gazelle.Controller = ORYX.Plugins.AbstractPlugin.extend({
 				}
 			]
 		});
-	},
-
-	handleAddOperation: function(options) {
-		this.request({
-			request: options.operation.request,
-			onSuccess: function(response) {
-				this.insertItem({response: response});
-			}.bind(this),
-			onFailure: function(response) {
-				this.insertItem({
-					response: JSON.stringify(response)
-				})
-			}.bind(this)
-		});
-	},
-
-	addService: function(service) {
-		this.services.push(service);
 	}
 });

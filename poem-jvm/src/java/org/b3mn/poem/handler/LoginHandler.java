@@ -54,7 +54,7 @@ import org.openid4java.util.ProxyProperties;
 
 @HandlerWithoutModelContext(uri="/login")
 public class LoginHandler extends HandlerBase {
-    
+
 	/**
 	* This servlet provides openID authentication.
 	*
@@ -63,57 +63,57 @@ public class LoginHandler extends HandlerBase {
 	*
 	* @author Martin Czuchra, Sutra Zhou
 	*/
-	
+
 	public static final String OPENID_SESSION_IDENTIFIER = "openid";
 	public static final String REPOSITORY_REDIRECT = "repository";
 
 	private ConsumerManager manager;
-	
+
 	@Override
 	public void init() {
-		
+
 		ServletContext context = getServletContext();
-		
-		// --- Forward proxy setup (only if needed) --- 
+
+		// --- Forward proxy setup (only if needed) ---
 		if (context != null) {
 			String proxyHostName = context.getInitParameter("proxy-host-name");
 			String proxyPort = getServletContext().getInitParameter("proxy-port");
 			if (proxyHostName != null && proxyPort != null && proxyHostName.length() > 0 && proxyPort.length() > 0) {
-				ProxyProperties proxyProps = new ProxyProperties(); 
-				proxyProps.setProxyHostName(proxyHostName.trim()); 
-				proxyProps.setProxyPort(Integer.valueOf(proxyPort.trim())); 
+				ProxyProperties proxyProps = new ProxyProperties();
+				proxyProps.setProxyHostName(proxyHostName.trim());
+				proxyProps.setProxyPort(Integer.valueOf(proxyPort.trim()));
 				HttpClientFactory.setProxyProperties(proxyProps);
 			}
 		}
-		
+
         try {
 			this.manager = new ConsumerManager();
 	        manager.setAssociations(new InMemoryConsumerAssociationStore());
-	        manager.setNonceVerifier(new InMemoryNonceVerifier(5000));
+	        manager.setNonceVerifier(new InMemoryNonceVerifier(10000)); // 5000ms?
 		} catch (ConsumerException e) {
 			// TODO implement error handling
 		}
 
 	}
-	
+
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse res, Identity subject, Identity object) throws Exception {
     	doPost(req, res, subject, object);
 	}
-	
+
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse res, Identity subject, Identity object) throws Exception {
-        
+
     	if ("true".equals( req.getParameter("mashUp") )){
     		res.getWriter().print(subject.getUri());
     		return;
-    	}    	
+    	}
     	// If logout is true remove session attribute and redirect to the repository
     	// which will force a new login as public user
     	if ("true".equals(req.getParameter("logout"))) {
     		//req.getSession().removeAttribute("openid");
     		String openid = (String)req.getSession().getAttribute("openid");
-    		
+
     		if(openid != null && openid != "" && openid != getPublicUser()) {
     			User user = new User(openid);
     			user.removeAuthenticationAttributes(this.getServletContext(), req, res);
@@ -126,9 +126,9 @@ public class LoginHandler extends HandlerBase {
     	}
     	if ("true".equals(req.getParameter("is_return"))) {
             processReturn(req, res);
-        }     	
+        }
     	else {
-     	   // Convert OpenID identifier to lower case in order to prevent creating 	   
+     	   // Convert OpenID identifier to lower case in order to prevent creating
      	   // different accounts for the same OpenID
             String identifier = req.getParameter("openid_identifier").toLowerCase();
             this.authRequest(identifier, req, res);
@@ -152,7 +152,7 @@ public class LoginHandler extends HandlerBase {
     		//req.setAttribute("identifier", user.getOpenId());
     		user.addAuthentificationAttributes(this.getServletContext(), req, resp);
     		user.login(req, resp);
-    		
+
     		String rPage = req.getParameter("redirect");
     		resp.sendRedirect( rPage != null ? rPage : REPOSITORY_REDIRECT);
     	}
@@ -267,7 +267,7 @@ public class LoginHandler extends HandlerBase {
                         .getAuthResponse();
 
                 Identity subject = Identity.instance(verified.getIdentifier());
-                
+
                 // Check weather the response contains additional open id attributes
                 if (authSuccess.hasExtension(AxMessage.OPENID_NS_AX)) {
                     FetchResponse fetchResp = (FetchResponse) authSuccess
@@ -277,7 +277,7 @@ public class LoginHandler extends HandlerBase {
                 	// values with null
                 	/*
                 	// Update database values
-                	Subject user = um.login(verified.getIdentifier(), httpReq, httpResponse);	
+                	Subject user = um.login(verified.getIdentifier(), httpReq, httpResponse);
                 	user.setNickname((String)fetchResp.getAttributeValues("nickname").get(0));
 					user.setFullname((String)fetchResp.getAttributeValues("fullname").get(0));
 					user.setEmail((String)fetchResp.getAttributeValues("email").get(0));
@@ -291,18 +291,18 @@ public class LoginHandler extends HandlerBase {
                     // if the user doesn't exists
                     if (subject == null) {
 						// Create new user with open id attributes
-						User.CreateNewUser(verified.getIdentifier(), 
-								(String)fetchResp.getAttributeValues("nickname").get(0), 
+						User.CreateNewUser(verified.getIdentifier(),
+								(String)fetchResp.getAttributeValues("nickname").get(0),
 								(String)fetchResp.getAttributeValues("fullname").get(0),
 								(String)fetchResp.getAttributeValues("email").get(0),
 								null, // TODO parse date to java format
-								(String)fetchResp.getAttributeValues("gender").get(0), 
-								(String)fetchResp.getAttributeValues("postcode").get(0), 
-								(String)fetchResp.getAttributeValues("country").get(0), 
-								(String)fetchResp.getAttributeValues("language").get(0), 
-								null, 
-								null, 
-								null, 
+								(String)fetchResp.getAttributeValues("gender").get(0),
+								(String)fetchResp.getAttributeValues("postcode").get(0),
+								(String)fetchResp.getAttributeValues("country").get(0),
+								(String)fetchResp.getAttributeValues("language").get(0),
+								null,
+								null,
+								null,
 								null);
 					}
                 }
@@ -320,12 +320,12 @@ public class LoginHandler extends HandlerBase {
 
         return null;
     }
-    
+
     // Returns a string containing a Html page with the necessary OpenID parameter encoded as Html form
-    // This may look stupid but it's recommended in the OpenID standard. The page automatically redirects to the 
-    // OpenID provider. 
+    // This may look stupid but it's recommended in the OpenID standard. The page automatically redirects to the
+    // OpenID provider.
     protected String getRedirectPage(AuthRequest authReq, String destinationUrl) {
- 	   String page = 
+ 	   String page =
  	   "<html xmlns=\"http://www.w3.org/1999/xhtml\">" +
  	   "<head>" +
  	       "<title>OpenID HTML FORM Redirection</title>" +
@@ -342,8 +342,8 @@ public class LoginHandler extends HandlerBase {
  	   "</body>" +
  	   "</html>";
 
- 	   
+
  	   return page;
     }
-	
+
 }
