@@ -125,14 +125,11 @@ ORYX.Plugins.Gazelle.Operation = Clazz.extend({
 			onSuccess: function(response) {
 				parameters['input'] = response.responseText;
 
-				Ext.lib.Ajax.setDefaultPostHeader(false);
-
 				Ext.Ajax.request({
 					url: request.url,
 					method: request.method,
-					useDefaultHeader:false,
-					headers: { 'content-type' : 'application/json' },
-					params: parameters,
+					headers: { 'Content-Type' : 'application/json' },
+					jsonData: parameters,
 					success: function(request) {
 						options.onSuccess(request.responseText);
 					}.bind(this),
