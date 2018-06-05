@@ -47,7 +47,7 @@ xmlgraphics-commons-1.1.jar   Apache 2.0             included in jar file
 **Javascript Libraries**
 Library                       License                License File
 ---------------------------------------------------------------------------------------------------------
-ext-2.0.2                     LGPL 3.0               ext-2.0.2/LICENSE.txt
+ext-2.1.0                     LGPL 3.0               ext-2.1.0/LICENSE.txt
 path_parser.js                ?                      -
 prototype-1.5.1.js            MIT License            licenses/LICENSE.prototype-1.5.1
 
