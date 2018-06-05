@@ -125,18 +125,26 @@ ORYX.Plugins.Gazelle.Operation = Clazz.extend({
 			onSuccess: function(response) {
 				parameters['input'] = response.responseText;
 
-				Ext.Ajax.request({
+				var requestOptions = {
 					url: request.url,
 					method: request.method,
-					headers: { 'Content-Type' : 'application/json' },
-					jsonData: parameters,
 					success: function(request) {
 						options.onSuccess(request.responseText);
 					}.bind(this),
 					failure: function(request) {
 						options.onFailure(request);
 					}.bind(this)
-				});
+				}
+
+				if (request.contentType === 'application/json') {
+					requestOptions['jsonData'] = parameters;
+				} else if (request.contentType === 'application/xml') {
+					//requestOptions['xmlData'] = ...; // TODO
+				} else if (request.contentType === 'application/x-www-form-urlencoded') {
+					requestOptions['params'] = parameters;
+				}
+
+				Ext.Ajax.request(requestOptions);
 			}.bind(this),
 			onFailure: function(response) {
 				this.insertItem({
