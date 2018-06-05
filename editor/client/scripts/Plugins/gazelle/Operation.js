@@ -131,7 +131,7 @@ ORYX.Plugins.Gazelle.Operation = Clazz.extend({
 					url: request.url,
 					method: request.method,
 					useDefaultHeader:false,
-					//headers: { 'content-type' : 'application/json' },
+					headers: { 'content-type' : 'application/json' },
 					params: parameters,
 					success: function(request) {
 						options.onSuccess(request.responseText);

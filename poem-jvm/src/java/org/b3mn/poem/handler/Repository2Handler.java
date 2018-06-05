@@ -58,7 +58,7 @@ public class Repository2Handler extends  HandlerBase {
 		String stylesheet_ie_fix 	= "repository_ie_fixes";
 		
 		String backend_path = "/backend";
-		String ext_path = backend_path + "/ext-2.0.2/";
+		String ext_path = backend_path + "/ext-2.1.0/";
 
     	response.setStatus(200);
     	response.setContentType("text/html");
