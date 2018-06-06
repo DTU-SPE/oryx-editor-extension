@@ -6,6 +6,8 @@ ORYX.Plugins.Gazelle.Service = Clazz.extend({
 	construct: function(options) {
 		arguments.callee.$.construct.apply(this, arguments);
 
+		console.log('got into the service construct');
+
 		this.service = options.service;
 		var operations = [];
 		this.operations = operations;

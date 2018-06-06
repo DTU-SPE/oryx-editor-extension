@@ -62,7 +62,10 @@
 		<plugin name="ORYX.Plugins.BPMN2_0Serialization" />
 		<plugin name="ORYX.Plugins.Bpmn2_0Choreography" />
 		<plugin name="ORYX.Plugins.VisioBPMNImport" />
-		<!-- <plugin name="ORYX.Plugins.TBPMShapeConnector"/> <plugin name="ORYX.Plugins.TBPMCanvasMode"/> 
+		<plugin name="ORYX.Plugins.Gazelle.Operation" />
+		<plugin name="ORYX.Plugins.Gazelle.Service" />
+		<plugin name="ORYX.Plugins.Gazelle.Controller" />
+		<!-- <plugin name="ORYX.Plugins.TBPMShapeConnector"/> <plugin name="ORYX.Plugins.TBPMCanvasMode"/>
 			<plugin name="ORYX.Plugins.TBPMSupport"/> -->
 	</profile>
 	<profile name="bpmn2.0Choreography" depends="default"
@@ -114,6 +117,8 @@
 		<plugin name="ORYX.Plugins.Lola" />
 		<plugin name="ORYX.Plugins.LolaPetriNetSoundnessChecker" />
 		<plugin name="ORYX.Plugins.ProcessLogGenerator" />
+		<plugin name="ORYX.Plugins.Gazelle.Operation" />
+		<plugin name="ORYX.Plugins.Gazelle.Service" />
 		<plugin name="ORYX.Plugins.Gazelle.Controller" />
 	</profile>
 	<profile name="xforms" depends="default" stencilset="stencilsets/xforms/xforms.json">

@@ -240,13 +240,16 @@
 		<plugin source="petrinet.js" name="ORYX.Plugins.PetriNet">
 			<requires namespace="http://b3mn.org/stencilset/petrinet#" />
 		</plugin>
+		<plugin source="gazelle/Service.js" name="ORYX.Plugins.Gazelle.Service">
+			<requires namespace="http://b3mn.org/stencilset/bpmn2.0#" />
+			<requires namespace="http://b3mn.org/stencilset/petrinet#" />
+		</plugin>
 		<plugin source="gazelle/Controller.js" name="ORYX.Plugins.Gazelle.Controller">
+			<requires namespace="http://b3mn.org/stencilset/bpmn2.0#" />
 			<requires namespace="http://b3mn.org/stencilset/petrinet#" />
 		</plugin>
 		<plugin source="gazelle/Operation.js" name="ORYX.Plugins.Gazelle.Operation">
-			<requires namespace="http://b3mn.org/stencilset/petrinet#" />
-		</plugin>
-		<plugin source="gazelle/Service.js" name="ORYX.Plugins.Gazelle.Service">
+			<requires namespace="http://b3mn.org/stencilset/bpmn2.0#" />
 			<requires namespace="http://b3mn.org/stencilset/petrinet#" />
 		</plugin>
 		<plugin source="bpmn2pn.js" name="ORYX.Plugins.PNExport">

@@ -9,9 +9,11 @@ if (!ORYX.Plugins.Gazelle) {
 * @extends ORYX.Plugins.AbstractPlugin
 */
 ORYX.Plugins.Gazelle.Controller = ORYX.Plugins.AbstractPlugin.extend({
-	construct: function() {
+	construct: function(facade) {
 		// Call super class constructor
 		arguments.callee.$.construct.apply(this, arguments);
+
+		this.facade = facade;
 
 		this.facade.offer({
 			'name': 'Generic Web Service', // ORYX.I18N.Controller.name
@@ -59,7 +61,7 @@ ORYX.Plugins.Gazelle.Controller = ORYX.Plugins.AbstractPlugin.extend({
 		var service_endpoint_plg = 'http://localhost:1234/service_plg.json'
 
 		this.configureService({url: service_endpoint_lola});
-		this.configureService({url: service_endpoint_plg});
+		//this.configureService({url: service_endpoint_plg});
 	},
 
 	configureService: function(options) {
@@ -92,23 +94,29 @@ ORYX.Plugins.Gazelle.Controller = ORYX.Plugins.AbstractPlugin.extend({
 	CreateService: function(options) {
 		this.getAsyncData({url: options.url})
 		.then(function(response) {
-			var contentType = response.getResponseHeader["Content-Type"].replace(/\s/g, "")
-			if (contentType === 'application/json') {
-				// TODO
-			}
+			  console.log('CreateService: getAsyncData response');
+			// var contentType = response.getResponseHeader["Content-Type"].replace(/\s/g, "")
+			// if (contentType === 'application/json') {
+			// 	// TODO
+			// }
 			var responseText = Ext.decode(response.responseText);
+			console.log(responseText);
 			var service = new ORYX.Plugins.Gazelle.Service({service: responseText});
-
+			console.log(service);
 			var links = service.getLinks();
+			console.log(links)
 			var promises = links.map(function(link) {
 				return this.getAsyncData({url: link.href});
 			}.bind(this));
+
+			console.log(promises);
 
 			return Promise.all(promises).then(function(values) {
 				return {values: values, service: service};
 			});
 		}.bind(this))
 		.then(function(response) {
+			console.log(response);
 			response.values.forEach(function(r) {
 				var array = Ext.decode(r.responseText);
 				array.forEach(function(value) {

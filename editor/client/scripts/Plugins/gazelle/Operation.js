@@ -109,6 +109,7 @@ ORYX.Plugins.Gazelle.Operation = Clazz.extend({
 
 	request: function(options) {
 		var request = this.operation.request;
+		console.log(request);
 
 		var parameters = {};
 		if (typeof options.values !== 'undefined') {
@@ -121,8 +122,10 @@ ORYX.Plugins.Gazelle.Operation = Clazz.extend({
 			})
 		}
 
-		this.getPNML({
+		this.getModel({
+			modelType: 'BPMN',
 			onSuccess: function(response) {
+				 console.log(response.responseText);
 				parameters['input'] = response.responseText;
 
 				var requestOptions = {
@@ -144,6 +147,8 @@ ORYX.Plugins.Gazelle.Operation = Clazz.extend({
 					requestOptions['params'] = parameters;
 				}
 
+				console.log(requestOptions);
+
 				Ext.Ajax.request(requestOptions);
 			}.bind(this),
 			onFailure: function(response) {
@@ -154,18 +159,33 @@ ORYX.Plugins.Gazelle.Operation = Clazz.extend({
 		})
 	},
 
-	getPNML: function(options) {
-		var serialized_rdf = this.controller.getRDFFromDOM();
-		if (!serialized_rdf.startsWith("<?xml")) {
-			serialized_rdf = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
-			+ serialized_rdf;
+	getModel: function(options) {
+		var url;
+		var parameters = {};
+		console.log(options.modelType);
+		if (options.modelType === 'PNML') {
+			url = ORYX.CONFIG.SIMPLE_PNML_EXPORT_URL;
+			var resource = location.href;
+			var tool = 'lola';
+			var serialized_rdf = this.controller.getRDFFromDOM();
+			if (!serialized_rdf.startsWith("<?xml")) {
+				serialized_rdf = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+				+ serialized_rdf;
+			}
+
+			parameters['resource'] = resource;
+			parameters['tool'] = tool;
+			parameters['data'] = serialized_rdf
+		} else if (options.modelType === 'BPMN') {
+			url = ORYX.CONFIG.ROOT_PATH + "bpmn2_0serialization";
+			var serialized_json = this.controller.facade.getSerializedJSON();
+			parameters['data'] = serialized_json
 		}
 
-		var resource = location.href;
-		var tool = 'lola';
+		console.log(parameters);
 
 		Ext.Ajax.request({
-			url: ORYX.CONFIG.SIMPLE_PNML_EXPORT_URL,
+			url: url,
 			method: 'POST',
 			success: function(request) {
 				options.onSuccess(request);
@@ -173,11 +193,34 @@ ORYX.Plugins.Gazelle.Operation = Clazz.extend({
 			failure: function(request) {
 				options.onFailure(request);
 			}.bind(this),
-			params: {
-				resource: resource,
-				data: serialized_rdf,
-				tool: tool
-			}
+			params: parameters
 		});
 	},
+
+	// getPNML: function(options) {
+	// 	var serialized_rdf = this.controller.getRDFFromDOM();
+	// 	if (!serialized_rdf.startsWith("<?xml")) {
+	// 		serialized_rdf = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+	// 		+ serialized_rdf;
+	// 	}
+	//
+	// 	var resource = location.href;
+	// 	var tool = 'lola';
+	//
+	// 	Ext.Ajax.request({
+	// 		url: ORYX.CONFIG.SIMPLE_PNML_EXPORT_URL,
+	// 		method: 'POST',
+	// 		success: function(request) {
+	// 			options.onSuccess(request);
+	// 		}.bind(this),
+	// 		failure: function(request) {
+	// 			options.onFailure(request);
+	// 		}.bind(this),
+	// 		params: {
+	// 			resource: resource,
+	// 			data: serialized_rdf,
+	// 			tool: tool
+	// 		}
+	// 	});
+	// },
 });
