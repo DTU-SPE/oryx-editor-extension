@@ -61,7 +61,7 @@ ORYX.Plugins.Gazelle.Controller = ORYX.Plugins.AbstractPlugin.extend({
 		var service_endpoint_plg = 'http://localhost:1234/service_plg.json'
 
 		this.configureService({url: service_endpoint_lola});
-		//this.configureService({url: service_endpoint_plg});
+		this.configureService({url: service_endpoint_plg});
 	},
 
 	configureService: function(options) {
