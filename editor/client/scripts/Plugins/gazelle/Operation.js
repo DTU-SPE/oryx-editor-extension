@@ -109,7 +109,6 @@ ORYX.Plugins.Gazelle.Operation = Clazz.extend({
 
 	request: function(options) {
 		var request = this.operation.request;
-		console.log(request);
 
 		var parameters = {};
 		if (typeof options.values !== 'undefined') {
@@ -125,7 +124,6 @@ ORYX.Plugins.Gazelle.Operation = Clazz.extend({
 		this.getModel({
 			modelType: 'BPMN',
 			onSuccess: function(response) {
-				 console.log(response.responseText);
 				parameters['input'] = response.responseText;
 
 				var requestOptions = {
@@ -147,8 +145,6 @@ ORYX.Plugins.Gazelle.Operation = Clazz.extend({
 					requestOptions['params'] = parameters;
 				}
 
-				console.log(requestOptions);
-
 				Ext.Ajax.request(requestOptions);
 			}.bind(this),
 			onFailure: function(response) {
@@ -162,7 +158,6 @@ ORYX.Plugins.Gazelle.Operation = Clazz.extend({
 	getModel: function(options) {
 		var url;
 		var parameters = {};
-		console.log(options.modelType);
 		if (options.modelType === 'PNML') {
 			url = ORYX.CONFIG.SIMPLE_PNML_EXPORT_URL;
 			var resource = location.href;
@@ -181,8 +176,6 @@ ORYX.Plugins.Gazelle.Operation = Clazz.extend({
 			var serialized_json = this.controller.facade.getSerializedJSON();
 			parameters['data'] = serialized_json
 		}
-
-		console.log(parameters);
 
 		Ext.Ajax.request({
 			url: url,

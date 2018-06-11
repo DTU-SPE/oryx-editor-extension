@@ -65,7 +65,6 @@ ORYX.Plugins.Gazelle.Controller = ORYX.Plugins.AbstractPlugin.extend({
 	},
 
 	configureService: function(options) {
-		console.log(options.url);
 		this.CreateService({
 			url: options.url,
 			onSuccess: function(service) {
@@ -94,29 +93,22 @@ ORYX.Plugins.Gazelle.Controller = ORYX.Plugins.AbstractPlugin.extend({
 	CreateService: function(options) {
 		this.getAsyncData({url: options.url})
 		.then(function(response) {
-			  console.log('CreateService: getAsyncData response');
 			// var contentType = response.getResponseHeader["Content-Type"].replace(/\s/g, "")
 			// if (contentType === 'application/json') {
 			// 	// TODO
 			// }
-			var responseText = Ext.decode(response.responseText);
-			console.log(responseText);
-			var service = new ORYX.Plugins.Gazelle.Service({service: responseText});
-			console.log(service);
+			var service = Ext.decode(response.responseText);
+			var service = new ORYX.Plugins.Gazelle.Service({service: service});
 			var links = service.getLinks();
-			console.log(links)
 			var promises = links.map(function(link) {
 				return this.getAsyncData({url: link.href});
 			}.bind(this));
-
-			console.log(promises);
 
 			return Promise.all(promises).then(function(values) {
 				return {values: values, service: service};
 			});
 		}.bind(this))
 		.then(function(response) {
-			console.log(response);
 			response.values.forEach(function(r) {
 				var array = Ext.decode(r.responseText);
 				array.forEach(function(value) {
