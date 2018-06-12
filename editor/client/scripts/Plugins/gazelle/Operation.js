@@ -158,6 +158,7 @@ ORYX.Plugins.Gazelle.Operation = Clazz.extend({
 	getModel: function(options) {
 		var url;
 		var parameters = {};
+		console.log(options.modelType);
 		if (options.modelType === 'PNML') {
 			url = ORYX.CONFIG.SIMPLE_PNML_EXPORT_URL;
 			var resource = location.href;
