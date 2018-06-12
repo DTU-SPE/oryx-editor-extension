@@ -71,7 +71,7 @@ ORYX.Plugins.Gazelle.Operation = Clazz.extend({
 		var formPanel = new Ext.FormPanel({
 			url: this.operation.request.url,
 			method: this.operation.request.method,
-			title: this.operation.label,
+			title: this.operation.label.text,
 			submit: function(form) {
 				this.request({
 					request: this.operation.request,
