@@ -11,9 +11,9 @@ ORYX.Gazelle.Controllers.MainController = Clazz.extend({
 	},
 
 	handleInit: function() {
-		// var service_endpoint_lola = 'http://localhost:1234/service_lola.json';
+		var service_endpoint_lola = 'http://localhost:1234/service_lola.json';
 		var service_endpoint_plg = 'http://localhost:1234/service_plg_v2.json';
-		// this.configureService({url: service_endpoint_lola});
+		this.configureService({url: service_endpoint_lola});
 		this.configureService({url: service_endpoint_plg});
 	},
 
