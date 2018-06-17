@@ -1,7 +1,7 @@
 /**
  * Copyright (c) 2008
  * Willi Tscheschner
- * 
+ *
  **/
 
 if(!ORYX){ var ORYX = {} }
@@ -15,42 +15,42 @@ if(!ORYX.Plugins){ ORYX.Plugins = {} }
         construct: function() {
             // Call super class constructor
             arguments.callee.$.construct.apply(this, arguments);
-            
+
             [...]
         },
         [...]
     });
-   
+
    @class ORYX.Plugins.AbstractPlugin
    @constructor Creates a new instance
    @author Willi Tscheschner
 */
 ORYX.Plugins.AbstractPlugin = Clazz.extend({
-    /** 
+    /**
      * The facade which offer editor-specific functionality
      * @type Facade
      * @memberOf ORYX.Plugins.AbstractPlugin.prototype
      */
 	facade: null,
-	
+
 	construct: function( facade ){
 		this.facade = facade;
-		
+
 		this.facade.registerOnEvent(ORYX.CONFIG.EVENT_LOADED, this.onLoaded.bind(this));
 	},
-        
+
     /**
        Overwrite to handle load event. TODO: Document params!!!
        @methodOf ORYX.Plugins.AbstractPlugin.prototype
     */
 	onLoaded: function(){},
-	
+
     /**
        Overwrite to handle selection changed event. TODO: Document params!!!
        @methodOf ORYX.Plugins.AbstractPlugin.prototype
     */
 	onSelectionChanged: function(){},
-	
+
     /**
        Show overlay on given shape.
        @methodOf ORYX.Plugins.AbstractPlugin.prototype
@@ -72,11 +72,11 @@ ORYX.Plugins.AbstractPlugin = Clazz.extend({
        @param {String} [svgNode="NW"] The svg node position where the overlay should be placed
     */
 	showOverlay: function(shapes, attributes, svgNode, svgNodePosition ){
-		
+
 		if( !(shapes instanceof Array) ){
 			shapes = [shapes]
 		}
-		
+
 		// Define Shapes
 		shapes = shapes.map(function(shape){
 			var el = shape;
@@ -86,12 +86,12 @@ ORYX.Plugins.AbstractPlugin = Clazz.extend({
 			}
 			return el;
 		}.bind(this)).compact();
-		
+
 		// Define unified id
 		if( !this.overlayID ){
 			this.overlayID = this.type + ORYX.Editor.provideId();
 		}
-		
+
 		this.facade.raiseEvent({
 			type		: ORYX.CONFIG.EVENT_OVERLAY_SHOW,
 			id			: this.overlayID,
@@ -100,9 +100,9 @@ ORYX.Plugins.AbstractPlugin = Clazz.extend({
 			node		: svgNode,
 			nodePosition: svgNodePosition || "NW"
 		});
-		
+
 	},
-	
+
     /**
        Hide current overlay.
        @methodOf ORYX.Plugins.AbstractPlugin.prototype
@@ -111,17 +111,17 @@ ORYX.Plugins.AbstractPlugin = Clazz.extend({
 		this.facade.raiseEvent({
 			type	: ORYX.CONFIG.EVENT_OVERLAY_HIDE,
 			id		: this.overlayID
-		});		
+		});
 	},
-	
+
     /**
        Does a transformation with the given xslt stylesheet.
        @methodOf ORYX.Plugins.AbstractPlugin.prototype
        @param {String} data The data (e.g. eRDF) which should be transformed
        @param {String} stylesheet URL of a stylesheet which should be used for transforming data.
     */
-	doTransform: function( data, stylesheet ) {		
-		
+	doTransform: function( data, stylesheet ) {
+
 		if( !stylesheet || !data ){
 			return ""
 		}
@@ -143,23 +143,23 @@ ORYX.Plugins.AbstractPlugin = Clazz.extend({
 		var domParser = new DOMParser();
 		var xslObject = domParser.parseFromString(xsl, "text/xml");
         xsltProcessor.importStylesheet(xslObject);
-        
+
         try {
-        	
+
             var newData 		= xsltProcessor.transformToFragment(parsedData, document);
             var serializedData 	= (new XMLSerializer()).serializeToString(newData);
-            
+
            	/* Firefox 2 to 3 problem?! */
             serializedData = !serializedData.startsWith("<?xml") ? "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + serializedData : serializedData;
-            
+
             return serializedData;
-            
+
         }catch (error) {
             return -1;
         }
-        
+
 	},
-	
+
 	/**
 	 * Opens a new window that shows the given XML content.
 	 * @methodOf ORYX.Plugins.AbstractPlugin.prototype
@@ -175,7 +175,7 @@ ORYX.Plugins.AbstractPlugin = Clazz.extend({
 		   '_blank', "resizable=yes,width=600,height=600,toolbar=0,scrollbars=yes"
 		);
 	},
-	
+
     /**
      * Opens a download window for downloading the given content.
      * @methodOf ORYX.Plugins.AbstractPlugin.prototype
@@ -189,7 +189,7 @@ ORYX.Plugins.AbstractPlugin = Clazz.extend({
 			win.document.write("<html><body>");
 			var submitForm = win.document.createElement("form");
 			win.document.body.appendChild(submitForm);
-			
+
 			var createHiddenElement = function(name, value) {
 				var newElement = document.createElement("input");
 				newElement.name=name;
@@ -197,19 +197,19 @@ ORYX.Plugins.AbstractPlugin = Clazz.extend({
 				newElement.value = value;
 				return newElement
 			}
-			
+
 			submitForm.appendChild( createHiddenElement("download", content) );
 			submitForm.appendChild( createHiddenElement("file", filename) );
-			
-			
+
+
 			submitForm.method = "POST";
 			win.document.write("</body></html>");
 			win.document.close();
 			submitForm.action= ORYX.PATH + "/download";
 			submitForm.submit();
-		}		
+		}
 	},
-    
+
     /**
      * Serializes DOM.
      * @methodOf ORYX.Plugins.AbstractPlugin.prototype
@@ -238,10 +238,10 @@ ORYX.Plugins.AbstractPlugin = Clazz.extend({
         '</head><body>' +
         serializedDOM +
         '</body></html>';
-        
+
         return serializedDOM;
     },
-    
+
     /**
      * Sets the editor in read only mode: Edges/ dockers cannot be moved anymore,
      * shapes cannot be selected anymore.
@@ -250,7 +250,7 @@ ORYX.Plugins.AbstractPlugin = Clazz.extend({
     enableReadOnlyMode: function(){
         //Edges cannot be moved anymore
         this.facade.disableEvent(ORYX.CONFIG.EVENT_MOUSEDOWN);
-        
+
         // Stop the user from editing the diagram while the plugin is active
         this._stopSelectionChange = function(){
             if(this.facade.getSelection().length > 0) {
@@ -267,13 +267,13 @@ ORYX.Plugins.AbstractPlugin = Clazz.extend({
     disableReadOnlyMode: function(){
         // Edges can be moved now again
         this.facade.enableEvent(ORYX.CONFIG.EVENT_MOUSEDOWN);
-        
+
         if (this._stopSelectionChange) {
             this.facade.unregisterOnEvent(ORYX.CONFIG.EVENT_SELECTION_CHANGED, this._stopSelectionChange.bind(this));
             this._stopSelectionChange = undefined;
         }
     },
-    
+
     /**
      * Extracts RDF from DOM.
      * @methodOf ORYX.Plugins.AbstractPlugin.prototype
@@ -316,25 +316,25 @@ ORYX.Plugins.AbstractPlugin = Clazz.extend({
 			var xsltProcessor = new XSLTProcessor();
 			xsltProcessor.importStylesheet(xslObject);
 			var result = xsltProcessor.transformToFragment(xmlObject, document);
-			
+
 			var serializer = new XMLSerializer();
-			
+
 			return serializer.serializeToString(result);
 		}catch(e){
 			Ext.Msg.alert("Oryx", error);
 			return "";
 		}
 
-		
+
     },
-    
+
     /**
 	 * Checks if a certain stencil set is loaded right now.
-	 * 
+	 *
 	 */
 	isStencilSetExtensionLoaded: function(stencilSetExtensionNamespace) {
 		return this.facade.getStencilSets().values().any(
-			function(ss){ 
+			function(ss){
 				return ss.extensions().keys().any(
 					function(extensionKey) {
 						return extensionKey == stencilSetExtensionNamespace;
@@ -343,10 +343,10 @@ ORYX.Plugins.AbstractPlugin = Clazz.extend({
 			}.bind(this)
 		);
 	},
-	
+
 	/**
 	 * Raises an event so that registered layouters does
-	 * have the posiblility to layout the given shapes 
+	 * have the posiblility to layout the given shapes
 	 * For further reading, have a look into the AbstractLayouter
 	 * class
 	 * @param {Object} shapes
@@ -358,44 +358,44 @@ ORYX.Plugins.AbstractPlugin = Clazz.extend({
 			shapes		: shapes
 		});
 	},
-	
-	
+
+
 	/**
-	 * Does a primitive layouting with the incoming/outgoing 
-	 * edges (set the dockers to the right position) and if 
-	 * necessary, it will be called the real layouting 
+	 * Does a primitive layouting with the incoming/outgoing
+	 * edges (set the dockers to the right position) and if
+	 * necessary, it will be called the real layouting
 	 * @param {ORYX.Core.Node} node
 	 * @param {Array} edges
 	 */
-	layoutEdges : function(node, allEdges, offset){		
-		
+	layoutEdges : function(node, allEdges, offset){
+
 		// Find all edges, which are related to the node and
 		// have more than two dockers
 		var edges = allEdges
 			// Find all edges with more than two dockers
 			.findAll(function(r){ return r.dockers.length > 2 }.bind(this))
-			
+
 		if (edges.length > 0) {
-										
+
 			// Get the new absolute center
 			var center = node.absoluteXY();
-			
-			var ulo = {x: center.x - offset.x, y:center.y - offset.y}			
-			
+
+			var ulo = {x: center.x - offset.x, y:center.y - offset.y}
+
 			center.x += node.bounds.width()/2;
 			center.y += node.bounds.height()/2;
-			
+
 			// Get the old absolute center
 			oldCenter = Object.clone(center);
 			oldCenter.x -= offset ? offset.x : 0;
 			oldCenter.y -= offset ? offset.y : 0;
-			
+
 			var ul = {x: center.x - (node.bounds.width() / 2), y: center.y - (node.bounds.height() / 2)}
 			var lr = {x: center.x + (node.bounds.width() / 2), y: center.y + (node.bounds.height() / 2)}
-			
-			
+
+
 			/**
-			 * Align the bounds if the center is 
+			 * Align the bounds if the center is
 			 * the same than the old center
 			 * @params {Object} bounds
 			 * @params {Object} bounds2
@@ -404,49 +404,49 @@ ORYX.Plugins.AbstractPlugin = Clazz.extend({
 				var xdif = bounds.center().x-bounds2.center().x;
 				var ydif = bounds.center().y-bounds2.center().y;
 				if (Math.abs(xdif) < 3){
-					bounds.moveBy({x:(offset.xs?(((offset.xs*(bounds.center().x-ulo.x))+offset.x+ulo.x)-bounds.center().x):offset.x)-xdif, y:0});		
+					bounds.moveBy({x:(offset.xs?(((offset.xs*(bounds.center().x-ulo.x))+offset.x+ulo.x)-bounds.center().x):offset.x)-xdif, y:0});
 				} else if (Math.abs(ydif) < 3){
-					bounds.moveBy({x:0, y:(offset.ys?(((offset.ys*(bounds.center().y-ulo.y))+offset.y+ulo.y)-bounds.center().y):offset.y)-ydif});		
+					bounds.moveBy({x:0, y:(offset.ys?(((offset.ys*(bounds.center().y-ulo.y))+offset.y+ulo.y)-bounds.center().y):offset.y)-ydif});
 				}
 			};
-									
-			/**						
+
+			/**
 			 * Returns a TRUE if there are bend point which overlay the shape
 			 */
 			var isBendPointIncluded = function(edge){
 				// Get absolute bounds
 				var ab = edge.dockers.first().getDockedShape();
 				var bb = edge.dockers.last().getDockedShape();
-				
+
 				if (ab) {
 					ab = ab.absoluteBounds();
 					ab.widen(5);
 				}
-				
+
 				if (bb) {
 					bb = bb.absoluteBounds();
 					bb.widen(20); // Wide with 20 because of the arrow from the edge
 				}
-				
+
 				return edge.dockers
-						.any(function(docker, i){ 
+						.any(function(docker, i){
 							var c = docker.bounds.center();
 									// Dont count first and last
-							return 	i != 0 && i != edge.dockers.length-1 && 
+							return 	i != 0 && i != edge.dockers.length-1 &&
 									// Check if the point is included to the absolute bounds
 									((ab && ab.isIncluded(c)) || (bb && bb.isIncluded(c)))
 						})
 			}
 			// For every edge, check second and one before last docker
 			// if there are horizontal/vertical on the same level
-			// and if so, align the the bounds 
+			// and if so, align the the bounds
 			edges.each(function(edge){
 				if (edge.dockers.first().getDockedShape() === node){
 					var second = edge.dockers[1];
 					if (align(second.bounds, edge.dockers.first().bounds)){ second.update(); }
 				} else if (edge.dockers.last().getDockedShape() === node) {
 					var beforeLast = edge.dockers[edge.dockers.length-2];
-					if (align(beforeLast.bounds, edge.dockers.last().bounds)){ beforeLast.update(); }									
+					if (align(beforeLast.bounds, edge.dockers.last().bounds)){ beforeLast.update(); }
 				}
 				edge._update(true);
 				edge.removeUnusedDockers();
@@ -455,9 +455,9 @@ ORYX.Plugins.AbstractPlugin = Clazz.extend({
 					return;
 				}
 			}.bind(this))
-		}	
+		}
 
-		// Find all edges, which have only to dockers 
+		// Find all edges, which have only to dockers
 		// and is located horizontal/vertical.
 		// Do layout with those edges
 		allEdges.each(function(edge){
@@ -473,5 +473,14 @@ ORYX.Plugins.AbstractPlugin = Clazz.extend({
 					}
 				}
 			}.bind(this));
+	},
+
+	setActivated: function(button, activated) {
+		button.toggle(activated);
+		if (activated === undefined) {
+			this.active = !this.active;
+		} else {
+			this.active = activated;
+		}
 	}
 });
