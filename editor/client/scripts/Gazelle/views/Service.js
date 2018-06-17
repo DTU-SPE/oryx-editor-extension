@@ -2,7 +2,7 @@ if(!ORYX) { var ORYX = {} }
 if(!ORYX.Gazelle) { ORYX.Gazelle = {} }
 if(!ORYX.Gazelle.Views) { ORYX.Gazelle.Views = {} }
 
-ORYX.Gazelle.Views.View = Clazz.extend({
+ORYX.Gazelle.Views.Service = Clazz.extend({
 	construct: function(options) {
 		arguments.callee.$.construct.apply(this, arguments);
 
@@ -28,12 +28,9 @@ ORYX.Gazelle.Views.View = Clazz.extend({
 	},
 
 	displayServicePanelOperations: function(options) {
-		console.log(this.servicePanels);
-		console.log(options);
 		var servicePanel = this.servicePanels.find(function(servicePanel) {
 			return servicePanel.id === options.id;
 		});
-		console.log(servicePanel);
 		servicePanel.add({items: [].concat.apply([],options.operations)});
 		servicePanel.doLayout();
 	},

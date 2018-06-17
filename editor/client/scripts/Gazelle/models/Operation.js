@@ -7,7 +7,6 @@ ORYX.Gazelle.Models.Operation = Clazz.extend({
 		arguments.callee.$.construct.apply(this, arguments);
 
 		this.operation = options.operation;
-		this.controller = options.controller;
 	},
 
 	hasUserParameters: function() {
@@ -210,105 +209,106 @@ ORYX.Gazelle.Models.Operation = Clazz.extend({
 				parameters[parameter.key] = parameter.value;
 			})
 		}
-		// this.getModel({
-		// 	modelType: 'BPMN',
-		// 	onSuccess: function(response) {
-		// 		//parameters['input'] = response.responseText;
-		//
-		// 		var requestOptions = {
-		// 			url: request.url,
-		// 			method: request.method,
-		// 			success: function(request) {
-		// 				options.onSuccess(request.responseText);
-		// 			}.bind(this),
-		// 			failure: function(request) {
-		// 				options.onFailure(request);
-		// 			}.bind(this)
-		// 		}
-		//
-		// 		if (request.contentType === 'application/json') {
-		// 			requestOptions['jsonData'] = parameters;
-		// 		} else if (request.contentType === 'application/xml') {
-		// 			//requestOptions['xmlData'] = ...; // TODO
-		// 		} else if (request.contentType === 'application/x-www-form-urlencoded') {
-		// 			//requestOptions['params'] = parameters;
-		//
-		// 			const searchParams = Object.keys(parameters).map((key) => {
-  	// 				return encodeURIComponent(key) + '=' + encodeURIComponent(JSON.stringify(parameters[key]));
-		// 			}).join('&');
-		//
-		// 			requestOptions['params'] = searchParams;
-		// 		}
-		//
-		// 		Ext.Ajax.request(requestOptions);
-		// 	}.bind(this),
-		// 	onFailure: function(response) {
-		// 		this.insertItem({
-		// 			response: JSON.stringify(response)
-		// 		})
-		// 	}.bind(this)
-		// })
-	},
-	//
-	// getModel: function(options) {
-	// 	var url;
-	// 	var parameters = {};
-	// 	if (options.modelType === 'PNML') {
-	// 		url = ORYX.CONFIG.SIMPLE_PNML_EXPORT_URL;
-	// 		var resource = location.href;
-	// 		var tool = 'lola';
-	// 		var serialized_rdf = this.controller.getRDFFromDOM();
-	// 		if (!serialized_rdf.startsWith("<?xml")) {
-	// 			serialized_rdf = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
-	// 			+ serialized_rdf;
-	// 		}
-	//
-	// 		parameters['resource'] = resource;
-	// 		parameters['tool'] = tool;
-	// 		parameters['data'] = serialized_rdf
-	// 	} else if (options.modelType === 'BPMN') {
-	// 		url = ORYX.CONFIG.ROOT_PATH + "bpmn2_0serialization";
-	// 		var serialized_json = this.controller.facade.getSerializedJSON();
-	// 		parameters['data'] = serialized_json
-	// 	}
-	//
-	// 	Ext.Ajax.request({
-	// 		url: url,
-	// 		method: 'POST',
-	// 		success: function(request) {
-	// 			options.onSuccess(request);
-	// 		}.bind(this),
-	// 		failure: function(request) {
-	// 			options.onFailure(request);
-	// 		}.bind(this),
-	// 		params: parameters
-	// 	});
-	// }
+		this.getModel({
+			modelType: 'BPMN',
+			onSuccess: function(response) {
+				//parameters['input'] = response.responseText;
 
-	// getPNML: function(options) {
-	// 	var serialized_rdf = this.controller.getRDFFromDOM();
-	// 	if (!serialized_rdf.startsWith("<?xml")) {
-	// 		serialized_rdf = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
-	// 		+ serialized_rdf;
-	// 	}
-	//
-	// 	var resource = location.href;
-	// 	var tool = 'lola';
-	//
-	// 	Ext.Ajax.request({
-	// 		url: ORYX.CONFIG.SIMPLE_PNML_EXPORT_URL,
-	// 		method: 'POST',
-	// 		success: function(request) {
-	// 			options.onSuccess(request);
-	// 		}.bind(this),
-	// 		failure: function(request) {
-	// 			options.onFailure(request);
-	// 		}.bind(this),
-	// 		params: {
-	// 			resource: resource,
-	// 			data: serialized_rdf,
-	// 			tool: tool
-	// 		}
-	// 	});
-	// },
+				var requestOptions = {
+					url: request.url,
+					method: request.method,
+					success: function(request) {
+						options.onSuccess(request.responseText);
+					}.bind(this),
+					failure: function(request) {
+						options.onFailure(request);
+					}.bind(this)
+				}
+
+				if (request.contentType === 'application/json') {
+					requestOptions['jsonData'] = parameters;
+				} else if (request.contentType === 'application/xml') {
+					//requestOptions['xmlData'] = ...; // TODO
+				} else if (request.contentType === 'application/x-www-form-urlencoded') {
+					//requestOptions['params'] = parameters;
+
+					// TODO => not understood by transpiler
+					// const searchParams = Object.keys(parameters).map((key) => {
+  				// 	return encodeURIComponent(key) + '=' + encodeURIComponent(JSON.stringify(parameters[key]));
+					// }).join('&');
+
+					requestOptions['params'] = searchParams;
+				}
+
+				Ext.Ajax.request(requestOptions);
+			}.bind(this),
+			onFailure: function(response) {
+				this.insertItem({
+					response: JSON.stringify(response)
+				})
+			}.bind(this)
+		});
+	},
+
+	getModel: function(options) {
+		var url;
+		var parameters = {};
+		if (options.modelType === 'PNML') {
+			url = ORYX.CONFIG.SIMPLE_PNML_EXPORT_URL;
+			var resource = location.href;
+			var tool = 'lola';
+			var serialized_rdf = this.controller.getRDFFromDOM();
+			if (!serialized_rdf.startsWith("<?xml")) {
+				serialized_rdf = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+				+ serialized_rdf;
+			}
+
+			parameters['resource'] = resource;
+			parameters['tool'] = tool;
+			parameters['data'] = serialized_rdf
+		} else if (options.modelType === 'BPMN') {
+			url = ORYX.CONFIG.ROOT_PATH + "bpmn2_0serialization";
+			var serialized_json = this.controller.facade.getSerializedJSON();
+			parameters['data'] = serialized_json
+		}
+
+		Ext.Ajax.request({
+			url: url,
+			method: 'POST',
+			success: function(request) {
+				options.onSuccess(request);
+			}.bind(this),
+			failure: function(request) {
+				options.onFailure(request);
+			}.bind(this),
+			params: parameters
+		});
+	},
+
+	getPNML: function(options) {
+		var serialized_rdf = this.controller.getRDFFromDOM();
+		if (!serialized_rdf.startsWith("<?xml")) {
+			serialized_rdf = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+			+ serialized_rdf;
+		}
+
+		var resource = location.href;
+		var tool = 'lola';
+
+		Ext.Ajax.request({
+			url: ORYX.CONFIG.SIMPLE_PNML_EXPORT_URL,
+			method: 'POST',
+			success: function(request) {
+				options.onSuccess(request);
+			}.bind(this),
+			failure: function(request) {
+				options.onFailure(request);
+			}.bind(this),
+			params: {
+				resource: resource,
+				data: serialized_rdf,
+				tool: tool
+			}
+		});
+	}
 });

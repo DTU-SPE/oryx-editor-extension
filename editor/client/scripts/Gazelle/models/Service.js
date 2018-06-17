@@ -7,8 +7,7 @@ ORYX.Gazelle.Models.Service = Clazz.extend({
 		arguments.callee.$.construct.apply(this, arguments);
 
 		this.service = options.service;
-		var operations = [];
-		this.operations = operations;
+		this.operations = [];
 	},
 
 	getLinks: function() {
