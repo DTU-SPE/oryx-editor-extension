@@ -27,20 +27,81 @@ ORYX.Plugins.Gazelle = ORYX.Plugins.AbstractPlugin.extend({
 			'maxShape': 0
 		});
 
-
 		this.mainController = new ORYX.Gazelle.Controllers.MainController();
-		this.services = [];
+		this.serviceControllers = [];
 	},
 
 	handleHide: function (button) {
 		this.setActivated(button, false)
 	},
 
+	handleInit: function() {
+		var serviceResourceUrls = [
+			// 'http://localhost:1234/service_lola.json',
+			'http://localhost:1234/service_plg_v2.json'
+		];
+		this.serviceControllers = serviceResourceUrls.map(function(serviceResourceUrl) {
+			var serviceController = new ORYX.Gazelle.Controllers.ServiceController();
+			serviceController.initialize({
+				url: serviceResourceUrl,
+				onSuccess: function() {
+					this.mainController.addComponentToView(serviceController.getView());
+					var operationControllers = serviceController.getLinks().map(function(link) {
+						this.getOperations({url: link.href})
+						.then(function(response) {
+							response.links.map(function(link) {
+								var operationController = new ORYX.Gazelle.Controllers.OperationController(this);
+								operationController.initialize({
+									link: link,
+									onSuccess: function() {
+										serviceController.addComponentToView(operationController.getView());
+									}
+								});
+							}.bind(this))
+						}.bind(this))
+						['catch'](function(error) {
+							// TODO
+						});
+					}.bind(this));
+				}.bind(this)
+			});
+			return serviceController;
+		}.bind(this));
+	},
+
+	getOperations: function(options) {
+		return new Promise(function(resolve, reject) {
+			this.CreateRequestPromise({url: options.url})
+			.then(function(response) {
+				var responseText = Ext.decode(response.responseText);
+				resolve(responseText);
+			}.bind(this))
+			['catch'](function(error) {
+				reject(error);
+			});
+		}.bind(this));
+	},
+
+	CreateRequestPromise: function(options) {
+		return new Promise(function(resolve, reject){
+			Ext.Ajax.request({
+				url: options.url,
+				method: 'GET',
+				success: function(request) {
+					resolve(request);
+				},
+				failure: function(request) {
+					reject(request);
+				}
+			});
+		});
+	},
+
 	handleButtonPressed: function(button, pressed) {
-		this.mainController.initialize({
+		this.mainController.display({
 			pressed: pressed,
 			onHide: function() { this.handleHide(button); }.bind(this),
-			onInit: function() { this.handleInit(); }.bind(this)
-		})
+			onInit: function() { this.handleInit() }.bind(this)
+		});
 	}
 });

@@ -462,6 +462,7 @@
 			<fileset file="${editor-src-root}/lib/ext-2.1.0/adapter/ext/ext-base.js"/>
 			<fileset file="${editor-src-root}/lib/ext-2.1.0/ext-all.js"/>
 			<fileset file="${editor-src-root}/lib/ext-2.1.0/color-field.js"/>
+      <fileset file="${editor-src-root}/lib/utilities/lodash.min.js"/>
 			<fileset file="${editor-src-root}/data/i18n/translation_en_us.js"/>
             <fileset file="${compress.temp}"/>
         </concat>

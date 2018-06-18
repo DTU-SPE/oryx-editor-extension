@@ -5,7 +5,7 @@ if(!ORYX.Gazelle.Views) { ORYX.Gazelle.Views = {} }
 ORYX.Gazelle.Views.Main = Clazz.extend({
 	construct: function(options) {
 		arguments.callee.$.construct.apply(this, arguments);
-		
+
 		this.window = undefined;
 		this.servicePanels = [];
 	},
@@ -16,6 +16,11 @@ ORYX.Gazelle.Views.Main = Clazz.extend({
 			this.window.show(this, options.onInit());
 		}
 		this.window.show();
+	},
+
+	addComponent: function(data) {
+		this.window.insert(1, data.container);
+		this.window.doLayout();
 	},
 
 	displayServicePanel: function(options) {

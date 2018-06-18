@@ -6,58 +6,33 @@ ORYX.Gazelle.Views.Service = Clazz.extend({
 	construct: function(options) {
 		arguments.callee.$.construct.apply(this, arguments);
 
-		var window = undefined;
-		this.window = window;
-
-		this.servicePanels = [];
+		this.model = undefined;
+		this.container = undefined
 	},
 
-	displayWindow: function(options) {
-		if (! this.window) {
-			this.window = this.CreateWindow(options);
-			this.window.show(this, options.onInit());
-		}
-		this.window.show();
-	},
-
-	displayServicePanel: function(options) {
-		var servicePanel = this.CreatePanel(options);
-		this.servicePanels.push(servicePanel);
-		this.window.insert(1, servicePanel);
-		this.window.doLayout();
+	load: function(model) {
+		this.model = model;
+		this.container = this.CreatePanel();
 	},
 
 	displayServicePanelOperations: function(options) {
-		var servicePanel = this.servicePanels.find(function(servicePanel) {
-			return servicePanel.id === options.id;
-		});
-		servicePanel.add({items: [].concat.apply([],options.operations)});
-		servicePanel.doLayout();
+		this.container.add({items: [].concat.apply([], options.operations)});
+		this.container.doLayout();
+	},
+
+	addComponent: function(options) {
+		this.container.insert(1, options.container);
+		this.container.doLayout();
 	},
 
 	hideWindow: function(options) {
 		this.window.hide();
 	},
 
-	CreateWindow: function(options) {
-		return new Ext.Window({
-			width: 500,
-			height: 300,
-			closeAction: 'hide',
-			plain: true,
-			autoScroll: true,
-			listeners: {
-				'hide': function(window) {
-					options.onHide();
-				}.bind(this)
-			}
-		});
-	},
-
-	CreatePanel: function(options) {
+	CreatePanel: function() {
 		return new Ext.Panel({
-			id: options.service.service.id,
-			title: options.service.service.label,
+			id: this.model.id,
+			title: this.model.label,
 			collapsible: true,
 			collapsed: false,
 			autoWidth: true,
