@@ -29,6 +29,7 @@ ORYX.Plugins.Gazelle = ORYX.Plugins.AbstractPlugin.extend({
 
 		this.mainController = new ORYX.Gazelle.Controllers.MainController();
 		this.serviceControllers = [];
+		this.operationControllers = []
 	},
 
 	handleHide: function (button) {
@@ -46,7 +47,7 @@ ORYX.Plugins.Gazelle = ORYX.Plugins.AbstractPlugin.extend({
 				url: serviceResourceUrl,
 				onSuccess: function() {
 					this.mainController.addComponentToView(serviceController.getView());
-					var operationControllers = serviceController.getLinks().map(function(link) {
+					this.operationControllers = serviceController.getLinks().map(function(link) {
 						this.getOperations({url: link.href})
 						.then(function(response) {
 							response.links.map(function(link) {
@@ -57,6 +58,7 @@ ORYX.Plugins.Gazelle = ORYX.Plugins.AbstractPlugin.extend({
 										serviceController.addComponentToView(operationController.getView());
 									}
 								});
+								return operationController;
 							}.bind(this))
 						}.bind(this))
 						['catch'](function(error) {
