@@ -6,13 +6,11 @@ ORYX.Gazelle.Views.Service = Clazz.extend({
 	construct: function(options) {
 		arguments.callee.$.construct.apply(this, arguments);
 
-		this.model = undefined;
 		this.container = undefined
 	},
 
 	load: function(model) {
-		this.model = model;
-		this.container = this.CreatePanel();
+		this.container = this.CreatePanel(model);
 	},
 
 	displayServicePanelOperations: function(options) {
@@ -29,10 +27,10 @@ ORYX.Gazelle.Views.Service = Clazz.extend({
 		this.window.hide();
 	},
 
-	CreatePanel: function() {
+	CreatePanel: function(model) {
 		return new Ext.Panel({
-			id: this.model.id,
-			title: this.model.label,
+			id: model.id,
+			title: model.label,
 			collapsible: true,
 			collapsed: false,
 			autoWidth: true,

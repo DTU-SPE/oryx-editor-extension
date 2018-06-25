@@ -51,8 +51,9 @@ ORYX.Plugins.Gazelle = ORYX.Plugins.AbstractPlugin.extend({
 						this.getOperations({url: link.href})
 						.then(function(response) {
 							response.links.map(function(link) {
-								var operationController = new ORYX.Gazelle.Controllers.OperationController(this);
+								var operationController = new ORYX.Gazelle.Controllers.OperationController();
 								operationController.initialize({
+									parent: this,
 									link: link,
 									onSuccess: function() {
 										serviceController.addComponentToView(operationController.getView());
@@ -101,12 +102,15 @@ ORYX.Plugins.Gazelle = ORYX.Plugins.AbstractPlugin.extend({
 
 	handleButtonPressed: function(button, pressed) {
 		if (pressed) {
-			this.mainController.display({
-				onHide: function() { this.handleHide(button); }.bind(this),
-				onInit: function() { this.handleInit() }.bind(this)
-			});
+			if (! this.mainController.isLoaded()) {
+				this.mainController.load({
+					onHide: function() { this.handleHide(button); }.bind(this),
+					onInit: function() { this.handleInit() }.bind(this)
+				});
+			}
+			this.mainController.show();
 		} else {
-			this.mainController.hideWindow();
+			this.mainController.hide();
 			this.handleHide(button);
 		}
 	}

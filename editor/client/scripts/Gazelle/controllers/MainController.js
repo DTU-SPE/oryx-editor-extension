@@ -6,22 +6,32 @@ ORYX.Gazelle.Controllers.MainController = Clazz.extend({
 	construct: function(options) {
 		arguments.callee.$.construct.apply(this, arguments);
 
-		this.model = new ORYX.Gazelle.Models.Main();
-		this.view = new ORYX.Gazelle.Views.Main();
+		this.model = undefined;
+		this.view = undefined;
 	},
 
-	display: function(options) {
+	load: function(options) {
+		this.model = new ORYX.Gazelle.Models.Main();
+		this.view = new ORYX.Gazelle.Views.Main();
 		this.view.load({
 			onHide: function() { options.onHide(); },
 			onInit: function() { options.onInit(); }
 		});
 	},
 
-	hideWindow: function() {
-		this.view.hideWindow();
+	hide: function() {
+		this.view.hide();
+	},
+
+	show: function() {
+		this.view.show();
 	},
 
 	addComponentToView: function(component) {
 		this.view.addComponent(component);
+	},
+
+	isLoaded() {
+		return typeof this.view !== 'undefined';
 	}
 });

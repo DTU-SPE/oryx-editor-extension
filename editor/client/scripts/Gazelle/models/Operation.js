@@ -3,14 +3,15 @@ if(!ORYX.Gazelle) { ORYX.Gazelle = {} }
 if(!ORYX.Gazelle.Models) { ORYX.Gazelle.Models = {} }
 
 ORYX.Gazelle.Models.Operation = Clazz.extend({
-	construct: function(parent) {
+	construct: function(options) {
 		arguments.callee.$.construct.apply(this, arguments);
 
-		this.parent = parent;
+		this.parent = undefined;
 		this.model = undefined;
 	},
 
 	load: function(options) {
+		this.parent = options.parent;
 		return new Promise(function(resolve, reject) {
 			this.CreateRequestPromise({url: options.url})
 			.then(function(response) {
