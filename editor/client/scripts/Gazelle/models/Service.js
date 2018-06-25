@@ -30,14 +30,6 @@ ORYX.Gazelle.Models.Service = Clazz.extend({
 		return this.model.links;
 	},
 
-	addOperation: function(operation) {
-		this.operations.push(operation);
-	},
-
-	getOperations: function() {
-		return this.operations;
-	},
-
 	CreateRequestPromise: function(options) {
 		return new Promise(function(resolve, reject){
 			Ext.Ajax.request({
