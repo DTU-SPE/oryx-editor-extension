@@ -22,8 +22,13 @@ ORYX.Gazelle.Controllers.OperationController = Clazz.extend({
 			options.onSuccess();
 		}.bind(this))
 		['catch'](function(error) {
+			// TODO
 			console.log(error);
 		});
+	},
+
+	getView: function() {
+		return this.view;
 	},
 
 	handleSubmit: function(form) {
@@ -37,9 +42,5 @@ ORYX.Gazelle.Controllers.OperationController = Clazz.extend({
 				// do something to the view
 			}
 		});
-	},
-
-	getView: function() {
-		return this.view;
 	}
 });

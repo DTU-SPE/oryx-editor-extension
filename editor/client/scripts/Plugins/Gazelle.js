@@ -85,6 +85,21 @@ ORYX.Plugins.Gazelle = ORYX.Plugins.AbstractPlugin.extend({
 		}.bind(this));
 	},
 
+	handleButtonPressed: function(button, pressed) {
+		if (pressed) {
+			if (! this.mainController.isInit()) {
+				this.mainController.initialize({
+					onHide: function() { this.handleHide(button); }.bind(this),
+					onInit: function() { this.handleInit() }.bind(this)
+				});
+			}
+			this.mainController.show();
+		} else {
+			this.mainController.hide();
+			this.handleHide(button);
+		}
+	},
+
 	CreateRequestPromise: function(options) {
 		return new Promise(function(resolve, reject){
 			Ext.Ajax.request({
@@ -99,19 +114,4 @@ ORYX.Plugins.Gazelle = ORYX.Plugins.AbstractPlugin.extend({
 			});
 		});
 	},
-
-	handleButtonPressed: function(button, pressed) {
-		if (pressed) {
-			if (! this.mainController.isLoaded()) {
-				this.mainController.load({
-					onHide: function() { this.handleHide(button); }.bind(this),
-					onInit: function() { this.handleInit() }.bind(this)
-				});
-			}
-			this.mainController.show();
-		} else {
-			this.mainController.hide();
-			this.handleHide(button);
-		}
-	}
 });

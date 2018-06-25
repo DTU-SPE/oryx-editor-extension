@@ -10,7 +10,7 @@ ORYX.Gazelle.Controllers.MainController = Clazz.extend({
 		this.view = undefined;
 	},
 
-	load: function(options) {
+	initialize: function(options) {
 		this.model = new ORYX.Gazelle.Models.Main();
 		this.view = new ORYX.Gazelle.Views.Main();
 		this.view.load({
@@ -31,7 +31,8 @@ ORYX.Gazelle.Controllers.MainController = Clazz.extend({
 		this.view.addComponent(component);
 	},
 
-	isLoaded() {
-		return typeof this.view !== 'undefined';
+	isInit: function() {
+		return typeof this.view !== 'undefined'
+		&& this.model !== 'undefined';
 	}
 });

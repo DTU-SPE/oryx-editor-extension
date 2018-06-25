@@ -51,24 +51,6 @@ ORYX.Gazelle.Models.Operation = Clazz.extend({
 		});
 	},
 
-	hasUserParameters: function() {
-		var userParameters = this.model.request.parameterGroups;
-		return (
-			typeof userParameters !== 'undefined'
-			&& userParameters instanceof Array
-			&& userParameters.length > 0
-		);
-	},
-
-	hasServiceParameters: function() {
-		var userParameters = this.model.request.serviceParameters;
-		return (
-			typeof userParameters !== 'undefined'
-			&& userParameters instanceof Array
-			&& userParameters.length > 0
-		);
-	},
-
 	handleSubmit: function(options) {
 		this.CreateParametersPromise({
 			formValues: options.form.getValues(),
@@ -134,7 +116,6 @@ ORYX.Gazelle.Models.Operation = Clazz.extend({
 
 				Promise.all(modelPromises).then(function(modelResolves) {
 					modelResolves.forEach(function(modelResolve) {
-						console.log(modelResolve);
 						if (typeof modelResolve.parameter.model.encoding.name !== 'undefined') {
 							if (modelResolve.parameter.model.encoding.name === 'ESCAPED') {
 								var xml = Ext.decode(modelResolve.request.responseText).xml
@@ -159,8 +140,6 @@ ORYX.Gazelle.Models.Operation = Clazz.extend({
 	},
 
 	CreateModelPromise: function(options) {
-		console.log(options);
-
 		return new Promise(function(resolve, reject) {
 			var url;
 			var parameters = {};

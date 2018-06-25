@@ -20,11 +20,8 @@ ORYX.Gazelle.Controllers.ServiceController = Clazz.extend({
 		}.bind(this))
 		['catch'](function(error) {
 			// TODO
+			console.log(error);
 		});
-	},
-
-	addComponentToView: function(component) {
-		this.view.addComponent(component);
 	},
 
 	getLinks: function() {
@@ -33,5 +30,9 @@ ORYX.Gazelle.Controllers.ServiceController = Clazz.extend({
 
 	getView: function() {
 		return this.view;
+	},
+
+	addComponentToView: function(component) {
+		this.view.addComponent(component);
 	}
 });
