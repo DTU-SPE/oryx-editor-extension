@@ -69,103 +69,161 @@ ORYX.Gazelle.Models.Operation = Clazz.extend({
 	},
 
 	handleSubmit: function(options) {
-		var parameters = this.CreateParameters({
+		this.CreateParametersPromise({
 			formValues: options.form.getValues(),
-			configurations: this.model.request.requestConfigurations
-		});
-
-		this.request({
-			request: this.model.request,
-			parameters: parameters,
-			onSuccess: function(response) {
-				// TODO
-			}.bind(this),
-			onFailure: function(error) {
-				console.log(error);
-			}.bind(this)
-		});
-	},
-
-	CreateParameters: function(options) {
-		var parameters = options.formValues;
-		var configurations = options.configurations;
-
-		// add key-value pair for each configuration to the parameters
-		configurations.forEach(function(configuration) {
-			parameters[configuration.key] = configuration.value;
-		});
-		return parameters;
+			request: this.model.request
+		})
+		.then(function(parameters) {
+			this.request({
+				request: this.model.request,
+				parameters: parameters,
+				onSuccess: function(response) {
+					// TODO
+				}.bind(this),
+				onFailure: function(error) {
+					console.log(error);
+				}.bind(this)
+			});
+		}.bind(this));
 	},
 
 	request: function(options) {
-		this.getModel({
-			modelType: 'BPMN',
-			onSuccess: function(response) {
-				var responseText = response.responseText;
-				var xml = Ext.decode(responseText).xml
-				var xmlEscaped = _.escape(xml)
-
-				options.parameters['model'] = xmlEscaped;
-
-				var requestOptions = {
-					url: options.request.url,
-					method: options.request.method,
-					success: function(request) {
-						options.onSuccess(options.request.responseText);
-					}.bind(this),
-					failure: function(request) {
-						options.onFailure(request);
-					}.bind(this)
-				}
-
-				if (options.request.contentType === 'application/json') {
-					requestOptions['jsonData'] = options.parameters;
-				} else if (options.request.contentType === 'application/xml') {
-					//requestOptions['xmlData'] = ...; // TODO
-				} else if (options.request.contentType === 'application/x-www-form-urlencoded') {
-					requestOptions['params'] = options.parameters;
-				}
-
-				Ext.Ajax.request(requestOptions);
-			}.bind(this),
-			onFailure: function(error) {
-				console.log(error);
-			}.bind(this)
-		});
-	},
-
-	getModel: function(options) {
-		var url;
-		var parameters = {};
-		if (options.modelType === 'PNML') {
-			url = ORYX.CONFIG.SIMPLE_PNML_EXPORT_URL;
-			var resource = location.href;
-			var tool = 'lola';
-			var serialized_rdf = this.parent.getRDFFromDOM();
-			if (!serialized_rdf.startsWith("<?xml")) {
-				serialized_rdf = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
-				+ serialized_rdf;
-			}
-
-			parameters['resource'] = resource;
-			parameters['tool'] = tool;
-			parameters['data'] = serialized_rdf
-		} else if (options.modelType === 'BPMN') {
-			url = ORYX.CONFIG.ROOT_PATH + "bpmn2_0serialization";
-			var serialized_json = this.parent.facade.getSerializedJSON();
-			parameters['data'] = serialized_json
-		}
-
-		Ext.Ajax.request({
-			url: url,
-			method: 'POST',
+		var requestOptions = {
+			url: options.request.url,
+			method: options.request.method,
 			success: function(request) {
 				options.onSuccess(request);
 			}.bind(this),
 			failure: function(request) {
 				options.onFailure(request);
-			}.bind(this),
-			params: parameters
-		});
+			}.bind(this)
+		};
+
+		if (options.request.contentType === 'application/json') {
+			requestOptions['jsonData'] = options.parameters;
+		} else if (options.request.contentType === 'application/xml') {
+			//requestOptions['xmlData'] = ...; // TODO
+		} else if (options.request.contentType === 'application/x-www-form-urlencoded') {
+			requestOptions['params'] = options.parameters;
+		} else {
+			console.log('Content type of request is not supported.')
+		}
+
+		Ext.Ajax.request(requestOptions);
+		// });
+	},
+
+	CreateParametersPromise: function(options) {
+		return new Promise(function(resolve, reject) {
+			// use form values as base parameters
+			var parameters = options.formValues;
+
+			// add key-value pair for each configuration to the parameters
+			var configurations = options.request.requestConfigurations;
+			configurations.forEach(function(configuration) {
+				parameters[configuration.key] = configuration.value;
+			});
+
+			var modelParameters = _.filter(options.request.parameters, {'type': 'MODEL'});
+
+			if (modelParameters.length > 0) {
+				var modelPromises = _.map(modelParameters, function(modelParameter) {
+					return this.CreateModelPromise({modelParameter: modelParameter});
+				}.bind(this));
+
+				Promise.all(modelPromises).then(function(modelResolves) {
+					modelResolves.forEach(function(modelResolve) {
+						console.log(modelResolve);
+						if (typeof modelResolve.parameter.model.encoding.name !== 'undefined') {
+							if (modelResolve.parameter.model.encoding.name === 'ESCAPED') {
+								var xml = Ext.decode(modelResolve.request.responseText).xml
+								var xmlEscaped = _.escape(xml)
+								parameters[modelResolve.parameter.key] = xmlEscaped;
+							} else {
+								parameters[modelResolve.parameter.key] = modelResolve.request.responseText;
+							}
+						} else {
+							parameters[modelResolve.parameter.key] = modelResolve.request.responseText;
+						}
+					});
+					resolve(parameters);
+				})
+				['catch'](function(error) {
+					reject(error);
+				});
+			} else {
+				resolve(parameters);
+			}
+		}.bind(this));
+	},
+
+	CreateModelPromise: function(options) {
+		console.log(options);
+
+		return new Promise(function(resolve, reject) {
+			var url;
+			var parameters = {};
+			var diagram = this.parent.facade.getJSON();
+			var formats = options.modelParameter.model.formats;
+
+			if (diagram.stencilset.namespace === 'http://b3mn.org/stencilset/petrinet#') {
+				// supported Petri net transformations
+				var format = _.find(formats, {'name': 'http://www.pnml.org/version-2009/grammar/pnml'});
+
+				if (typeof format !== 'undefined') {
+					var type = _.find(format.types, {'name': 'http://www.pnml.org/version-2009/grammar/ptnet'});
+
+					if (typeof type !== 'undefined') {
+						url = ORYX.CONFIG.SIMPLE_PNML_EXPORT_URL;
+						var resource = location.href;
+						var tool = 'lola';
+						var serialized_rdf = this.parent.getRDFFromDOM();
+
+						if (!serialized_rdf.startsWith("<?xml")) {
+							serialized_rdf = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+							+ serialized_rdf;
+						}
+
+						parameters['resource'] = resource;
+						parameters['tool'] = tool;
+						parameters['data'] = serialized_rdf
+					} else {
+						console.log('type=' + type + ' is not supported for format=' + format + 'for diagram.stencilset.namespace=' + diagram.stencilset.namespace);
+					}
+				} else {
+					console.log('format is unsupported for diagram.stencilset.namespace=' + diagram.stencilset.namespace);
+				}
+			} else if (diagram.stencilset.namespace === 'http://b3mn.org/stencilset/bpmn2.0#') {
+				var format = _.find(formats, {'name': 'http://schema.omg.org/spec/BPMN/2.0'});
+
+				if (typeof format !== 'undefined') {
+					var type = _.find(format.types, {'name': 'http://bpmndi.org'});
+
+					if (typeof type !== 'undefined') {
+						url = ORYX.CONFIG.ROOT_PATH + "bpmn2_0serialization";
+						var serialized_json = this.parent.facade.getSerializedJSON();
+						parameters['data'] = serialized_json
+					} else {
+						console.log('type is unsupported for format=' + format + 'for diagram.stencilset.namespace=' + diagram.stencilset.namespace);
+					}
+				} else {
+					console.log('format is unsupported for diagram.stencilset.namespace=' + diagram.stencilset.namespace);
+				}
+			}
+
+			if (typeof parameters.data !== 'undefined') {
+				Ext.Ajax.request({
+					url: url,
+					method: 'POST',
+					success: function(request) {
+						resolve({parameter: options.modelParameter, request: request});
+					}.bind(this),
+					failure: function(request) {
+						reject(request);
+					}.bind(this),
+					params: parameters
+				});
+			}
+		}.bind(this));
 	}
 });

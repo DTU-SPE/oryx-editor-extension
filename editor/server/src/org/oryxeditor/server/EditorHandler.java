@@ -42,7 +42,7 @@ import org.springframework.util.FileCopyUtils;
 public class EditorHandler extends HttpServlet {
 
 	/**
-	 * 
+	 *
 	 */
 	public static final String oryx_path = "/oryx/";
 	private static final String defaultSS="stencilsets/bpmn1.1/bpmn1.1.json";
@@ -88,7 +88,7 @@ public class EditorHandler extends HttpServlet {
 		if(exts==null)
 			exts=new JSONArray();
 		extString=exts.toString();
-		String content = 
+		String content =
 	        "<script type='text/javascript'>" +
 	        "if(!ORYX) var ORYX = {};" +
 	        "if(!ORYX.CONFIG) ORYX.CONFIG = {};" +
@@ -115,46 +115,46 @@ public class EditorHandler extends HttpServlet {
           	  "}}" +
           	"</script>";
 		response.setContentType("application/xhtml+xml");
-		
-		response.getWriter().println(this.getOryxModel("Oryx-Editor", 
-				content, this.getLanguageCode(request), 
+
+		response.getWriter().println(this.getOryxModel("Oryx-Editor",
+				content, this.getLanguageCode(request),
 				this.getCountryCode(request), profiles));
 		response.setStatus(200);
 	}
-	protected String getOryxModel(String title, String content, 
+	protected String getOryxModel(String title, String content,
     		String languageCode, String countryCode, ArrayList<String> profiles) {
-    	
+
     	return getOryxModel(title, content, languageCode, countryCode, "", profiles);
     }
-    
-    protected String getOryxModel(String title, String content, 
+
+    protected String getOryxModel(String title, String content,
     		String languageCode, String countryCode, String headExtentions, ArrayList<String> profiles) {
-    	
+
     	String languageFiles = "";
     	String profileFiles="";
-    	
+
     	if (new File(this.getOryxRootDirectory() + "/oryx/i18n/translation_"+languageCode+".js").exists()) {
-    		languageFiles += "<script src=\"" + oryx_path 
+    		languageFiles += "<script src=\"" + oryx_path
     		+ "i18n/translation_"+languageCode+".js\" type=\"text/javascript\" />\n";
     	}
-    	
+
     	if (new File(this.getOryxRootDirectory() + "/oryx/i18n/translation_" + languageCode+"_" + countryCode + ".js").exists()) {
-    		languageFiles += "<script src=\"" + oryx_path 
-    		+ "i18n/translation_" + languageCode+"_" + countryCode 
+    		languageFiles += "<script src=\"" + oryx_path
+    		+ "i18n/translation_" + languageCode+"_" + countryCode
     		+ ".js\" type=\"text/javascript\" />\n";
     	}
     	for(String profile: profiles){
       	  	profileFiles=profileFiles+ "<script src=\"" + oryx_path+"profiles/" + profile+".js\" type=\"text/javascript\" />\n";
 
     	}
-    	
+
     	String analytics = getServletContext().getInitParameter("ANALYTICS_SNIPPET");
     	if (null == analytics) {
     		analytics = "";
     	}
-    	
-    	
-    	
+
+
+
       	return "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
       	    + "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">"
       	  	+ "<html xmlns=\"http://www.w3.org/1999/xhtml\"\n"
@@ -170,6 +170,7 @@ public class EditorHandler extends HttpServlet {
       	  	+ "<script src=\"" + oryx_path + "lib/ext-2.1.0/adapter/ext/ext-base.js\" type=\"text/javascript\" />\n"
       	  	+ "<script src=\"" + oryx_path + "lib/ext-2.1.0/ext-all.js\" type=\"text/javascript\" />\n"
       	  	+ "<script src=\"" + oryx_path + "lib/ext-2.1.0/color-field.js\" type=\"text/javascript\" />\n"
+						+ "<script src=\"" + oryx_path + "lib/utilities/lodash.min.js\" type=\"text/javascript\" />\n"
       	  	+ "<style media=\"screen\" type=\"text/css\">\n"
       	  	+ "@import url(\"" + oryx_path + "lib/ext-2.1.0/resources/css/ext-all.css\");\n"
       	  	+ "@import url(\"" + oryx_path + "lib/ext-2.1.0/resources/css/xtheme-gray.css\");\n"
@@ -178,13 +179,13 @@ public class EditorHandler extends HttpServlet {
       	  	+ "<!-- oryx editor -->\n"
       	  	// EN_US is default an base language
       	  	+ "<!-- language files -->\n"
-      	  	+ "<script src=\"" + oryx_path + "i18n/translation_en_us.js\" type=\"text/javascript\" />\n"      	  	
+      	  	+ "<script src=\"" + oryx_path + "i18n/translation_en_us.js\" type=\"text/javascript\" />\n"
       	  	+ languageFiles
       	  	// Handle different profiles
       	  	+ "<script src=\"" + oryx_path + "profiles/oryx.core.js\" type=\"text/javascript\" />\n"
       	  	+ profileFiles
       	  	+ headExtentions
-      	  	
+
       	  	+ "<link rel=\"Stylesheet\" media=\"screen\" href=\"" + oryx_path + "css/theme_norm.css\" type=\"text/css\" />\n"
 
       	  	+ "<!-- erdf schemas -->\n"
@@ -193,16 +194,16 @@ public class EditorHandler extends HttpServlet {
       	  	+ "<link rel=\"schema.b3mn\" href=\"http://b3mn.org\" />\n"
       	  	+ "<link rel=\"schema.oryx\" href=\"http://oryx-editor.org/\" />\n"
       	  	+ "<link rel=\"schema.raziel\" href=\"http://raziel.org/\" />\n"
-      	  	
+
       	    + content
-      	  	
+
       	  	+ "</head>\n"
-      	  	
+
       	  	+ "<body style=\"overflow:hidden;\"><div class='processdata' style='display:none'>\n"
-      	  	
+
       	  	+ "\n"
       	  	+ "</div>\n"
-      	  	
+
       	  	+ analytics
 
       	  	+ "</body>\n"
@@ -234,7 +235,7 @@ public class EditorHandler extends HttpServlet {
 		}
 		if(handlerDir==null)
 			return profilNames;
-		
+
 		for (File source : handlerDir.listFiles()) {
 			if (source.getName().endsWith(".js")) {
 				profilNames.add(source.getName().substring(0, source.getName().lastIndexOf(".")));

@@ -10,7 +10,7 @@ ORYX.Gazelle.Views.Main = Clazz.extend({
 		this.servicePanels = [];
 	},
 
-	displayWindow: function(options) {
+	load: function(options) {
 		if (! this.window) {
 			this.window = this.CreateWindow(options);
 			this.window.show(this, options.onInit());
@@ -38,7 +38,7 @@ ORYX.Gazelle.Views.Main = Clazz.extend({
 		servicePanel.doLayout();
 	},
 
-	hideWindow: function(options) {
+	hideWindow: function() {
 		this.window.hide();
 	},
 

@@ -11,15 +11,14 @@ ORYX.Gazelle.Controllers.MainController = Clazz.extend({
 	},
 
 	display: function(options) {
-		if (options.pressed) {
-			this.view.displayWindow({
-				onHide: function() { options.onHide(); },
-				onInit: function() { options.onInit(); }
-			});
-		} else {
-			this.view.hideWindow();
-			options.onHide();
-		}
+		this.view.load({
+			onHide: function() { options.onHide(); },
+			onInit: function() { options.onInit(); }
+		});
+	},
+
+	hideWindow: function() {
+		this.view.hideWindow();
 	},
 
 	addComponentToView: function(component) {

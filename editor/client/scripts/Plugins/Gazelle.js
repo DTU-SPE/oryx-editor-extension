@@ -38,7 +38,7 @@ ORYX.Plugins.Gazelle = ORYX.Plugins.AbstractPlugin.extend({
 
 	handleInit: function() {
 		var serviceResourceUrls = [
-			// 'http://localhost:1234/service_lola.json',
+			'http://localhost:1234/service_lola_v2.json',
 			'http://localhost:1234/service_plg_v2.json'
 		];
 		this.serviceControllers = serviceResourceUrls.map(function(serviceResourceUrl) {
@@ -100,10 +100,14 @@ ORYX.Plugins.Gazelle = ORYX.Plugins.AbstractPlugin.extend({
 	},
 
 	handleButtonPressed: function(button, pressed) {
-		this.mainController.display({
-			pressed: pressed,
-			onHide: function() { this.handleHide(button); }.bind(this),
-			onInit: function() { this.handleInit() }.bind(this)
-		});
+		if (pressed) {
+			this.mainController.display({
+				onHide: function() { this.handleHide(button); }.bind(this),
+				onInit: function() { this.handleInit() }.bind(this)
+			});
+		} else {
+			this.mainController.hideWindow();
+			this.handleHide(button);
+		}
 	}
 });
