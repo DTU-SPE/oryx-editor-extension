@@ -19,7 +19,7 @@ ORYX.Plugins.Gazelle = ORYX.Plugins.AbstractPlugin.extend({
 			'name': 'Generic Web Service', // ORYX.I18N.Gazelle.name
 			'functionality': this.handleButtonPressed.bind(this),
 			'group': 'analysis', // ORYX.I18N.Gazelle.group
-			'icon': ORYX.PATH + "images/icon-ws.png",
+			'icon': ORYX.PATH + 'images/icon-ws.png',
 			'description': 'Generic Web Service plugin', // ORYX.I18N.Gazelle.desc
 			'index': 0,
 			'toggle': true,
@@ -27,9 +27,9 @@ ORYX.Plugins.Gazelle = ORYX.Plugins.AbstractPlugin.extend({
 			'maxShape': 0
 		});
 
-		this.mainController = new ORYX.Gazelle.Controllers.MainController();
+		this.mainController = undefined;
 		this.serviceControllers = [];
-		this.operationControllers = []
+		this.operationControllers = [];
 	},
 
 	handleHide: function (button) {
@@ -51,9 +51,8 @@ ORYX.Plugins.Gazelle = ORYX.Plugins.AbstractPlugin.extend({
 						this.getOperations({url: link.href})
 						.then(function(response) {
 							response.links.map(function(link) {
-								var operationController = new ORYX.Gazelle.Controllers.OperationController();
+								var operationController = new ORYX.Gazelle.Controllers.OperationController(this);
 								operationController.initialize({
-									parent: this,
 									link: link,
 									onSuccess: function() {
 										serviceController.addComponentToView(operationController.getView());
@@ -87,7 +86,8 @@ ORYX.Plugins.Gazelle = ORYX.Plugins.AbstractPlugin.extend({
 
 	handleButtonPressed: function(button, pressed) {
 		if (pressed) {
-			if (! this.mainController.isInit()) {
+			if (typeof this.mainController === 'undefined') {
+				this.mainController = new ORYX.Gazelle.Controllers.MainController();
 				this.mainController.initialize({
 					onHide: function() { this.handleHide(button); }.bind(this),
 					onInit: function() { this.handleInit() }.bind(this)

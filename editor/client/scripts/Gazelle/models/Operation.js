@@ -3,15 +3,14 @@ if(!ORYX.Gazelle) { ORYX.Gazelle = {} }
 if(!ORYX.Gazelle.Models) { ORYX.Gazelle.Models = {} }
 
 ORYX.Gazelle.Models.Operation = Clazz.extend({
-	construct: function(options) {
+	construct: function(props) {
 		arguments.callee.$.construct.apply(this, arguments);
 
-		this.parent = undefined;
+		this.props = props;
 		this.model = undefined;
 	},
 
 	load: function(options) {
-		this.parent = options.parent;
 		return new Promise(function(resolve, reject) {
 			this.CreateRequestPromise({url: options.url})
 			.then(function(response) {
@@ -89,11 +88,10 @@ ORYX.Gazelle.Models.Operation = Clazz.extend({
 		} else if (options.request.contentType === 'application/x-www-form-urlencoded') {
 			requestOptions['params'] = options.parameters;
 		} else {
-			console.log('Content type of request is not supported.')
+			console.log('Content type of request is not supported.');
 		}
 
 		Ext.Ajax.request(requestOptions);
-		// });
 	},
 
 	CreateParametersPromise: function(options) {
@@ -143,7 +141,7 @@ ORYX.Gazelle.Models.Operation = Clazz.extend({
 		return new Promise(function(resolve, reject) {
 			var url;
 			var parameters = {};
-			var diagram = this.parent.facade.getJSON();
+			var diagram = this.props.getJSON();
 			var formats = options.modelParameter.model.formats;
 
 			if (diagram.stencilset.namespace === 'http://b3mn.org/stencilset/petrinet#') {
@@ -157,7 +155,7 @@ ORYX.Gazelle.Models.Operation = Clazz.extend({
 						url = ORYX.CONFIG.SIMPLE_PNML_EXPORT_URL;
 						var resource = location.href;
 						var tool = 'lola';
-						var serialized_rdf = this.parent.getRDFFromDOM();
+						var serialized_rdf = this.props.getRDFFromDOM();
 
 						if (!serialized_rdf.startsWith("<?xml")) {
 							serialized_rdf = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
@@ -181,7 +179,7 @@ ORYX.Gazelle.Models.Operation = Clazz.extend({
 
 					if (typeof type !== 'undefined') {
 						url = ORYX.CONFIG.ROOT_PATH + "bpmn2_0serialization";
-						var serialized_json = this.parent.facade.getSerializedJSON();
+						var serialized_json = this.props.getSerializedJSON();
 						parameters['data'] = serialized_json
 					} else {
 						console.log('type is unsupported for format=' + format + 'for diagram.stencilset.namespace=' + diagram.stencilset.namespace);

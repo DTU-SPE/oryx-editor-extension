@@ -6,7 +6,7 @@ ORYX.Gazelle.Views.Operation = Clazz.extend({
 	construct: function(options) {
 		arguments.callee.$.construct.apply(this, arguments);
 
-		this.container = undefined
+		this.container = undefined;
 	},
 
 	load: function(options) {
@@ -19,11 +19,20 @@ ORYX.Gazelle.Views.Operation = Clazz.extend({
 	CreateFormPanel: function(options) {
 		var request = options.operation.request;
 		var items = request.parameters.map(function(parameter) {
-			return {
+			var item = {
 				name: parameter.key,
 				fieldLabel: parameter.label.text
+			};
+			if (parameter.type === "INTEGER") {
+				return new Ext.form.NumberField(item)
+			} else if (parameter.type === "STRING") {
+				return new Ext.form.TextField(item);
+			} else if (parameter.type === "MODEL") {
+				return new Ext.form.Hidden(item);
+			} else {
+				return new Ext.form.TextField(item);
 			}
-		})
+		});
 
 		var formPanel = new Ext.FormPanel({
 			url: request.url,
@@ -34,7 +43,7 @@ ORYX.Gazelle.Views.Operation = Clazz.extend({
 			collapsible: true,
 			collapsed: false,
 			autoWidth: true,
-			defaultType: 'textfield',
+			// defaultType: 'textfield',
 			items: items,
 			buttons: [
 				{

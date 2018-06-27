@@ -3,9 +3,10 @@ if(!ORYX.Gazelle) { ORYX.Gazelle = {} }
 if(!ORYX.Gazelle.Models) { ORYX.Gazelle.Models = {} }
 
 ORYX.Gazelle.Models.Service = Clazz.extend({
-	construct: function() {
+	construct: function(props) {
 		arguments.callee.$.construct.apply(this, arguments);
 
+		this.props = props;
 		this.model = undefined;
 	},
 

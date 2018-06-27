@@ -3,17 +3,19 @@ if(!ORYX.Gazelle) { ORYX.Gazelle = {} }
 if(!ORYX.Gazelle.Controllers) { ORYX.Gazelle.Controllers = {} }
 
 ORYX.Gazelle.Controllers.OperationController = Clazz.extend({
-	construct: function(options) {
+	construct: function(props) {
 		arguments.callee.$.construct.apply(this, arguments);
 
-		this.model = undefined;
-		this.view = undefined;
+		this.model = new ORYX.Gazelle.Models.Operation({
+			getJSON: function() { return props.facade.getJSON(); },
+			getSerializedJSON: function() { return props.facade.getSerializedJSON(); },
+			getRDFFromDOM: function() { return props.getRDFFromDOM(); }
+		});
+		this.view = new ORYX.Gazelle.Views.Operation();
 	},
 
 	initialize: function(options) {
-		this.model = new ORYX.Gazelle.Models.Operation();
-		this.view = new ORYX.Gazelle.Views.Operation();
-		this.model.load({url: options.link.href, parent: options.parent})
+		this.model.load({url: options.link.href})
 		.then(function(response) {
 			this.view.load({
 				model: response,

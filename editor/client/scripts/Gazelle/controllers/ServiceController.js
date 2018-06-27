@@ -3,16 +3,14 @@ if(!ORYX.Gazelle) { ORYX.Gazelle = {} }
 if(!ORYX.Gazelle.Controllers) { ORYX.Gazelle.Controllers = {} }
 
 ORYX.Gazelle.Controllers.ServiceController = Clazz.extend({
-	construct: function(options) {
+	construct: function(props) {
 		arguments.callee.$.construct.apply(this, arguments);
 
-		this.model = undefined;
-		this.view = undefined;
+		this.model = new ORYX.Gazelle.Models.Service();
+		this.view = new ORYX.Gazelle.Views.Service();
 	},
 
 	initialize: function(options) {
-		this.model = new ORYX.Gazelle.Models.Service();
-		this.view = new ORYX.Gazelle.Views.Service();
 		this.model.load({url: options.url})
 		.then(function(response) {
 			this.view.load(this.model.get());

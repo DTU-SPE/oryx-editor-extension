@@ -3,16 +3,14 @@ if(!ORYX.Gazelle) { ORYX.Gazelle = {} }
 if(!ORYX.Gazelle.Controllers) { ORYX.Gazelle.Controllers = {} }
 
 ORYX.Gazelle.Controllers.MainController = Clazz.extend({
-	construct: function(options) {
+	construct: function(props) {
 		arguments.callee.$.construct.apply(this, arguments);
 
-		this.model = undefined;
-		this.view = undefined;
+		this.model = new ORYX.Gazelle.Models.Main();
+		this.view = new ORYX.Gazelle.Views.Main();
 	},
 
 	initialize: function(options) {
-		this.model = new ORYX.Gazelle.Models.Main();
-		this.view = new ORYX.Gazelle.Views.Main();
 		this.view.load({
 			onHide: function() { options.onHide(); },
 			onInit: function() { options.onInit(); }

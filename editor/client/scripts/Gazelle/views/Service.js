@@ -6,7 +6,7 @@ ORYX.Gazelle.Views.Service = Clazz.extend({
 	construct: function(options) {
 		arguments.callee.$.construct.apply(this, arguments);
 
-		this.container = undefined
+		this.container = undefined;
 	},
 
 	load: function(model) {
