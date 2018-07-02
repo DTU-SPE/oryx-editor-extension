@@ -13,13 +13,14 @@ services:
       POSTGRES_DB: poem
     ports:
       - '5432:5432'
+    volumes:
+      - /opt/oryx/database:/var/lib/postgresql/data
     networks:
       gazelle-network:
         aliases:
           - database
   web:
     image: oryxeditorextension_web
-    container_name: oryxeditorextension_web_1
     build:
       context: .
       dockerfile: Dockerfile
