@@ -12,6 +12,23 @@ ORYX.Gazelle.Views.Main = Clazz.extend({
 	load: function(options) {
 		this.container = this.CreateWindow(options);
 		this.container.show(this, options.onInit());
+
+		var appContainer = new Ext.Component({
+			id: 'gazelle-app',
+			autoWidth: true,
+    	autoHeight: true
+		});
+		this.container.insert(1, appContainer);
+		this.container.doLayout();
+
+		var script = document.createElement("script");
+    script.src = 'http://localhost:8081/js/bundle.js';
+    document.head.appendChild(script);
+
+	},
+
+	loadScript: function(url) {
+
 	},
 
 	addComponent: function(options) {
@@ -34,6 +51,7 @@ ORYX.Gazelle.Views.Main = Clazz.extend({
 			closeAction: 'hide',
 			plain: true,
 			autoScroll: true,
+			html: '<div id="gazelle-app"></div>',
 			listeners: {
 				'hide': function(window) {
 					options.onHide();

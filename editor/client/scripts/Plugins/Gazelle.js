@@ -28,8 +28,8 @@ ORYX.Plugins.Gazelle = ORYX.Plugins.AbstractPlugin.extend({
 		});
 
 		this.mainController = undefined;
-		this.serviceControllers = [];
-		this.operationControllers = [];
+		// this.serviceControllers = [];
+		// this.operationControllers = [];
 	},
 
 	handleHide: function (button) {
@@ -37,52 +37,52 @@ ORYX.Plugins.Gazelle = ORYX.Plugins.AbstractPlugin.extend({
 	},
 
 	handleInit: function() {
-		var serviceResourceUrls = [
-			'http://localhost:1234/service_lola_v2.json',
-			'http://localhost:1234/service_plg_v2.json'
-		];
-		this.serviceControllers = serviceResourceUrls.map(function(serviceResourceUrl) {
-			var serviceController = new ORYX.Gazelle.Controllers.ServiceController();
-			serviceController.initialize({
-				url: serviceResourceUrl,
-				onSuccess: function() {
-					this.mainController.addComponentToView(serviceController.getView());
-					this.operationControllers = serviceController.getLinks().map(function(link) {
-						this.getOperations({url: link.href})
-						.then(function(response) {
-							response.links.map(function(link) {
-								var operationController = new ORYX.Gazelle.Controllers.OperationController(this);
-								operationController.initialize({
-									link: link,
-									onSuccess: function() {
-										serviceController.addComponentToView(operationController.getView());
-									}
-								});
-								return operationController;
-							}.bind(this))
-						}.bind(this))
-						['catch'](function(error) {
-							// TODO
-						});
-					}.bind(this));
-				}.bind(this)
-			});
-			return serviceController;
-		}.bind(this));
+		// var serviceResourceUrls = [
+		// 	'http://localhost:1234/service_lola_v2.json',
+		// 	'http://localhost:1234/service_plg_v2.json'
+		// ];
+		// this.serviceControllers = serviceResourceUrls.map(function(serviceResourceUrl) {
+		// 	var serviceController = new ORYX.Gazelle.Controllers.ServiceController();
+		// 	serviceController.initialize({
+		// 		url: serviceResourceUrl,
+		// 		onSuccess: function() {
+		// 			this.mainController.addComponentToView(serviceController.getView());
+		// 			this.operationControllers = serviceController.getLinks().map(function(link) {
+		// 				this.getOperations({url: link.href})
+		// 				.then(function(response) {
+		// 					response.links.map(function(link) {
+		// 						var operationController = new ORYX.Gazelle.Controllers.OperationController(this);
+		// 						operationController.initialize({
+		// 							link: link,
+		// 							onSuccess: function() {
+		// 								serviceController.addComponentToView(operationController.getView());
+		// 							}
+		// 						});
+		// 						return operationController;
+		// 					}.bind(this))
+		// 				}.bind(this))
+		// 				['catch'](function(error) {
+		// 					// TODO
+		// 				});
+		// 			}.bind(this));
+		// 		}.bind(this)
+		// 	});
+		// 	return serviceController;
+		// }.bind(this));
 	},
 
-	getOperations: function(options) {
-		return new Promise(function(resolve, reject) {
-			this.CreateRequestPromise({url: options.url})
-			.then(function(response) {
-				var responseText = Ext.decode(response.responseText);
-				resolve(responseText);
-			}.bind(this))
-			['catch'](function(error) {
-				reject(error);
-			});
-		}.bind(this));
-	},
+	// getOperations: function(options) {
+	// 	return new Promise(function(resolve, reject) {
+	// 		this.CreateRequestPromise({url: options.url})
+	// 		.then(function(response) {
+	// 			var responseText = Ext.decode(response.responseText);
+	// 			resolve(responseText);
+	// 		}.bind(this))
+	// 		['catch'](function(error) {
+	// 			reject(error);
+	// 		});
+	// 	}.bind(this));
+	// },
 
 	handleButtonPressed: function(button, pressed) {
 		if (pressed) {
@@ -100,18 +100,18 @@ ORYX.Plugins.Gazelle = ORYX.Plugins.AbstractPlugin.extend({
 		}
 	},
 
-	CreateRequestPromise: function(options) {
-		return new Promise(function(resolve, reject){
-			Ext.Ajax.request({
-				url: options.url,
-				method: 'GET',
-				success: function(request) {
-					resolve(request);
-				},
-				failure: function(request) {
-					reject(request);
-				}
-			});
-		});
-	},
+	// CreateRequestPromise: function(options) {
+	// 	return new Promise(function(resolve, reject){
+	// 		Ext.Ajax.request({
+	// 			url: options.url,
+	// 			method: 'GET',
+	// 			success: function(request) {
+	// 				resolve(request);
+	// 			},
+	// 			failure: function(request) {
+	// 				reject(request);
+	// 			}
+	// 		});
+	// 	});
+	// },
 });
