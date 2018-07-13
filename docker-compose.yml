@@ -30,7 +30,6 @@ services:
       - gazelle-network
     restart: unless-stopped
     volumes:
-    - ./editor/client/scripts/Gazelle/:/usr/local/tomcat/webapps/gazelle
     - ./editor/client/scripts/Plugins/Gazelle.js:/usr/local/tomcat/webapps/plugins/Gazelle.js
 networks:
   gazelle-network:

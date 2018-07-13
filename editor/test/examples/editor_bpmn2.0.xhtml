@@ -29,19 +29,6 @@
 		<script src="i18n/translation_en_us.js" type="text/javascript" />
 		<script src="oryx.debug.js" type="text/javascript" />
 		<script src="/plugins/Gazelle.js" type="text/javascript" />
-		<!-- Controllers -->
-		<script src="/gazelle/controllers/MainController.js" type="text/javascript" />
-		<script src="/gazelle/controllers/OperationController.js" type="text/javascript" />
-		<script src="/gazelle/controllers/ServiceController.js" type="text/javascript" />
-		<!-- Models -->
-		<script src="/gazelle/models/Main.js" type="text/javascript" />
-		<script src="/gazelle/models/Operation.js" type="text/javascript" />
-		<script src="/gazelle/models/Service.js" type="text/javascript" />
-		<!-- Views -->
-		<script src="/gazelle/views/Main.js" type="text/javascript" />
-		<script src="/gazelle/views/Operation.js" type="text/javascript" />
-		<script src="/gazelle/views/Service.js" type="text/javascript" />
-
 
 		<link rel="Stylesheet" media="screen" href="css/theme_norm.css"
 			type="text/css" />
@@ -60,7 +47,7 @@
 	<body style="display: block; overflow: hidden;">
 		<script type='text/javascript'>
 	          function onOryxResourcesLoaded(){
-	            new ORYX.Editor({
+	            ORYX.Editor.editorInstance = new ORYX.Editor({
 	              id: 'oryx-canvas123',
 	              stencilset: {
 	                url: ORYX.CONFIG.ROOT_PATH + 'stencilsets/bpmn2.0/bpmn2.0.json'

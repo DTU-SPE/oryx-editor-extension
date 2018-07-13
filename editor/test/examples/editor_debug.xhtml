@@ -118,7 +118,7 @@
       <!-- The URL field restricts editor_debug.xhtml to a tomcat environment. Access via "file://" is not possible -->
       <script type='text/javascript'>
           function onOryxResourcesLoaded(){
-            new ORYX.Editor({
+            ORYX.Editor.editorInstance = new ORYX.Editor({
               id: 'oryx-canvas123',
               stencilset: {
                 url: ORYX.CONFIG.ROOT_PATH + 'stencilsets/bpmn1.1/bpmn1.1.json'

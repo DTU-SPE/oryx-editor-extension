@@ -27,91 +27,53 @@ ORYX.Plugins.Gazelle = ORYX.Plugins.AbstractPlugin.extend({
 			'maxShape': 0
 		});
 
-		this.mainController = undefined;
-		// this.serviceControllers = [];
-		// this.operationControllers = [];
+		this.container = undefined;
+	},
+
+	getFacade: function() {
+		return this.facade;
 	},
 
 	handleHide: function (button) {
+		this.container.hide();
 		this.setActivated(button, false)
 	},
 
 	handleInit: function() {
-		// var serviceResourceUrls = [
-		// 	'http://localhost:1234/service_lola_v2.json',
-		// 	'http://localhost:1234/service_plg_v2.json'
-		// ];
-		// this.serviceControllers = serviceResourceUrls.map(function(serviceResourceUrl) {
-		// 	var serviceController = new ORYX.Gazelle.Controllers.ServiceController();
-		// 	serviceController.initialize({
-		// 		url: serviceResourceUrl,
-		// 		onSuccess: function() {
-		// 			this.mainController.addComponentToView(serviceController.getView());
-		// 			this.operationControllers = serviceController.getLinks().map(function(link) {
-		// 				this.getOperations({url: link.href})
-		// 				.then(function(response) {
-		// 					response.links.map(function(link) {
-		// 						var operationController = new ORYX.Gazelle.Controllers.OperationController(this);
-		// 						operationController.initialize({
-		// 							link: link,
-		// 							onSuccess: function() {
-		// 								serviceController.addComponentToView(operationController.getView());
-		// 							}
-		// 						});
-		// 						return operationController;
-		// 					}.bind(this))
-		// 				}.bind(this))
-		// 				['catch'](function(error) {
-		// 					// TODO
-		// 				});
-		// 			}.bind(this));
-		// 		}.bind(this)
-		// 	});
-		// 	return serviceController;
-		// }.bind(this));
+		this.container.doLayout();
+		var script = document.createElement("script");
+		script.src = 'http://localhost:8081/js/bundle.js';
+		document.head.appendChild(script);
 	},
-
-	// getOperations: function(options) {
-	// 	return new Promise(function(resolve, reject) {
-	// 		this.CreateRequestPromise({url: options.url})
-	// 		.then(function(response) {
-	// 			var responseText = Ext.decode(response.responseText);
-	// 			resolve(responseText);
-	// 		}.bind(this))
-	// 		['catch'](function(error) {
-	// 			reject(error);
-	// 		});
-	// 	}.bind(this));
-	// },
 
 	handleButtonPressed: function(button, pressed) {
 		if (pressed) {
-			if (typeof this.mainController === 'undefined') {
-				this.mainController = new ORYX.Gazelle.Controllers.MainController();
-				this.mainController.initialize({
-					onHide: function() { this.handleHide(button); }.bind(this),
-					onInit: function() { this.handleInit() }.bind(this)
+			if (typeof this.container === 'undefined') {
+				this.container = this.CreateContainer({
+					onHide: function() { this.handleHide(button); }.bind(this)
 				});
+				this.container.show(this, this.handleInit());;
+			} else {
+				this.container.show();
 			}
-			this.mainController.show();
 		} else {
-			this.mainController.hide();
 			this.handleHide(button);
 		}
 	},
 
-	// CreateRequestPromise: function(options) {
-	// 	return new Promise(function(resolve, reject){
-	// 		Ext.Ajax.request({
-	// 			url: options.url,
-	// 			method: 'GET',
-	// 			success: function(request) {
-	// 				resolve(request);
-	// 			},
-	// 			failure: function(request) {
-	// 				reject(request);
-	// 			}
-	// 		});
-	// 	});
-	// },
+	CreateContainer: function(options) {
+		return new Ext.Window({
+			width: 500,
+			height: 300,
+			closeAction: 'hide',
+			plain: true,
+			autoScroll: true,
+			html: '<div id="gazelle-app"></div>',
+			listeners: {
+				'hide': function(window) {
+					options.onHide();
+				}.bind(this)
+			}
+		});
+	}
 });

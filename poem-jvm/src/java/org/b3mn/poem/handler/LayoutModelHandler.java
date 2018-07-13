@@ -67,7 +67,7 @@ public class LayoutModelHandler extends  HandlerBase {
             	"return suc;" +
               "};"+
               "function onOryxResourcesLoaded(){" +
-                "var editor = new ORYX.Editor({"+
+                "var editor = ORYX.Editor.editorInstance = new ORYX.Editor({"+
                   "id: 'oryx-canvas123',"+
                   "stencilset: {"+
                   	"url: '/oryx"+stencilset + "'" +

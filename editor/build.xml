@@ -230,15 +230,6 @@
                 <file name='scripts/Core/edge.js'/>
             	<file name='scripts/Core/abstractPlugin.js'/>
             	<file name='scripts/Core/abstractLayouter.js'/>
-              <file name='scripts/Gazelle/controllers/MainController.js'/>
-              <file name='scripts/Gazelle/controllers/OperationController.js'/>
-              <file name='scripts/Gazelle/controllers/ServiceController.js'/>
-              <file name='scripts/Gazelle/models/Main.js'/>
-              <file name='scripts/Gazelle/models/Operation.js'/>
-              <file name='scripts/Gazelle/models/Service.js'/>
-              <file name='scripts/Gazelle/views/Main.js'/>
-              <file name='scripts/Gazelle/views/Operation.js'/>
-              <file name='scripts/Gazelle/views/Service.js'/>
             </filelist>
 			</concat>
 	        <java dir="${editor-build-root}/tempProfiles/" jar="${editor-src-root}/lib/yuicompressor-2.4.2.jar" fork="true"
@@ -388,15 +379,6 @@
                 <file name='scripts/Core/command.js'/>
             	<file name='scripts/Core/abstractPlugin.js'/>
             	<file name='scripts/Core/abstractLayouter.js'/>
-              <file name='scripts/Gazelle/controllers/MainController.js'/>
-              <file name='scripts/Gazelle/controllers/OperationController.js'/>
-              <file name='scripts/Gazelle/controllers/ServiceController.js'/>
-              <file name='scripts/Gazelle/models/Main.js'/>
-              <file name='scripts/Gazelle/models/Operation.js'/>
-              <file name='scripts/Gazelle/models/Service.js'/>
-              <file name='scripts/Gazelle/views/Main.js'/>
-              <file name='scripts/Gazelle/views/Operation.js'/>
-              <file name='scripts/Gazelle/views/Service.js'/>
             </filelist>
 			<!-- load all sources from plugins defined in the plugins.xml-->
 			<filelist dir="${editor-src-client}/scripts/Plugins/" files="${config.plugins.plugin.source}"/>
