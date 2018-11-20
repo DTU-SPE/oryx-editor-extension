@@ -29,7 +29,7 @@ The subsections below cover the following installation steps:
 * [OPTIONAL] Docker Community Edition (CE) (Docker Engine 1.13.1+)
     * ./Dockerfile (Tomcat 6) and ./poem-jvm/Dockerfile (PostgreSQL 8.4) included
 * [OPTIONAL] docker-compose
-    * ./docker-compose.yml 
+    * ./docker-compose.yml
 
 ### Build web apps
 * In ./build.properties change *java-home* to the installation path (JAVA_HOME) of *Java SE Development Kit 6u45*
@@ -43,13 +43,11 @@ Expected result: after a successful deployment, the following sites are availabl
 
 #### Deploy web apps and database in Docker containers
 * `$ cd /path/to/workspace/oryx-editor-extension`
+* `$ cp ./build.properties.sample ./build.propertis` and configure the values
+* `$ cp ./poem-jvm/db.env.sample ./poem-jvm/db.env` and configure the values
+* In ./build.properties change value of attribute *docker-container-web* to container name of the web container (usually should be oryxeditorextension_web_1, but check `$ docker ps` if automatic naming has changed)
 * `$ docker-compose -f docker-compose.yml up`
-* Log entry indicating that the web server is initialized: `web_1  | INFO: Server startup in 1094 ms`
-* Log entry indicating that the database is initialized: `db_1   | LOG:  database system is ready to accept connections`
-* In a separate terminal: `$ cd /path/to/workspace/oryx-editor-extension`
-* `$ ant create-schema`
-* In ./build.properties change *docker-container-web* to container name of the web container (usually should be oryxeditorextension_web_1, but check `$ docker ps` if automatic naming has changed)
-* `$ ant deploy-all-docker`
+* `$ sh post_setup.sh`
 
 #### Deploy web apps and database in local containers
 ##### Deploy web apps in local Tomcat 6 container

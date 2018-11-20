@@ -24,7 +24,7 @@
     <target name="deploy-backend">
         <copy file="${war-dir}/backend.war" tofile="${deploymentdir}/backend.war"/>
     </target>
-	
+
 	<target name="deploy-backend-docker">
 	   <exec executable="docker">
 	      <arg value="cp"/>
@@ -39,7 +39,7 @@
     <target name="undeploy-backend">
         <delete file="${deploymentdir}/backend.war"/>
     </target>
-	
+
 	<target name="undeploy-backend-docker">
 	   <exec executable="docker">
 	      <arg value="exec"/>
@@ -256,6 +256,7 @@
 			<exec executable="${postgresql-bin-dir}/psql">
 					<arg value="--host=${postgresql-hostname}" />
 					<arg value="--username=${postgresql-username}" />
+					<arg value="--password=${postgresql-password}" />
 					<arg value="--port=${postgresql-port}" />
 					<arg value="--dbname=poem" />
 					<arg value="--file=${data-dir}/database/db_schema.sql" />

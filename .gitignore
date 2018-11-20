@@ -6,3 +6,6 @@
 /doxygen/*
 !/doxygen/.gitkeep
 /war/
+/poem-jvm/db.env
+/build.properties
+/volumes
