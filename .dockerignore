@@ -1,0 +1,9 @@
+.git
+.gitignore
+build-dependencies.png
+build.properties.sample
+docker-compose.yml
+Dockerfile
+volumes/
+/poem-jvm/db.env
+/poem-jvm/db.env.sample

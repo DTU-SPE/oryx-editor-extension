@@ -39,6 +39,10 @@
     <target name="undeploy-all" depends="undeploy-editor, undeploy-backend"/>
 	<target name="undeploy-all-docker" depends="undeploy-editor-docker, undeploy-backend-docker"/>
 
+  <target name="build-deploy-editor-docker" depends="build-editor, deploy-editor-docker"/>
+
+
+
 
     <!-- Generate dependency graph of Ant tasks using Grand
          http://www.ggtools.net/grand/

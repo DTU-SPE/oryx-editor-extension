@@ -24,7 +24,7 @@
     <target name="deploy-backend">
         <copy file="${war-dir}/backend.war" tofile="${deploymentdir}/backend.war"/>
     </target>
-	
+
 	<target name="deploy-backend-docker">
 	   <exec executable="docker">
 	      <arg value="cp"/>
@@ -39,7 +39,7 @@
     <target name="undeploy-backend">
         <delete file="${deploymentdir}/backend.war"/>
     </target>
-	
+
 	<target name="undeploy-backend-docker">
 	   <exec executable="docker">
 	      <arg value="exec"/>
@@ -74,8 +74,8 @@
 	<target name="compress-repository-javascript">
 		<concat destfile='${poem-build-dir}/repository2/repository2.js'>
             <fileset file="${server-root-dir}/src/javascript/repository2/prototype.js"/>
-			<fileset file="editor/lib/ext-2.0.2/adapter/ext/ext-base.js"/>
-			<fileset file="editor/lib/ext-2.0.2/ext-all.js"/>
+			<fileset file="editor/lib/ext-2.1.0/adapter/ext/ext-base.js"/>
+			<fileset file="editor/lib/ext-2.1.0/ext-all.js"/>
 			<filelist id="repsourcefiles" dir="${server-root-dir}/src/javascript/repository2">
                 <file name='ext_templates.js'/>
 				<file name='core/clazz.js'/>
@@ -111,8 +111,8 @@
 
     	<copy todir="${target-dir}/backend">
           <fileset dir="editor/lib">
-            <include name="ext-2.0.2/"/>
-          	<depend  targetdir="${target-dir}/backend/ext-2.0.2" />
+            <include name="ext-2.1.0/"/>
+          	<depend  targetdir="${target-dir}/backend/ext-2.1.0" />
           </fileset>
     	</copy>
 
@@ -120,7 +120,7 @@
 		<copy todir="${target-dir}/backend">
 			<fileset dir="${data-dir}" >
 				<include name="images/" />
-				<depend targetdir="${target-dir}/backend/ext-2.0.2"/>
+				<depend targetdir="${target-dir}/backend/ext-2.1.0"/>
 			</fileset>
 		</copy>
 
@@ -195,7 +195,7 @@
 			<!-- Ext files-->
 			<!--TODO the backend should not reference anything in folder editor-->
 			<fileset dir="editor/lib" >
-				<include name="ext-2.0.2/" />
+				<include name="ext-2.1.0/" />
 			</fileset>
 			<!-- Image files-->
 			<fileset dir="${data-dir}" >

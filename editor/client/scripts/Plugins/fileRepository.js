@@ -257,7 +257,7 @@ onOryxResourcesLoaded = function () {
 			? ORYX.Utils.getParamFromUrl('stencilset')
 			: ORYX.CONFIG.SSET;
 
-		new ORYX.Editor({
+		ORYX.Editor.editorInstance = new ORYX.Editor({
 			id: 'oryx-canvas123',
 			stencilset: {
 				url: ORYX.PATH + '/'+stencilset

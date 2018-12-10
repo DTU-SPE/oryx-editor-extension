@@ -41,7 +41,7 @@ ORYX.Plugins.XFormsExport = ORYX.Plugins.AbstractPlugin.extend({
 			'minShape': 0,
 			'maxShape': 0});
 	},
-	
+
 	exportXForms: function(){
 		this._showCssDialog();
 	},
@@ -52,20 +52,20 @@ ORYX.Plugins.XFormsExport = ORYX.Plugins.AbstractPlugin.extend({
         this.facade.raiseEvent({
             type: ORYX.CONFIG.EVENT_LOADING_ENABLE
         });
-		
+
 		//this.checkClientXFormsSupport();
-            
+
 		// asynchronously ...
         window.setTimeout((function(){
-			
+
 			// ... save synchronously
             this.exportSynchronously(cssUrl);
-			
+
 			// raise loading disable event.
             this.facade.raiseEvent({
                 type: ORYX.CONFIG.EVENT_LOADING_DISABLE
             });
-			
+
         }).bind(this), 10);
 
 		return true;
@@ -87,24 +87,24 @@ ORYX.Plugins.XFormsExport = ORYX.Plugins.AbstractPlugin.extend({
 					css: cssUrl
 				},
 				onSuccess: function(request){
-					
+
 						var win = window.open("data:text/xml," +
-								request.responseText, 
-								"_blank", 
+								request.responseText,
+								"_blank",
 								"resizable=yes,width=640,height=480,toolbar=0,scrollbars=yes");
-						
+
 				}
 			});
-			
+
 		} catch (error){
 			this.facade.raiseEvent({type:ORYX.CONFIG.EVENT_LOADING_DISABLE});
 			Ext.Msg.alert(ORYX.I18N.Oryx.title, error);
 	 	}
 	},
-	
+
 	checkClientXFormsSupport: function() {
 		if(!clientSupportsXForms) {
-			
+
 			var output = ORYX.I18N.XFormsSerialization.noClientXFormsSupportDesc;
 
 			var win = new Ext.Window({
@@ -124,54 +124,54 @@ ORYX.Plugins.XFormsExport = ORYX.Plugins.AbstractPlugin.extend({
                             }]
                         });
         	win.show();
-			
+
 		}
 	},
-	
+
 	/**
 	 * Opens dialog
-	 * 
+	 *
 	 */
 	_showCssDialog: function( successCallback ){
-	
+
 	    var form = new Ext.form.FormPanel({
 			baseCls: 		'x-plain',
 	        labelWidth: 	50,
 	        defaultType: 	'textfield',
 	        items: [{
-	            text : 		ORYX.I18N.XFormsSerialization.selectCss, 
+	            text : 		ORYX.I18N.XFormsSerialization.selectCss,
 				style : 	'font-size:12px;margin-bottom:10px;display:block;',
 	            anchor:		'100%',
-				xtype : 	'label' 
+				xtype : 	'label'
 	        },{
 	            xtype: 'textarea',
 	            hideLabel: true,
 	            name: 'msg',
-	            anchor: '100% -30' 
+	            anchor: '100% -30'
 	        }]
 	    });
 
 
 
 		// Create the panel
-		var dialog = new Ext.Window({ 
-			autoCreate: true, 
+		var dialog = new Ext.Window({
+			autoCreate: true,
 			layout: 	'fit',
 			plain:		true,
 			bodyStyle: 	'padding:5px;',
-			title: 		ORYX.I18N.XFormsSerialization.expTitle, 
-			height: 	150, 
+			title: 		ORYX.I18N.XFormsSerialization.expTitle,
+			height: 	150,
 			width:		500,
 			modal:		true,
-			fixedcenter:true, 
-			shadow:		true, 
+			fixedcenter:true,
+			shadow:		true,
 			proxyDrag: 	true,
 			resizable:	true,
 			items: 		[form],
 			buttons:[
 				{
 					text:ORYX.I18N.XFormsSerialization.ok,
-					handler:function(){		
+					handler:function(){
 						this.exportIt(form.items.items[1].getValue());
 						dialog.hide();
 					}.bind(this)
@@ -183,7 +183,7 @@ ORYX.Plugins.XFormsExport = ORYX.Plugins.AbstractPlugin.extend({
 				}
 			]
 		});
-		
+
 		// Destroy the panel when hiding
 		dialog.on('hide', function(){
 			dialog.destroy(true);
@@ -197,4 +197,3 @@ ORYX.Plugins.XFormsExport = ORYX.Plugins.AbstractPlugin.extend({
 	}
 
 });
-

@@ -1,6 +1,6 @@
 /**
  * @author nicolas.peters
- * 
+ *
  * Contains all strings for German language.
  * Version 1 - 08/29/08
  */
@@ -268,7 +268,7 @@ ORYX.I18N.jPDLSupport.impDesc = "jPDL Datei importieren";
 ORYX.I18N.jPDLSupport.impFailedReq = "Anfrage für den Import der jPDL Datei ist fehlgeschlagen.";
 ORYX.I18N.jPDLSupport.impFailedJson = "Transformation der jPDL Datei ist fehlgeschlagen.";
 ORYX.I18N.jPDLSupport.impFailedJsonAbort = "Import abgebrochen.";
-ORYX.I18N.jPDLSupport.loadSseQuestionTitle = "Stencil Set Erweiterung für jBPM muss geladen werden"; 
+ORYX.I18N.jPDLSupport.loadSseQuestionTitle = "Stencil Set Erweiterung für jBPM muss geladen werden";
 ORYX.I18N.jPDLSupport.loadSseQuestionBody = "Um jPDL importieren zu können, muss die Stencil Set Erweiterung für jBPM geladen werden. Möchten Sie fortfahren?";
 ORYX.I18N.jPDLSupport.expFailedReq = "Anfrage für den Export des Models ist fehlgeschlagen.";
 ORYX.I18N.jPDLSupport.expFailedXml = "Export nach jPDL ist fehlgeschlagen. Exporter meldet: ";
@@ -662,7 +662,7 @@ ORYX.I18N.SyntaxChecker.EPC_EVENT_AFTER_EVENT =  "Auf ein Ereignis darf kein Ere
 ORYX.I18N.SyntaxChecker.EPC_PI_AFTER_FUNCTION =  "Auf eine Funktion darf keine Prozessschnittstelle folgen.";
 ORYX.I18N.SyntaxChecker.EPC_FUNCTION_AFTER_PI =  "Auf eine Prozessschnittstelle darf keine Funktion folgen.";
 ORYX.I18N.SyntaxChecker.EPC_SOURCE_EQUALS_TARGET = "Eine Kante muss zwei verschiedene Knoten verbinden."
-	
+
 if(!ORYX.I18N.SyntaxChecker.PetriNet) ORYX.I18N.SyntaxChecker.PetriNet={};
 ORYX.I18N.SyntaxChecker.PetriNet_NOT_BIPARTITE = "Der Graph ist nicht bepartit.";
 ORYX.I18N.SyntaxChecker.PetriNet_NO_LABEL = "Bezeichnung für einen bezeichnete Transition ist nicht gesetzt.";
@@ -689,7 +689,7 @@ ORYX.I18N.Validator.bpmnLeadsToNoEnd = "Dieser Prozess wird niemals einen Endzus
 
 ORYX.I18N.Validator.syntaxErrorsTitle = "Syntaxfehler";
 ORYX.I18N.Validator.syntaxErrorsMsg = "Das Modell kann nicht validiert werden, weil es Syntaxfehler enthält.";
-	
+
 ORYX.I18N.Validator.error = "Validierung fehlgeschlagen";
 ORYX.I18N.Validator.errorDesc = 'Es tut uns leid, aber die Valdierung konnte nicht durchgeführt werden. Wenn Sie uns über die Supportanfrage-Funktion Ihr Modell zuschicken, hilft es uns, den Fehler zu identifizieren und zu beheben.';
 

@@ -12,13 +12,13 @@
         <!-- libraries -->
         <script src="lib/prototype-1.5.1.js" type="text/javascript" />
         <script src="lib/path_parser.js" type="text/javascript" />
-        <script src="lib/ext-2.0.2/adapter/ext/ext-base.js" type="text/javascript" />
-		<script src="lib/ext-2.0.2/ext-all-debug.js" type="text/javascript" />
-		<script src="lib/ext-2.0.2/color-field.js" type="text/javascript" />
+        <script src="lib/ext-2.1.0/adapter/ext/ext-base.js" type="text/javascript" />
+		<script src="lib/ext-2.1.0/ext-all-debug.js" type="text/javascript" />
+		<script src="lib/ext-2.1.0/color-field.js" type="text/javascript" />
 		
         <style media="screen" type="text/css">
-			@import url("lib/ext-2.0.2/resources/css/ext-all.css");
-			@import url("lib/ext-2.0.2/resources/css/xtheme-gray.css"); 
+			@import url("lib/ext-2.1.0/resources/css/ext-all.css");
+			@import url("lib/ext-2.1.0/resources/css/xtheme-gray.css"); 
 		</style>
 		
         <!-- oryx editor -->
@@ -44,7 +44,7 @@
     <body style="display: block; overflow: hidden;">
       <script type='text/javascript'>
           function onOryxResourcesLoaded(){
-            new ORYX.Editor({
+            ORYX.Editor.editorInstance = new ORYX.Editor({
               id: 'oryx-canvas123',
               stencilset: {
                 url: ORYX.CONFIG.ROOT_PATH + 'stencilsets/bpmn/bpmn.json'
