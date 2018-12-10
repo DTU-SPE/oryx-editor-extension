@@ -453,9 +453,11 @@
             <fileset file="license"/>
 			<fileset file="${editor-src-root}/lib/path_parser.js"/>
 			<fileset file="${editor-src-root}/lib/prototype-1.5.1.js"/>
+
 			<fileset file="${editor-src-root}/lib/ext-2.1.0/adapter/ext/ext-base.js"/>
 			<fileset file="${editor-src-root}/lib/ext-2.1.0/ext-all.js"/>
 			<fileset file="${editor-src-root}/lib/ext-2.1.0/color-field.js"/>
+      <fileset file="${editor-src-root}/lib/utilities/gazelle.js"/>
       <fileset file="${editor-src-root}/lib/utilities/lodash.min.js"/>
 			<fileset file="${editor-src-root}/data/i18n/translation_en_us.js"/>
             <fileset file="${compress.temp}"/>

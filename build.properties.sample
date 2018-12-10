@@ -10,4 +10,3 @@ postgresql-hostname = database
 postgresql-username = poem
 postgresql-port = 5432
 postgresql-bin-dir = /usr/bin
-docker-container-web = oryxeditorextension_web_1

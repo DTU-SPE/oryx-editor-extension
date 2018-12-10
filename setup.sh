@@ -8,8 +8,10 @@ set -e # Exit script if command fails
 # "Create and start containers" in detached mode
 docker-compose up -d
 
+web_id=$(docker-compose ps -q web)
+
 # Build web applications
-docker exec oryxeditorextension_web_1 ant build-all
+docker exec $web_id ant build-all
 
 # Deploy web applications
-docker exec oryxeditorextension_web_1 ant deploy-all
+docker exec $web_id ant deploy-all

@@ -41,9 +41,9 @@ ORYX.Plugins.Gazelle = ORYX.Plugins.AbstractPlugin.extend({
 
 	handleInit: function() {
 		this.container.doLayout();
-		var script = document.createElement("script");
-		script.src = 'http://localhost:8081/js/bundle.js';
-		document.head.appendChild(script);
+		var script = document.createElement("gazelle-app");
+		script.src = '/lib/utilities/gazelle.js';
+		document.body.appendChild(script);
 	},
 
 	handleButtonPressed: function(button, pressed) {
