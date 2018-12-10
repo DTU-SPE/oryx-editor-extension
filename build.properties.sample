@@ -8,7 +8,6 @@ javac-executable = bin/javac
 javac-fork = true
 postgresql-hostname = database
 postgresql-username = poem
-postgresql-password = poem
 postgresql-port = 5432
 postgresql-bin-dir = /usr/bin
 docker-container-web = oryxeditorextension_web_1

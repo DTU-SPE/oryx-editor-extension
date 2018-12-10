@@ -33,7 +33,7 @@ The subsections below cover the following installation steps:
 
 ### Build web apps
 * In ./build.properties change *java-home* to the installation path (JAVA_HOME) of *Java SE Development Kit 6u45*
-* `$ cd /path/to/workspace/oryx-editor-extension`
+* `$ cd /path/to/oryx-editor-extension`
 * `$ ant build-all`
 
 ### Deploy web apps and database
@@ -42,18 +42,21 @@ Expected result: after a successful deployment, the following sites are availabl
 * Oryx Editor: http://localhost:9090/oryx/editor
 
 #### Deploy web apps and database in Docker containers
-* `$ cd /path/to/workspace/oryx-editor-extension`
-* `$ cp ./build.properties.sample ./build.propertis` and configure the values
+* `$ cd /path/to/oryx-editor-extension`
+* `$ cp ./build.properties.sample ./build.properties` and configure the values
+	* Change value of attribute *docker-container-web* to the container name of the web container (usually should be oryxeditorextension_web_1, but check `$ docker ps` if automatic naming has changed)
 * `$ cp ./poem-jvm/db.env.sample ./poem-jvm/db.env` and configure the values
-* In ./build.properties change value of attribute *docker-container-web* to container name of the web container (usually should be oryxeditorextension_web_1, but check `$ docker ps` if automatic naming has changed)
-* `$ docker-compose -f docker-compose.yml up`
-* `$ sh post_setup.sh`
+* `$ sh setup.sh`
+* `$ docker exec -it oryxeditorextension_web_1 /bin/bash`
+* `# ant create-schema`
+  * Supply the password specified in `./poem-jvm/db.env` when prompted
+* `# exit`
 
 #### Deploy web apps and database in local containers
 ##### Deploy web apps in local Tomcat 6 container
 * Documentation: https://tomcat.apache.org/tomcat-6.0-doc/
 * In ./build.properties change *deploymentdir* to the web apps directory of the tomcat installation
-* `$ cd /path/to/workspace/oryx-editor-extension`
+* `$ cd /path/to/oryx-editor-extension`
 * `$ ant deploy-all`
 
 ##### Deploy database in local PostgreSQL 8.4 container
@@ -89,7 +92,7 @@ JAVA_OPTS="-Xdebug -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address
 ## Documentation
 
 ### JavaDoc
-`$ cd /path/to/workspace/oryx-editor-extension`
+`$ cd /path/to/oryx-editor-extension`
 
 #### Oryx Editor
 `$ ant javadoc-editor`

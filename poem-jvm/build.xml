@@ -256,7 +256,6 @@
 			<exec executable="${postgresql-bin-dir}/psql">
 					<arg value="--host=${postgresql-hostname}" />
 					<arg value="--username=${postgresql-username}" />
-					<arg value="--password=${postgresql-password}" />
 					<arg value="--port=${postgresql-port}" />
 					<arg value="--dbname=poem" />
 					<arg value="--file=${data-dir}/database/db_schema.sql" />
