@@ -16,7 +16,6 @@ services:
       - ./volumes/poem-jvm/postgresql-data:/var/lib/postgresql/data
   web:
     image: oryxeditorextension_web
-    container_name: oryxeditorextension_web_1
     build:
       context: ./
       dockerfile: Dockerfile
