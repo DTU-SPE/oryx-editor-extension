@@ -24,7 +24,7 @@
     <target name="deploy-backend">
         <copy file="${war-dir}/backend.war" tofile="${deploymentdir}/backend.war"/>
     </target>
-	
+
 	<target name="deploy-backend-docker">
 	   <exec executable="docker">
 	      <arg value="cp"/>
@@ -39,7 +39,7 @@
     <target name="undeploy-backend">
         <delete file="${deploymentdir}/backend.war"/>
     </target>
-	
+
 	<target name="undeploy-backend-docker">
 	   <exec executable="docker">
 	      <arg value="exec"/>
