@@ -56,12 +56,12 @@ public class ProcessWaveEditorHandler extends EditorHandler {
 		/*
 		 * stencilsets/bpmn1.1/bpmn1.1.json
 		 */
-		
+
 
 		String sset=request.getParameter("stencilset");
 		String json = request.getParameter("json");
 		String extString=request.getParameter("exts");
-		String content = 
+		String content =
 	        "<script type='text/javascript'>" +
 	        "if(!ORYX) var ORYX = {};" +
 	        "if(!ORYX.CONFIG) ORYX.CONFIG = {};\n" +
@@ -74,16 +74,16 @@ public class ProcessWaveEditorHandler extends EditorHandler {
         	sset+
         	"';\n" +
         	"}"+
-            "new ORYX.Editor(json);\n"+
+            "ORYX.Editor.editorInstance = new ORYX.Editor(json);\n"+
 	      	  "}" +
           	"</script>";
 		response.setContentType("application/xhtml+xml");
-		
-		response.getWriter().println(this.getOryxModel("Oryx-Editor", 
-				content, this.getLanguageCode(request), 
+
+		response.getWriter().println(this.getOryxModel("Oryx-Editor",
+				content, this.getLanguageCode(request),
 				this.getCountryCode(request), profileName(sset)));
 		response.setStatus(200);
-		
+
 	}
 	private ArrayList<String> profileName(String stencilset) {
 		//FIXME resue mapping from backend or transfer mapping to editor site
@@ -101,8 +101,8 @@ public class ProcessWaveEditorHandler extends EditorHandler {
 		list.add("default");
 		return list;
 	}
-	
-	
-    
-    
+
+
+
+
 }

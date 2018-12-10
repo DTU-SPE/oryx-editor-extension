@@ -7,22 +7,17 @@ services:
       context: ./poem-jvm
       dockerfile: Dockerfile
     restart: unless-stopped
-    environment:
-      POSTGRES_USER: poem
-      POSTGRES_PASSWORD: poem
-      POSTGRES_DB: poem
-    ports:
-      - '5432:5432'
-    volumes:
-      - /opt/oryx/database:/var/lib/postgresql/data
+    env_file: ./poem-jvm/db.env
     networks:
       gazelle-network:
         aliases:
           - database
+    volumes:
+      - ./volumes/poem-jvm/postgresql-data:/var/lib/postgresql/data
   web:
     image: oryxeditorextension_web
     build:
-      context: .
+      context: ./
       dockerfile: Dockerfile
     ports:
       - '9090:8080'
@@ -31,8 +26,7 @@ services:
       - gazelle-network
     restart: unless-stopped
     volumes:
-    - ./editor/client/scripts/Gazelle/:/usr/local/tomcat/webapps/gazelle
-    - ./editor/client/scripts/Plugins/Gazelle.js:/usr/local/tomcat/webapps/plugins/Gazelle.js
+      - ./volumes/oryx/webapps:/usr/local/tomcat/webapps
 networks:
   gazelle-network:
     driver: bridge

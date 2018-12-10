@@ -101,7 +101,7 @@ public class EditorHandler extends HttpServlet {
 	        	"window.onOryxResourcesLoaded = function() {" +
                 "if (location.hash.slice(1).length == 0 || location.hash.slice(1).indexOf('new')!=-1){" +
                 "var stencilset=ORYX.Utils.getParamFromUrl('stencilset')?ORYX.Utils.getParamFromUrl('stencilset'):'"+sset+"';"+
-                "new ORYX.Editor({"+
+                "ORYX.Editor.editorInstance = new ORYX.Editor({"+
                   "id: 'oryx-canvas123',"+
                   "stencilset: {"+
                   	"url: '"+oryx_path+"'+stencilset" +
